@@ -15,7 +15,7 @@ export default function Matcher({ leftSets, rightSets }: Props) {
   const [correctSets, setCorrectSets] = useState<number[]>([]);
 
   useEffect(() => {
-    if (selectedLeft && selectedLeft === selectedRight) {
+    if (selectedLeft !== undefined && selectedLeft === selectedRight) {
       setCorrectSets([...correctSets, selectedLeft]);
       setSelectedLeft(undefined);
       setSelectedRight(undefined);
