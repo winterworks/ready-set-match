@@ -1,8 +1,9 @@
-import { Data } from "../app/types"
+import { Data } from "../types"
 
 export const data: Data = {
     categories: [
         {
+            key: "morse-code",
             name: "Morse code",
             sets: [
                 { id: 1, a: "A", b:".-" },
@@ -44,6 +45,7 @@ export const data: Data = {
             ]
         },
         {
+            key: "periodic-table",
             name: "Periodic Table",
             sets: [
 
