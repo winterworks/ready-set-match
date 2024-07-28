@@ -9,7 +9,10 @@ export default function Categories({categories}: Props) {
   return (
     <ButtonGroup variant="contained" aria-label="Basic button group">
       {categories.map(category =>
-        <Button key={category.name}>{category.name}</Button>
+        <Button
+          href={`/practice/${category.key}`}
+          key={category.name}
+        >{category.name}</Button>
       )}
     </ButtonGroup>
   );
