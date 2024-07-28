@@ -1,5 +1,6 @@
 import Matcher from "@/components/matcher";
 import { data } from "@/data/data";
+import { shuffle } from "@/helpers/shuffle";
 
 interface Props {
   params: { category: string }
@@ -13,7 +14,12 @@ export default function Home({ params, size = 7 }: Props) {
     return <>Not enough sets</>
   }
 
+  const sets = shuffle(selectedCategory.sets).slice(0, size);
+
   return (
-    <Matcher sets={selectedCategory.sets.slice(0, size)}></Matcher>
+    <Matcher
+      leftSets={shuffle(sets)}
+      rightSets={shuffle(sets)}
+    ></Matcher>
   );
 }

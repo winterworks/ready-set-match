@@ -5,20 +5,14 @@ import { Button, Grid } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 interface Props {
-  sets: Set[];
+  leftSets: Set[];
+  rightSets: Set[];
 }
 
-export default function Matcher({ sets }: Props) {
-  let leftItems: Set[] = [];
-  let rightItems: Set[] = [];
+export default function Matcher({ leftSets, rightSets }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<number>();
   const [selectedRight, setSelectedRight] = useState<number>();
   const [correctSets, setCorrectSets] = useState<number[]>([]);
-
-  sets.forEach(set => {
-    leftItems.push(set);
-    rightItems.push(set);
-  });
 
   useEffect(() => {
     if (selectedLeft && selectedLeft === selectedRight) {
@@ -27,8 +21,6 @@ export default function Matcher({ sets }: Props) {
       setSelectedRight(undefined);
     }
   }, [correctSets, selectedLeft, selectedRight]);
-
-  // TODO shuffle each column
 
   function leftClicked(id: number) {
     itemClicked(id, selectedLeft, setSelectedLeft);
@@ -69,12 +61,12 @@ export default function Matcher({ sets }: Props) {
 
     return (
       <Grid
+        key={id}
         item
         container
         justifyContent="center"
       >
         <Button
-          key={id}
           size="large"
           onClick={!isCorrect ? () => itemClicked(id) : undefined}
           variant={variant}
@@ -93,10 +85,10 @@ export default function Matcher({ sets }: Props) {
       columnSpacing={4}
     >
       <Grid container item rowSpacing={2} xs={6} >
-        {leftItems.map(({ id, a }) => renderItem(id, a, leftClicked, selectedLeft))}
+        {leftSets.map(({ id, a }) => renderItem(id, a, leftClicked, selectedLeft))}
       </Grid>
       <Grid container item rowSpacing={2} xs={6}>
-        {rightItems.map(({ id, b }) => renderItem(id, b, rightClicked, selectedRight))}
+        {rightSets.map(({ id, b }) => renderItem(id, b, rightClicked, selectedRight))}
       </Grid>
     </Grid>
   );
