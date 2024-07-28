@@ -5,6 +5,7 @@ export const data: Data = {
         {
             key: "morse-code",
             name: "Morse code",
+            icon: "MoreHoriz",
             sets: [
                 { id: 1, a: "A", b:".-" },
                 { id: 2, a: "B", b:"-..." },
@@ -47,6 +48,7 @@ export const data: Data = {
         {
             key: "periodic-table",
             name: "Periodic Table",
+            icon: "Science",
             sets: [
                 { id: 1,	a: "H",     b:	"Hydrogen" },
                 { id: 2,	a: "He",    b:	"Helium" },

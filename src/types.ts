@@ -5,8 +5,10 @@ export interface Data {
 export interface Category {
     key: string;
     name: string;
+    sets: Set[];
+
+    icon?: string;
     categories?: Category[];
-    sets: Set[]
 }
 
 export interface Set {

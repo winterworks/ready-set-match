@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-          <Container maxWidth="sm">
+          <Container maxWidth="md">
             <a href="/">
               <Typography component="h1" variant="h2" align="center" gutterBottom>
                 Ready Set Match
