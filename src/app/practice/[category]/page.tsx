@@ -20,6 +20,7 @@ export default function Home({ params, size = 7 }: Props) {
     <Matcher
       leftSets={shuffle(sets)}
       rightSets={shuffle(sets)}
-    ></Matcher>
+      category={selectedCategory}
+    />
   );
 }

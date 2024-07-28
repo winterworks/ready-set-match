@@ -1,15 +1,16 @@
 "use client";
 
-import { Set } from "@/types";
-import { Button, Grid } from "@mui/material";
+import { Category, Set } from "@/types";
+import { Button, Grid, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 interface Props {
+  category: Category;
   leftSets: Set[];
   rightSets: Set[];
 }
 
-export default function Matcher({ leftSets, rightSets }: Props) {
+export default function Matcher({ category, leftSets, rightSets }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<number>();
   const [selectedRight, setSelectedRight] = useState<number>();
   const [correctSets, setCorrectSets] = useState<number[]>([]);
@@ -83,12 +84,39 @@ export default function Matcher({ leftSets, rightSets }: Props) {
     <Grid
       container
       columnSpacing={4}
+      rowSpacing={4}
     >
       <Grid container item rowSpacing={2} xs={6} >
         {leftSets.map(({ id, a }) => renderItem(id, a, leftClicked, selectedLeft))}
       </Grid>
       <Grid container item rowSpacing={2} xs={6}>
         {rightSets.map(({ id, b }) => renderItem(id, b, rightClicked, selectedRight))}
+      </Grid>
+      <Grid container item rowSpacing={2} xs={12} justifyContent="center">
+        <Grid container item rowSpacing={2} xs={12} justifyContent="space-between">
+          <Button
+            href={`/`}
+            size="large"
+            variant="contained"
+          >
+            Back
+          </Button>
+          {correctSets.length !== leftSets.length ? null : (
+            <Typography component="h3" variant="h5" align="center" gutterBottom>
+              All correct!
+            </Typography>
+          )}
+          {correctSets.length !== leftSets.length ? <></> : (
+            <Button
+              href={`/practice/${category.key}`}
+              size="large"
+              variant="contained"
+              color="success"
+            >
+              Again
+            </Button>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   );
