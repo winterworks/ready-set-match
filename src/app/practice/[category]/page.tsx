@@ -1,3 +1,4 @@
+import Matcher from "@/components/matcher";
 import { data } from "@/data/data";
 
 interface Props {
@@ -13,6 +14,6 @@ export default function Home({ params, size = 7 }: Props) {
   }
 
   return (
-    <>Practice</>
+    <Matcher sets={selectedCategory.sets.slice(0, size)}></Matcher>
   );
 }
