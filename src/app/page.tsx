@@ -1,9 +1,10 @@
-import Image from "next/image";
+import { data } from "@/data/data";
+import { Button, ButtonGroup } from "@mui/material";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="relative z-[-1] flex place-items-center before:absolute">
+    <main>
+      <div>
         My app
       </div>
     </main>
