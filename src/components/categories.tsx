@@ -1,48 +1,37 @@
-import { Card, CardActionArea, CardContent, Container, Stack, Typography } from "@mui/material";
+import { Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
 import { Category } from "../types";
-import { Checklist, MoreHoriz, Science, Translate } from '@mui/icons-material';
+import Icon from "./icon";
 
 interface Props {
   categories: Category[];
 }
 
 export default function Categories({categories}: Props) {
-  function renderCategory(category: Category) {
-    let Icon = Checklist;
-
-    switch (category.icon) {
-      case "Science":
-        Icon = Science;
-        break;
-      case "Translate":
-        Icon = Translate;
-        break;
-      case "MoreHoriz":
-        Icon = MoreHoriz;
-        break;
-      default:
-        break;
-    }
-
+  function renderCategory({ key, name, icon }: Category) {
     return (
-      <Container key={category.name}>
-        <Card>
-          <CardActionArea href={`/practice/${category.key}`}>
-            <CardContent>
-              <Icon />
-              <Typography gutterBottom variant="h6" component="div">
-                {category.name}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Container>
-    )
+      <Grid key={name} item xs={12} sm={6} md={4}>
+        <Container key={name}>
+          <Card>
+            <CardActionArea href={`/practice/${key}`}>
+              <CardContent>
+                {icon && (<Icon iconName={icon}/>)}
+                <Typography gutterBottom variant="h6" component="div">
+                  {name}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </Container>
+      </Grid>
+    );
   }
 
   return (
-    <Stack direction="row" spacing={2}>
+    <Grid
+      container
+      rowSpacing={4}
+    >
       {categories.map(renderCategory)}
-    </Stack>
+    </Grid>
   );
 }
