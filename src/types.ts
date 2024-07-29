@@ -7,6 +7,7 @@ export interface Category {
     name: string;
     sets: Set[];
 
+    link?: string;
     icon?: string;
     categories?: Category[];
 }

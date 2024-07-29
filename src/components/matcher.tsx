@@ -1,8 +1,9 @@
 "use client";
 
 import { Category, Set } from "@/types";
-import { Button, Grid, Typography } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Button, Grid, Link, Typography } from "@mui/material";
+import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 interface Props {
   category: Category;
@@ -80,43 +81,75 @@ export default function Matcher({ category, leftSets, rightSets }: Props) {
     )
   }
 
+  function renderItems () {
+    const items: ReactNode[] = [];
+
+    for(let index = 0; index < leftSets.length; index++) {
+      items.push(
+        <Grid container item columnSpacing={8} xs={12} >
+          <Grid container item xs={6}>
+            {renderItem(leftSets[index].id, leftSets[index].a, leftClicked, selectedLeft)}
+          </Grid>
+          <Grid container item xs={6}>
+            {renderItem(rightSets[index].id, rightSets[index].b, rightClicked, selectedRight)}
+          </Grid>
+        </Grid>
+      )
+    }
+
+    return items;
+  }
+
+  function renderInfo() {
+    return (
+      <Grid container item xs={12} direction="column">
+        <Typography component="h3" variant="h5" align="center">
+          Practicing: {category.name}
+        </Typography>
+        <Link
+          href={category.link}
+          target="_blank"
+          rel="noopener"
+          align="center"
+        >
+          View more information
+          <OpenInNewIcon fontSize="small" />
+        </Link>
+      </Grid>
+    )
+  }
+
   return (
     <Grid
       container
       columnSpacing={4}
       rowSpacing={4}
     >
-      <Grid container item rowSpacing={2} xs={6} >
-        {leftSets.map(({ id, a }) => renderItem(id, a, leftClicked, selectedLeft))}
-      </Grid>
-      <Grid container item rowSpacing={2} xs={6}>
-        {rightSets.map(({ id, b }) => renderItem(id, b, rightClicked, selectedRight))}
-      </Grid>
-      <Grid container item rowSpacing={2} xs={12} justifyContent="center">
-        <Grid container item rowSpacing={2} xs={12} justifyContent="space-between">
+      {renderItems()}
+      {renderInfo()}
+      <Grid container item xs={12} justifyContent="space-between">
+        <Button
+          href={`/`}
+          size="large"
+          variant="contained"
+        >
+          Back
+        </Button>
+        {correctSets.length === leftSets.length && (
+          <Typography component="h3" variant="h5" align="center" gutterBottom>
+            All correct!
+          </Typography>
+        )}
+        {correctSets.length !== leftSets.length ? <></> : (
           <Button
-            href={`/`}
+            href={`/practice/${category.key}`}
             size="large"
             variant="contained"
+            color="success"
           >
-            Back
+            Again
           </Button>
-          {correctSets.length !== leftSets.length ? null : (
-            <Typography component="h3" variant="h5" align="center" gutterBottom>
-              All correct!
-            </Typography>
-          )}
-          {correctSets.length !== leftSets.length ? <></> : (
-            <Button
-              href={`/practice/${category.key}`}
-              size="large"
-              variant="contained"
-              color="success"
-            >
-              Again
-            </Button>
-          )}
-        </Grid>
+        )}
       </Grid>
     </Grid>
   );
