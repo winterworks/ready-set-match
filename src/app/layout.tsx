@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Container } from "@mui/material";
 import Typography from '@mui/material/Typography';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter';
+import Theme from "@/components/theme";
 import "./globals.css";
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -20,14 +22,18 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-          <Container maxWidth="md">
-            <a href="/">
-              <Typography component="h1" variant="h2" align="center" gutterBottom>
-                Ready Set Match
-              </Typography>
-            </a>
-            {children}
-          </Container>
+        <AppRouterCacheProvider>
+          <Theme>
+            <Container maxWidth="md" >
+              <a href="/">
+                <Typography component="h1" variant="h2" align="center" gutterBottom>
+                  Ready Set Match
+                </Typography>
+              </a>
+              {children}
+            </Container>
+          </Theme>
+        </AppRouterCacheProvider>
       </body>
     </html>
   );
