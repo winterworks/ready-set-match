@@ -6,7 +6,7 @@ import { shuffle } from "src/helpers/shuffle";
 export default function Practice() {
   const { category } = useParams();
   const size = 7;
-  const selectedCategory = data.categories.find(({ key }) => key === category);
+  const selectedCategory = data.categories.find(({ id }) => id === category);
 
   if (!selectedCategory || selectedCategory.sets.length < size) {
     return <>Not enough sets</>

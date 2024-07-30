@@ -3,7 +3,7 @@ export interface Data {
 }
 
 export interface Category {
-    key: string;
+    id: string;
     name: string;
     sets: Set[];
 

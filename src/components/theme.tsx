@@ -1,4 +1,3 @@
-'use client';
 import { PaletteMode, ThemeProvider } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme } from '@mui/material/styles';

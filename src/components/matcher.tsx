@@ -1,5 +1,3 @@
-"use client";
-
 import { Button, Grid, Link, Typography } from "@mui/material";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -143,7 +141,7 @@ export default function Matcher({ category, leftSets, rightSets }: Props) {
         )}
         {correctSets.length !== leftSets.length ? <></> : (
           <Button
-            href={`/practice/${category.key}`}
+            href={`/practice/${category.id}`}
             size="large"
             variant="contained"
             color="success"

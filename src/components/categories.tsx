@@ -7,12 +7,12 @@ interface Props {
 }
 
 export default function Categories({categories}: Props) {
-  function renderCategory({ key, name, icon }: Category) {
+  function renderCategory({ id, name, icon }: Category) {
     return (
       <Grid key={name} item xs={12} sm={6} md={4}>
         <Container key={name}>
           <Card>
-            <CardActionArea href={`/practice/${key}`}>
+            <CardActionArea href={`/practice/${id}`}>
               <CardContent>
                 {icon && (<Icon iconName={icon}/>)}
                 <Typography gutterBottom variant="h6" component="div">
