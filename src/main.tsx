@@ -5,23 +5,8 @@ import { CssBaseline } from '@mui/material';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import theme from 'src/theme';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Root from 'src/routes';
-import Practice from 'src/routes/practice';
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Root/>,
-  },
-  {
-    path: "/practice/:category",
-    element: <Practice />
-  }
-]);
+import { RouterProvider } from "react-router-dom";
+import { router } from 'src/router';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
