@@ -1,5 +1,5 @@
 import { Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
-import { Category } from "../types";
+import { Category } from "src/types";
 import Icon from "./icon";
 
 interface Props {

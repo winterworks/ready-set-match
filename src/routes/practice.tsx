@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
-import Matcher from "../components/matcher";
-import { data } from "../data/data";
-import { shuffle } from "../helpers/shuffle";
+import Matcher from "src/components/matcher";
+import { data } from "src/data/data";
+import { shuffle } from "src/helpers/shuffle";
 
 export default function Practice() {
   const { category } = useParams();

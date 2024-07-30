@@ -2,15 +2,15 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
 import { CssBaseline } from '@mui/material';
-import theme from './theme';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import theme from 'src/theme';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Root from './routes';
-import Practice from './routes/practice';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import Root from 'src/routes';
+import Practice from 'src/routes/practice';
 
 const router = createBrowserRouter([
   {

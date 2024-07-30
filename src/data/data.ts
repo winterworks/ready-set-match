@@ -1,4 +1,4 @@
-import { Data } from "../types"
+import { Data } from "src/types"
 
 export const data: Data = {
     categories: [

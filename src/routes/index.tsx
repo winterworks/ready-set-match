@@ -1,5 +1,5 @@
-import Categories from "../components/categories";
-import { data } from "../data/data";
+import Categories from "src/components/categories";
+import { data } from "src/data/data";
 
 export default function Root() {
   return (
