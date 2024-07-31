@@ -1,9 +1,8 @@
 export interface Data {
-    categories: Category[];
+    categories: { [key: string]: Category };
 }
 
 export interface Category {
-    id: string;
     name: string;
     sets: Set[];
 
@@ -16,4 +15,6 @@ export interface Set {
     id: number;
     a: string;
     b: string;
+
+    practiced?: number;
 }

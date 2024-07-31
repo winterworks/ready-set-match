@@ -3,14 +3,14 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Category, Set } from "src/types";
 
-
 interface Props {
+  categoryId: string;
   category: Category;
   leftSets: Set[];
   rightSets: Set[];
 }
 
-export default function Matcher({ category, leftSets, rightSets }: Props) {
+export default function Matcher({ categoryId, category, leftSets, rightSets }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<number>();
   const [selectedRight, setSelectedRight] = useState<number>();
   const [correctSets, setCorrectSets] = useState<number[]>([]);
@@ -36,7 +36,6 @@ export default function Matcher({ category, leftSets, rightSets }: Props) {
     currentValue: number | undefined,
     updateCurrent: Dispatch<SetStateAction<number | undefined>>
 ) {
-    console.log(id, currentValue)
     if (id === currentValue) {
       updateCurrent(undefined);
     } else {
@@ -85,7 +84,7 @@ export default function Matcher({ category, leftSets, rightSets }: Props) {
 
     for(let index = 0; index < leftSets.length; index++) {
       items.push(
-        <Grid container item columnSpacing={8} xs={12} >
+        <Grid key={index} container item columnSpacing={8} xs={12} >
           <Grid container item xs={6}>
             {renderItem(leftSets[index].id, leftSets[index].a, leftClicked, selectedLeft)}
           </Grid>
@@ -141,7 +140,7 @@ export default function Matcher({ category, leftSets, rightSets }: Props) {
         )}
         {correctSets.length !== leftSets.length ? <></> : (
           <Button
-            href={`/practice/${category.id}`}
+            href={`/practice/${categoryId}`}
             size="large"
             variant="contained"
             color="success"

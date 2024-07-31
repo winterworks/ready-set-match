@@ -1,9 +1,8 @@
 import { Data } from "src/types"
 
 export const data: Data = {
-    categories: [
-        {
-            id: "morse-code",
+    categories: {
+        "morse-code": {
             name: "Morse code",
             icon: "MoreHoriz",
             link: "https://en.wikipedia.org/wiki/Morse_code",
@@ -46,8 +45,7 @@ export const data: Data = {
                 { id: 36, a: "9", b:"----." },
             ]
         },
-        {
-            id: "periodic-table",
+        "periodic-table": {
             name: "Periodic Table",
             icon: "Science",
             link: "https://en.wikipedia.org/wiki/Periodic_table",
@@ -172,5 +170,5 @@ export const data: Data = {
                 { id: 118,	a: "Og",    b:	"Oganesson" },
             ]
         }
-    ]
+    }
 }

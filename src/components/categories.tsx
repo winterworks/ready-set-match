@@ -1,13 +1,12 @@
 import { Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
 import { Category } from "src/types";
 import Icon from "./icon";
+import { data } from "src/data/data";
 
-interface Props {
-  categories: Category[];
-}
+interface Props {}
 
-export default function Categories({categories}: Props) {
-  function renderCategory({ id, name, icon }: Category) {
+export default function Categories({}: Props) {
+  function renderCategory(id: string, { name, icon }: Category) {
     return (
       <Grid key={name} item xs={12} sm={6} md={4}>
         <Container key={name}>
@@ -26,12 +25,20 @@ export default function Categories({categories}: Props) {
     );
   }
 
+  function renderCategories() {
+    const categoryElements = [];
+    for(const [id, category] of Object.entries(data.categories)) {
+      categoryElements.push(renderCategory(id, category));
+    };
+    return categoryElements;
+  }
+
   return (
     <Grid
       container
       rowSpacing={4}
     >
-      {categories.map(renderCategory)}
+      {renderCategories()}
     </Grid>
   );
 }
