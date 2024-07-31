@@ -2,6 +2,8 @@ import { Button, Grid, Link, Typography } from "@mui/material";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Category, Set } from "src/types";
+import { useAtom } from "jotai";
+import { stateAtom } from "src/data/state"
 
 interface Props {
   categoryId: string;
@@ -14,6 +16,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   const [selectedLeft, setSelectedLeft] = useState<number>();
   const [selectedRight, setSelectedRight] = useState<number>();
   const [correctSets, setCorrectSets] = useState<number[]>([]);
+  const [state, setState] = useAtom(stateAtom);
 
   useEffect(() => {
     if (selectedLeft !== undefined && selectedLeft === selectedRight) {
@@ -21,7 +24,31 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
       setSelectedLeft(undefined);
       setSelectedRight(undefined);
     }
+
+    if(correctSets.length === leftSets.length) {
+      finishedPractice();
+    }
   }, [correctSets, selectedLeft, selectedRight]);
+
+  function finishedPractice() {
+    const updatedSets = category.sets.map(
+      set => correctSets.includes(set.id)
+        ? { ...set, practiced: set.practiced ? set.practiced + 1 : 1 }
+        : set
+    );
+
+    const newState = {
+      ...state,
+      categories: {
+        ...state.categories,
+        [categoryId]: {
+          ...category,
+          sets: updatedSets
+        }
+      }
+    }
+    setState(newState);
+  }
 
   function leftClicked(id: number) {
     itemClicked(id, selectedLeft, setSelectedLeft);
