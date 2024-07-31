@@ -19,8 +19,8 @@ export interface PracticeElement {
 export const practiceOptions: PracticeElement[] = [
   { id: PracticeOption.LEAST, text: "Least Practiced"  },
   { id: PracticeOption.MOST, text: "Most Practiced" },
-  { id: PracticeOption.WEAKEST, text: "Least Practiced", disabled: true },
-  { id: PracticeOption.STRONGEST, text: "Most Practiced", disabled: true }
+  { id: PracticeOption.WEAKEST, text: "Weakest", disabled: true },
+  { id: PracticeOption.STRONGEST, text: "Strongest", disabled: true }
 ];
 
 const practiceKey = 'practiceOption';
