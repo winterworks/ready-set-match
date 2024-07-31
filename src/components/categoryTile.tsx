@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardContent, Container, Grid, Typography } from "@mui/material";
+import { Card, CardActionArea, CardContent, Grid, Typography } from "@mui/material";
 import { Category } from "src/types";
 import Icon from "./icon";
 
@@ -17,21 +17,19 @@ export default function CategoryTile({ categoryId, category: { name, icon, sets 
 
   return (
     <Grid key={name} item xs={12} sm={6} md={4}>
-      <Container key={name}>
-        <Card>
-          <CardActionArea href={`/practice/${categoryId}`}>
-            <CardContent>
-              {icon && (<Icon iconName={icon}/>)}
-              <Typography gutterBottom variant="h6" component="div">
-                {name}
-              </Typography>
-              <Typography>
-                Sets practiced: {totalPracticed}
-              </Typography>
-            </CardContent>
-          </CardActionArea>
-        </Card>
-      </Container>
+      <Card>
+        <CardActionArea href={`/practice/${categoryId}`}>
+          <CardContent>
+            {icon && (<Icon iconName={icon}/>)}
+            <Typography gutterBottom variant="h6" component="div">
+              {name}
+            </Typography>
+            <Typography>
+              Sets practiced: {totalPracticed}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+      </Card>
     </Grid>
   );
 }
