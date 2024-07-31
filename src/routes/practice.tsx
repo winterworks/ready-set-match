@@ -8,7 +8,7 @@ import { stateAtom } from "src/data/state";
 import { shuffle } from "src/helpers/shuffle";
 
 export default function Practice() {
-  const { category: categoryId } = useParams();
+  const { categoryId } = useParams();
   const [state] = useAtom(stateAtom);
 
   const size = 7;

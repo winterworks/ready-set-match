@@ -1,10 +1,11 @@
-import { Checklist, MoreHoriz, Science, Translate } from '@mui/icons-material';
+import { Checklist, Science, Translate, CellTower } from '@mui/icons-material';
+import { SvgIconOwnProps } from '@mui/material';
 
-interface Props {
+interface Props extends SvgIconOwnProps {
   iconName: string;
 }
 
-export default function Icon({iconName}: Props) {
+export default function Icon({ iconName, ...props }: Props) {
   let Icon = Checklist;
 
   switch (iconName) {
@@ -14,12 +15,12 @@ export default function Icon({iconName}: Props) {
     case "Translate":
       Icon = Translate;
       break;
-    case "MoreHoriz":
-      Icon = MoreHoriz;
+    case "CellTower":
+      Icon = CellTower;
       break;
     default:
       break;
   }
 
-  return <Icon />;
+  return <Icon {...props} />;
 }

@@ -32,6 +32,7 @@ export default function PracticeOptionSelector() {
   function renderButton({ id, text, disabled }: PracticeElement) {
     return (
       <Button
+        key={id}
         variant={selectedOption === id ? "contained" : "outlined" }
         disabled={disabled}
         onClick={() => setSelectedOption(id)}

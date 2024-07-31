@@ -4,7 +4,7 @@ export const data: Data = {
     categories: {
         "morse-code": {
             name: "Morse code",
-            icon: "MoreHoriz",
+            icon: "CellTower",
             link: "https://en.wikipedia.org/wiki/Morse_code",
             sets: [
                 { id: 1, a: "A", b:".-" },
