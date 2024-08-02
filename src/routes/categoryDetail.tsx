@@ -17,20 +17,28 @@ export default function CategoryDetail() {
 
   const { name, icon, link, sets } = selectedCategory;
 
-  function renderSet({ a, b, practiced }: Set){
+  function renderSet({ a, b, practiced, mistakes }: Set, index: number){
     return (
-      <div>
-        <TextField id="a" label="" variant="standard" value={a} />
-        <TextField id="b" label="" variant="standard" value={b} />
+      <div key={index}>
+        <TextField id="a" label={index ? undefined : "Translation A"} variant="standard" value={a} />
+        <TextField id="b" label={index ? undefined : "Translation B"} variant="standard" value={b} />
         <TextField
           id="standard-number"
-          label=""
+          label={index ? undefined : "practiced"}
           type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
+          disabled
+          className='number-field'
           variant="standard"
           value={practiced}
+        />
+        <TextField
+          id="standard-number"
+          label={index ? undefined : "Mistakes"}
+          type="number"
+          disabled
+          className='number-field'
+          variant="standard"
+          value={mistakes}
         />
       </div>
     )
@@ -45,10 +53,14 @@ export default function CategoryDetail() {
         component="form"
         sx={{
           '& .MuiTextField-root': { m: 1, width: '25ch' },
+          '& .MuiTextField-root.number-field': { width: '100px' },
         }}
         noValidate
         autoComplete="off"
       >
+        <Typography component="h3" variant="h5" gutterBottom>
+          Category info
+        </Typography>
         <TextField id="name" label="Name" variant="standard" value={name} />
         <TextField
           id="icon"

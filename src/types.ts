@@ -17,4 +17,5 @@ export interface Set {
     b: string;
 
     practiced?: number;
+    mistakes?: number;
 }
