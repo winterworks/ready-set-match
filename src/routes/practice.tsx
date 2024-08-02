@@ -1,6 +1,6 @@
+import React from 'react';
 import { Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import React from "react";
 import { useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
 import { practiceAtom } from "src/components/practiceOptionSelector";

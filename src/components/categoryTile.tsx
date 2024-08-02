@@ -1,3 +1,4 @@
+import React from 'react';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material";
 import { Category } from "src/types";
 import Icon from "./icon";

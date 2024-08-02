@@ -1,3 +1,4 @@
+import React from 'react';
 import { Checklist, Science, Translate, CellTower } from '@mui/icons-material';
 import { SvgIconOwnProps } from '@mui/material';
 

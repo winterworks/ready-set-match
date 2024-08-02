@@ -1,3 +1,4 @@
+import React from 'react';
 import { createBrowserRouter } from "react-router-dom";
 import Root from 'src/routes';
 import CategoryDetail from "src/routes/categoryDetail";

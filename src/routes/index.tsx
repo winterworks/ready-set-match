@@ -1,3 +1,4 @@
+import React from 'react';
 import { Grid } from "@mui/material";
 import { useAtom } from "jotai";
 import CategoryTile from "src/components/categoryTile";
