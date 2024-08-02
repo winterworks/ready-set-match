@@ -2,8 +2,9 @@ import React from 'react';
 import { Grid } from "@mui/material";
 import { useAtom } from "jotai";
 import CategoryTile from "src/components/categoryTile";
-import PracticeOptionSelector from "src/components/practiceOptionSelector";
 import { stateAtom } from "src/data/state";
+import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector';
+import PracticeOptionSelector from 'src/components/practiceTypeSelector';
 
 export default function Root() {
   const [state] = useAtom(stateAtom);
@@ -21,6 +22,9 @@ export default function Root() {
     >
       <Grid item xs={12}>
         <PracticeOptionSelector />
+      </Grid>
+      <Grid item xs={12}>
+        <PracticeSetSizeSelector />
       </Grid>
       {categoryTiles}
     </Grid>

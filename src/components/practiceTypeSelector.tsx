@@ -4,19 +4,19 @@ import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { PracticeElement, PracticeOption, practiceOptions } from "src/helpers/setSorting";
 
-const practiceKey = 'practiceOption';
-export const practiceAtom = atomWithStorage(practiceKey, PracticeOption.LEAST, undefined, { getOnInit: true });
+const practiceTypeKey = 'practiceType';
+export const practiceTypeAtom = atomWithStorage(practiceTypeKey, PracticeOption.LEAST, undefined, { getOnInit: true });
 
 export default function PracticeOptionSelector() {
-  const [selectedOption, setSelectedOption] = useAtom(practiceAtom);
+  const [practiceType, setPracticeType] = useAtom(practiceTypeAtom);
 
   function renderButton({ id, text, disabled }: PracticeElement) {
     return (
       <Button
         key={id}
-        variant={selectedOption === id ? "contained" : "outlined" }
+        variant={practiceType === id ? "contained" : "outlined" }
         disabled={disabled}
-        onClick={() => setSelectedOption(id)}
+        onClick={() => setPracticeType(id)}
       >
         { text }
       </Button>

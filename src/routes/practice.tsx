@@ -3,26 +3,27 @@ import { Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
-import { practiceAtom } from "src/components/practiceOptionSelector";
 import { stateAtom } from "src/data/state";
 import { practiceOptions } from "src/helpers/setSorting";
 import { shuffle } from "src/helpers/shuffle";
+import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
+import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
 
 export default function Practice() {
   const { categoryId } = useParams();
   const [state] = useAtom(stateAtom);
+  const [setSizeOption] = useAtom(setSizeAtom);
 
-  const size = 7;
   if (!categoryId) {
     return <>This category does not exit</>
   }
 
   const selectedCategory = state.categories[categoryId];
-  if (!selectedCategory || selectedCategory.sets.length < size) {
+  if (!selectedCategory || selectedCategory.sets.length < setSizeOption) {
     return <>Not enough sets</>
   }
 
-  const [selectedOption] = useAtom(practiceAtom);
+  const [selectedOption] = useAtom(practiceTypeAtom);
   const practiceOption = practiceOptions.find(({ id }) => id === selectedOption);
 
   if (!practiceOption) {
@@ -33,7 +34,7 @@ export default function Practice() {
   const sortedSets = practiceOption.sort(selectedCategory.sets)
 
   // Select only a number of these least practiced sets
-  const practiceSets = sortedSets.slice(0, size);
+  const practiceSets = sortedSets.slice(0, setSizeOption);
 
   // Split the sets in 2 shuffled collections
   const leftSets = shuffle(practiceSets);
