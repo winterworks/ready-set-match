@@ -16,15 +16,15 @@ export interface PracticeElement {
   disabled?: boolean;
 }
 
-function sortByPracticed(sets: Set[], sortByLeast: boolean) {
+function sortSetsBy(sets: Set[], attribute: 'practiced' | 'mistakes', ascending: boolean) {
   return sets.slice(0).sort((setA, setB) => {
-    const a = setA.practiced || 0;
-    const b = setB.practiced || 0;
+    const a = setA[attribute] || 0;
+    const b = setB[attribute] || 0;
 
     if (a === b) {
       return 0.5 - Math.random();
     }
-    if (sortByLeast) {
+    if (ascending) {
       return a - b;
     }
     return b - a;
@@ -32,21 +32,29 @@ function sortByPracticed(sets: Set[], sortByLeast: boolean) {
 }
 
 function sortLeastPracticed(sets: Set[]) {
-  return sortByPracticed(sets, true);
+  return sortSetsBy(sets, "practiced", true);
 }
 
 function sortMostPracticed(sets: Set[]) {
-  return sortByPracticed(sets, false);
+  return sortSetsBy(sets, "practiced", false);
 }
 
 function sortRandom(sets: Set[]) {
   return sets.slice(0).sort(() => 0.5 - Math.random());
 }
 
+function sortWeakest(sets: Set[]) {
+  return sortSetsBy(sets, "mistakes", false);
+}
+
+function sortStrongest(sets: Set[]) {
+  return sortSetsBy(sets, "mistakes", true);
+}
+
 export const practiceOptions: PracticeElement[] = [
-  { id: PracticeOption.LEAST, text: "Least Practiced", sort: sortLeastPracticed },
-  { id: PracticeOption.MOST, text: "Most Practiced", sort: sortMostPracticed },
+  { id: PracticeOption.WEAKEST, text: "Weakest", sort: sortWeakest },
+  { id: PracticeOption.STRONGEST, text: "Strongest", sort: sortStrongest },
   { id: PracticeOption.RANDOM, text: "Random", sort: sortRandom },
-  { id: PracticeOption.WEAKEST, text: "Weakest", disabled: true, sort: () => [] },
-  { id: PracticeOption.STRONGEST, text: "Strongest", disabled: true, sort: () => [] }
+  { id: PracticeOption.LEAST, text: "Least Practiced", sort: sortLeastPracticed },
+  { id: PracticeOption.MOST, text: "Most Practiced", sort: sortMostPracticed }
 ];

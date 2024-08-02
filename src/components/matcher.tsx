@@ -17,13 +17,25 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   const [selectedLeft, setSelectedLeft] = useState<number>();
   const [selectedRight, setSelectedRight] = useState<number>();
   const [correctSets, setCorrectSets] = useState<number[]>([]);
+  const [mistakes, setMistakes] = useState<{ [key: string]: number }>({})
   const [state, setState] = useAtom(stateAtom);
 
   useEffect(() => {
-    if (selectedLeft !== undefined && selectedLeft === selectedRight) {
-      setCorrectSets([...correctSets, selectedLeft]);
-      setSelectedLeft(undefined);
-      setSelectedRight(undefined);
+    if (selectedLeft !== undefined && selectedRight !== undefined) {
+      // A set is selected
+      if (selectedLeft === selectedRight) {
+        // The set is correct
+        setCorrectSets([...correctSets, selectedLeft]);
+        setSelectedLeft(undefined);
+        setSelectedRight(undefined);
+      } else {
+        // The set is wrong
+        setMistakes({
+          ...mistakes,
+          [selectedLeft]: mistakes[selectedLeft] ? mistakes[selectedLeft] + 1 : 1,
+          [selectedRight]: mistakes[selectedRight] ? mistakes[selectedRight] + 1 : 1,
+        })
+      }
     }
 
     if(correctSets.length === leftSets.length) {
@@ -32,11 +44,18 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   }, [correctSets, selectedLeft, selectedRight]);
 
   function finishedPractice() {
-    const updatedSets = category.sets.map(
-      set => correctSets.includes(set.id)
-        ? { ...set, practiced: set.practiced ? set.practiced + 1 : 1 }
-        : set
-    );
+    const updatedSets = category.sets.map(set => {
+      if (correctSets.includes(set.id)) {
+        const currentMistakes = mistakes[set.id] || 0;
+        const previousMistakes = set.mistakes || 0;
+        return {
+          ...set,
+          practiced: set.practiced ? set.practiced + 1 : 1,
+          mistakes: previousMistakes + currentMistakes
+        }
+      }
+      return set;
+    });
 
     const newState = {
       ...state,
@@ -65,7 +84,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
     updateCurrent: Dispatch<SetStateAction<number | undefined>>
 ) {
     if (id === currentValue) {
-      updateCurrent(undefined);
+      updateCurrent(undefined); // Unselect item
     } else {
       updateCurrent(id);
     }
@@ -74,7 +93,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   function renderItem(
     id: number,
     text: string,
-    itemClicked: (id: number) => void,
+    onClick: (id: number) => void,
     selectedId?: number
   ) {
     const isSelected = id === selectedId;
@@ -96,7 +115,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
       >
         <Button
           size="large"
-          onClick={!isCorrect ? () => itemClicked(id) : undefined}
+          onClick={!isCorrect ? () => onClick(id) : undefined}
           variant={variant}
           color={color}
           fullWidth
