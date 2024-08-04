@@ -10,7 +10,7 @@ export default function Root() {
   const [state] = useAtom(stateAtom);
 
   const categoryTiles = [];
-  for(const [id, category] of Object.entries(state.categories)) {
+  for (const [id, category] of Object.entries(state.categories)) {
     categoryTiles.push(<CategoryTile categoryId={id} category={category} />);
   };
 

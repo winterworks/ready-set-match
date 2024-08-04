@@ -9,7 +9,7 @@ export interface CategoryReducerPayload {
 }
 
 export enum CategoryReducerAction {
-  UPDATE_SET = "UPDATE_SET"
+  UPDATE_SET = "UPDATE_SET",
 }
 
 const categoryReducer = (prevState: Data, payload: CategoryReducerPayload): Data => {
@@ -24,7 +24,7 @@ const categoryReducer = (prevState: Data, payload: CategoryReducerPayload): Data
             sets: prevState.categories[payload.categoryId].sets.map(set => set.id === payload.updatedSet.id ? payload.updatedSet : set )
           }
         }
-      }
+      };
     default:
       return prevState;
   }
@@ -35,4 +35,4 @@ export const categoryAtom = atom(
   (get, set, action: CategoryReducerPayload) => {
     set(stateAtom, categoryReducer(get(stateAtom), action))
   }
-)
+);

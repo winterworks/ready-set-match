@@ -3,11 +3,11 @@ import { Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
-import { categoryAtom } from "src/data/state";
 import { practiceOptions } from "src/helpers/setSorting";
 import { shuffle } from "src/helpers/shuffle";
 import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
+import { categoryAtom } from 'src/data/categoryReducer';
 
 export default function Practice() {
   const { categoryId } = useParams();
@@ -40,10 +40,10 @@ export default function Practice() {
   const leftSets = shuffle(practiceSets);
   const rightSets = shuffle(practiceSets);
 
-  return React.useMemo( () => (
+  return React.useMemo(() => (
     <>
       <Typography gutterBottom>
-        Exercise: {practiceOptions.find(({ id }) => id === selectedOption)?.text }
+        Exercise: {practiceOptions.find(({ id }) => id === selectedOption)?.text}
       </Typography>
       <Matcher
         leftSets={leftSets}
@@ -52,5 +52,5 @@ export default function Practice() {
         category={selectedCategory}
       />
     </>
-  ), [] );
+  ), []);
 }

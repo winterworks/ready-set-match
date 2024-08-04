@@ -16,13 +16,13 @@ export default function CategoryDetail() {
 
   const { name, icon, link, sets } = getCategory(categoryId);
 
-  function onSetUpdated (updatedSet: Set) {
+  function onSetUpdated(updatedSet: Set) {
     if (categoryId !== undefined) {
       dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, updatedSet });
     }
   }
 
-  function renderSet(set: Set, index: number){
+  function renderSet(set: Set, index: number) {
     const { a, b, practiced, mistakes } = set;
     return (
       <div key={index}>
@@ -78,7 +78,7 @@ export default function CategoryDetail() {
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                {icon && (<Icon iconName={icon}/>)}
+                {icon && (<Icon iconName={icon} />)}
               </InputAdornment>
             ),
           }}

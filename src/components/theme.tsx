@@ -8,7 +8,7 @@ function getTheme(mode: PaletteMode) {
     palette: {
       mode
     },
-  })
+  });
 }
 
 export default function Theme({ children }: Readonly<{

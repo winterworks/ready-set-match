@@ -21,7 +21,7 @@ export default function CategoryTile({ categoryId, category: { name, icon, sets 
       <Card>
         <CardContent>
           <Typography component="h3" variant="h5" display="flex" justifyContent="space-between">
-            {name}{icon && (<Icon fontSize="large" iconName={icon}/>)}
+            {name}{icon && (<Icon fontSize="large" iconName={icon} />)}
           </Typography>
           <Typography>
             Sets practiced: {totalPracticed}

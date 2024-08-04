@@ -11,16 +11,16 @@ export default function PracticeSetSizeSelector() {
   const [setSize, setSetSize] = useAtom(setSizeAtom);
 
   return (
-      <TextField
-        id="set-size"
-        label="Set size"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        value={setSize}
-        variant="filled"
-        onChange={(e) => setSetSize(Number(e.target.value))}
-      />
+    <TextField
+      id="set-size"
+      label="Set size"
+      type="number"
+      InputLabelProps={{
+        shrink: true,
+      }}
+      value={setSize}
+      variant="filled"
+      onChange={(e) => setSetSize(Number(e.target.value))}
+    />
   );
 }

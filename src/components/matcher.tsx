@@ -38,7 +38,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
       }
     }
 
-    if(correctSets.length === leftSets.length) {
+    if (correctSets.length === leftSets.length) {
       finishedPractice();
     }
   }, [correctSets, selectedLeft, selectedRight]);
@@ -68,7 +68,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
     id: number,
     currentValue: number | undefined,
     updateCurrent: Dispatch<SetStateAction<number | undefined>>
-) {
+  ) {
     if (id === currentValue) {
       updateCurrent(undefined); // Unselect item
     } else {
@@ -112,10 +112,10 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
     )
   }
 
-  function renderItems () {
+  function renderItems() {
     const items: ReactNode[] = [];
 
-    for(let index = 0; index < leftSets.length; index++) {
+    for (let index = 0; index < leftSets.length; index++) {
       items.push(
         <Grid key={index} container item columnSpacing={8} xs={12} >
           <Grid container item xs={6}>
