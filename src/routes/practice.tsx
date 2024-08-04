@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
-import { stateAtom } from "src/data/state";
+import { categoryAtom } from "src/data/state";
 import { practiceOptions } from "src/helpers/setSorting";
 import { shuffle } from "src/helpers/shuffle";
 import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
@@ -11,14 +11,14 @@ import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
 
 export default function Practice() {
   const { categoryId } = useParams();
-  const [state] = useAtom(stateAtom);
+  const [getCategory] = useAtom(categoryAtom);
   const [setSizeOption] = useAtom(setSizeAtom);
 
   if (!categoryId) {
     return <>This category does not exit</>
   }
 
-  const selectedCategory = state.categories[categoryId];
+  const selectedCategory = getCategory(categoryId);
   if (!selectedCategory || selectedCategory.sets.length < setSizeOption) {
     return <>Not enough sets</>
   }

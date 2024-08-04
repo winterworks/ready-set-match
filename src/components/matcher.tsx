@@ -4,7 +4,7 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Category, Set } from "src/types";
 import { useAtom } from "jotai";
-import { stateAtom } from "src/data/state"
+import { categoryAtom, CategoryReducerAction } from "src/data/state"
 
 interface Props {
   categoryId: string;
@@ -18,7 +18,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   const [selectedRight, setSelectedRight] = useState<number>();
   const [correctSets, setCorrectSets] = useState<number[]>([]);
   const [mistakes, setMistakes] = useState<{ [key: string]: number }>({})
-  const [state, setState] = useAtom(stateAtom);
+  const [, dispatch] = useAtom(categoryAtom);
 
   useEffect(() => {
     if (selectedLeft !== undefined && selectedRight !== undefined) {
@@ -44,30 +44,16 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   }, [correctSets, selectedLeft, selectedRight]);
 
   function finishedPractice() {
-    const updatedSets = category.sets.map(set => {
-      if (correctSets.includes(set.id)) {
-        const currentMistakes = mistakes[set.id] || 0;
-        const previousMistakes = set.mistakes || 0;
-        return {
-          ...set,
-          practiced: set.practiced ? set.practiced + 1 : 1,
-          mistakes: previousMistakes + currentMistakes
-        }
+    leftSets.forEach(set => {
+      const newMistakes = mistakes[set.id] || 0;
+      const previousMistakes = set.mistakes || 0;
+      const updatedSet = {
+        ...set,
+        practiced: set.practiced ? set.practiced + 1 : 1,
+        mistakes: previousMistakes + newMistakes
       }
-      return set;
+      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, updatedSet });
     });
-
-    const newState = {
-      ...state,
-      categories: {
-        ...state.categories,
-        [categoryId]: {
-          ...category,
-          sets: updatedSets
-        }
-      }
-    }
-    setState(newState);
   }
 
   function leftClicked(id: number) {

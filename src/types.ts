@@ -1,5 +1,9 @@
 export interface Data {
-    categories: { [key: string]: Category };
+    categories: Categories;
+}
+
+export interface Categories {
+    [key: string]: Category
 }
 
 export interface Category {

@@ -3,25 +3,35 @@ import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Icon from "src/components/icon";
-import { stateAtom } from "src/data/state";
+import { CategoryReducerAction, categoryAtom } from "src/data/state";
 import { Set } from "src/types";
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();
-  const [state] = useAtom(stateAtom);
+  const [getCategory, dispatch] = useAtom(categoryAtom);
 
-  const selectedCategory = state.categories[categoryId || ''];
-  if (!selectedCategory) {
+  if (!categoryId) {
     return <>This category does not exit</>
   }
 
-  const { name, icon, link, sets } = selectedCategory;
+  const { name, icon, link, sets } = getCategory(categoryId);
 
-  function renderSet({ a, b, practiced, mistakes }: Set, index: number){
+  function onSetUpdated (updatedSet: Set) {
+    if (categoryId !== undefined) {
+      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, updatedSet });
+    }
+  }
+
+  function renderSet(set: Set, index: number){
+    const { a, b, practiced, mistakes } = set;
     return (
       <div key={index}>
-        <TextField id="a" label={index ? undefined : "Translation A"} variant="standard" value={a} />
-        <TextField id="b" label={index ? undefined : "Translation B"} variant="standard" value={b} />
+        <TextField id="a" label={index ? undefined : "Translation A"} variant="standard" value={a}
+          onChange={(e) => onSetUpdated({ ...set, a: e.target.value })}
+        />
+        <TextField id="b" label={index ? undefined : "Translation B"} variant="standard" value={b}
+          onChange={(e) => onSetUpdated({ ...set, b: e.target.value })}
+        />
         <TextField
           id="standard-number"
           label={index ? undefined : "practiced"}
@@ -47,7 +57,7 @@ export default function CategoryDetail() {
   return (
     <>
       <Typography component="h2" variant="h4" gutterBottom>
-        {selectedCategory.name}
+        {name}
       </Typography>
       <Box
         component="form"
