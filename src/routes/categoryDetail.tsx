@@ -3,8 +3,8 @@ import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Icon from "src/components/icon";
-import { CategoryReducerAction, categoryAtom } from "src/data/state";
 import { Set } from "src/types";
+import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();

@@ -4,7 +4,7 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Category, Set } from "src/types";
 import { useAtom } from "jotai";
-import { categoryAtom, CategoryReducerAction } from "src/data/state"
+import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
 
 interface Props {
   categoryId: string;
