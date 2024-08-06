@@ -16,7 +16,7 @@ export interface Category {
 }
 
 export interface Set {
-    id: number;
+    id: string;
     a: string;
     b: string;
 

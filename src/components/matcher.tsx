@@ -14,9 +14,9 @@ interface Props {
 }
 
 export default function Matcher({ categoryId, category, leftSets, rightSets }: Props) {
-  const [selectedLeft, setSelectedLeft] = useState<number>();
-  const [selectedRight, setSelectedRight] = useState<number>();
-  const [correctSets, setCorrectSets] = useState<number[]>([]);
+  const [selectedLeft, setSelectedLeft] = useState<string>();
+  const [selectedRight, setSelectedRight] = useState<string>();
+  const [correctSets, setCorrectSets] = useState<string[]>([]);
   const [mistakes, setMistakes] = useState<{ [key: string]: number }>({})
   const [, dispatch] = useAtom(categoryAtom);
 
@@ -51,23 +51,23 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
         ...set,
         practiced: set.practiced ? set.practiced + 1 : 1,
         mistakes: previousMistakes + newMistakes
-      }
-      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, updatedSet });
+      };
+      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, set: updatedSet });
     });
   }
 
-  function leftClicked(id: number) {
+  function leftClicked(id: string) {
     itemClicked(id, selectedLeft, setSelectedLeft);
   }
 
-  function rightClicked(id: number) {
+  function rightClicked(id: string) {
     itemClicked(id, selectedRight, setSelectedRight);
   }
 
   function itemClicked(
-    id: number,
-    currentValue: number | undefined,
-    updateCurrent: Dispatch<SetStateAction<number | undefined>>
+    id: string,
+    currentValue: string | undefined,
+    updateCurrent: Dispatch<SetStateAction<string | undefined>>
   ) {
     if (id === currentValue) {
       updateCurrent(undefined); // Unselect item
@@ -77,10 +77,10 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   }
 
   function renderItem(
-    id: number,
+    id: string,
     text: string,
-    onClick: (id: number) => void,
-    selectedId?: number
+    onClick: (id: string) => void,
+    selectedId?: string
   ) {
     const isSelected = id === selectedId;
     const isCorrect = correctSets.includes(id);
