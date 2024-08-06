@@ -4,7 +4,9 @@ import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Icon from "src/components/icon";
 import { Set } from "src/types";
-import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
+import { categoryAtom, CategoryReducerAction, NewSet } from 'src/data/categoryReducer';
+import SetAddForm from 'src/components/setAddForm';
+import SetDetails from 'src/components/setDetail';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();
@@ -16,42 +18,17 @@ export default function CategoryDetail() {
 
   const { name, icon, link, sets } = getCategory(categoryId);
 
-  function onSetUpdated(updatedSet: Set) {
+  function onSetUpdated(set: Set) {
     if (categoryId !== undefined) {
-      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, updatedSet });
+      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, set });
     }
   }
 
-  function renderSet(set: Set, index: number) {
-    const { a, b, practiced, mistakes } = set;
-    return (
-      <div key={index}>
-        <TextField id="a" label={index ? undefined : "Translation A"} variant="standard" value={a}
-          onChange={(e) => onSetUpdated({ ...set, a: e.target.value })}
-        />
-        <TextField id="b" label={index ? undefined : "Translation B"} variant="standard" value={b}
-          onChange={(e) => onSetUpdated({ ...set, b: e.target.value })}
-        />
-        <TextField
-          id="standard-number"
-          label={index ? undefined : "practiced"}
-          type="number"
-          disabled
-          className='number-field'
-          variant="standard"
-          value={practiced}
-        />
-        <TextField
-          id="standard-number"
-          label={index ? undefined : "Mistakes"}
-          type="number"
-          disabled
-          className='number-field'
-          variant="standard"
-          value={mistakes}
-        />
-      </div>
-    )
+  function addSet(set: NewSet) {
+    if (categoryId === undefined) {
+      return;
+    }
+    dispatch({ action: CategoryReducerAction.ADD_SET, categoryId, set });
   }
 
   return (
@@ -89,7 +66,10 @@ export default function CategoryDetail() {
         <Typography component="h3" variant="h5" gutterBottom>
           Sets
         </Typography>
-        {sets.map(renderSet)}
+        <SetAddForm onSetAdded={addSet} />
+        {sets.map(set =>
+          <SetDetails key={set.id} set={set} onSetChanged={onSetUpdated} />
+        )}
       </Box>
     </>
   );
