@@ -3,33 +3,18 @@ import { Box, InputAdornment, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Icon from "src/components/icon";
-import { Set } from "src/types";
-import { categoryAtom, CategoryReducerAction, NewSet } from 'src/data/categoryReducer';
-import SetAddForm from 'src/components/setAddForm';
-import SetDetails from 'src/components/setDetail';
+import { categoryAtom} from 'src/data/categoryReducer';
+import SetsTable from 'src/components/setsTable';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();
-  const [getCategory, dispatch] = useAtom(categoryAtom);
+  const [getCategory] = useAtom(categoryAtom);
 
   if (!categoryId) {
     return <>This category does not exit</>
   }
 
   const { name, icon, link, sets } = getCategory(categoryId);
-
-  function onSetUpdated(set: Set) {
-    if (categoryId !== undefined) {
-      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, set });
-    }
-  }
-
-  function addSet(set: NewSet) {
-    if (categoryId === undefined) {
-      return;
-    }
-    dispatch({ action: CategoryReducerAction.ADD_SET, categoryId, set });
-  }
 
   return (
     <>
@@ -66,10 +51,7 @@ export default function CategoryDetail() {
         <Typography component="h3" variant="h5" gutterBottom>
           Sets
         </Typography>
-        <SetAddForm onSetAdded={addSet} />
-        {sets.map(set =>
-          <SetDetails key={set.id} set={set} onSetChanged={onSetUpdated} />
-        )}
+        <SetsTable categoryId={categoryId} sets={sets}/>
       </Box>
     </>
   );
