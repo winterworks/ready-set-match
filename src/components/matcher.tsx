@@ -13,11 +13,54 @@ interface Props {
   rightSets: Set[];
 }
 
+interface MatchItemProps {
+  id: string;
+  text: string;
+  correctSets: string[];
+
+  selectedLeft?: string;
+  selectedRight?: string;
+  selectedId?: string;
+
+  onClick: (id: string) => void;
+}
+
+function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRight, onClick}: MatchItemProps) {
+  const isSelected = id === selectedId;
+  const isCorrect = correctSets.includes(id);
+  const isWrong = isSelected
+    && selectedLeft !== undefined
+    && selectedRight !== undefined
+    && selectedLeft !== selectedRight;
+
+  const variant = isSelected || isCorrect ? 'contained' : 'outlined';
+  const color = (isCorrect ? "success" : undefined) || (isWrong ? "error" : undefined);
+
+  return (
+    <Grid
+      key={id}
+      item
+      container
+      justifyContent="center"
+    >
+      <Button
+        size="large"
+        onClick={!isCorrect ? () => onClick(id) : undefined}
+        variant={variant}
+        color={color}
+        fullWidth
+      >
+        {text}
+      </Button>
+    </Grid>
+  );
+}
+
 export default function Matcher({ categoryId, category, leftSets, rightSets }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<string>();
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
-  const [mistakes, setMistakes] = useState<{ [key: string]: number }>({})
+  const [mistakes, setMistakes] = useState<{ [key: string]: number }>({});
   const [, dispatch] = useAtom(categoryAtom);
 
   useEffect(() => {
@@ -76,42 +119,6 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
     }
   }
 
-  function renderItem(
-    id: string,
-    text: string,
-    onClick: (id: string) => void,
-    selectedId?: string
-  ) {
-    const isSelected = id === selectedId;
-    const isCorrect = correctSets.includes(id);
-    const isWrong = isSelected
-      && selectedLeft !== undefined
-      && selectedRight !== undefined
-      && selectedLeft !== selectedRight;
-
-    const variant = isSelected || isCorrect ? 'contained' : 'outlined'
-    const color = (isCorrect ? "success" : undefined) || (isWrong ? "error" : undefined)
-
-    return (
-      <Grid
-        key={id}
-        item
-        container
-        justifyContent="center"
-      >
-        <Button
-          size="large"
-          onClick={!isCorrect ? () => onClick(id) : undefined}
-          variant={variant}
-          color={color}
-          fullWidth
-        >
-          {text}
-        </Button>
-      </Grid>
-    )
-  }
-
   function renderItems() {
     const items: ReactNode[] = [];
 
@@ -119,10 +126,26 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
       items.push(
         <Grid key={index} container item columnSpacing={8} xs={12} >
           <Grid container item xs={6}>
-            {renderItem(leftSets[index].id, leftSets[index].a, leftClicked, selectedLeft)}
+            <MatchItem
+              id={leftSets[index].id}
+              text={leftSets[index].a}
+              correctSets={correctSets}
+              selectedLeft={selectedLeft}
+              selectedRight={selectedRight}
+              selectedId={selectedLeft}
+              onClick={leftClicked}
+            />
           </Grid>
           <Grid container item xs={6}>
-            {renderItem(rightSets[index].id, rightSets[index].b, rightClicked, selectedRight)}
+            <MatchItem
+              id={rightSets[index].id}
+              text={rightSets[index].b}
+              correctSets={correctSets}
+              selectedLeft={selectedLeft}
+              selectedRight={selectedRight}
+              selectedId={selectedRight}
+              onClick={rightClicked}
+            />
           </Grid>
         </Grid>
       )
@@ -131,8 +154,13 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
     return items;
   }
 
-  function renderInfo() {
-    return (
+  return (
+    <Grid
+      container
+      columnSpacing={4}
+      rowSpacing={4}
+    >
+      {renderItems()}
       <Grid container item xs={12} direction="column">
         <Typography component="h3" variant="h5" align="center">
           Practicing: {category.name}
@@ -147,17 +175,6 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
           <OpenInNewIcon fontSize="small" />
         </Link>
       </Grid>
-    )
-  }
-
-  return (
-    <Grid
-      container
-      columnSpacing={4}
-      rowSpacing={4}
-    >
-      {renderItems()}
-      {renderInfo()}
       <Grid container item xs={12} justifyContent="space-between">
         <Button
           href={`/`}
