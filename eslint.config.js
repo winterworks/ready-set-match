@@ -9,9 +9,17 @@ export default [
   {languageOptions: { globals: globals.browser }},
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
+  ...tseslint.configs.strictTypeChecked,
   pluginReact.configs.flat.recommended,
   {
-    ignores:  ["dist/", "node_modules/"]
+    ignores:  ["dist/", "node_modules/", "vite.config.ts", "**/*.js"]
+  },
+  {
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+      }
+    }
   },
   {
     settings: {

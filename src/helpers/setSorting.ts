@@ -18,8 +18,8 @@ export interface PracticeElement {
 
 function sortSetsBy(sets: Set[], attribute: 'practiced' | 'mistakes', ascending: boolean) {
   return sets.slice(0).sort((setA, setB) => {
-    const a = setA[attribute] || 0;
-    const b = setB[attribute] || 0;
+    const a = setA[attribute] ?? 0;
+    const b = setB[attribute] ?? 0;
 
     if (a === b) {
       return 0.5 - Math.random();

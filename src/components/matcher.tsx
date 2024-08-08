@@ -34,7 +34,7 @@ function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRi
     && selectedLeft !== selectedRight;
 
   const variant = isSelected || isCorrect ? 'contained' : 'outlined';
-  const color = (isCorrect ? "success" : undefined) || (isWrong ? "error" : undefined);
+  const color = (isCorrect ? "success" : undefined) ?? (isWrong ? "error" : undefined);
 
   return (
     <Grid
@@ -45,7 +45,7 @@ function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRi
     >
       <Button
         size="large"
-        onClick={!isCorrect ? () => onClick(id) : undefined}
+        onClick={!isCorrect ? () => { onClick(id); } : undefined}
         variant={variant}
         color={color}
         fullWidth
@@ -60,7 +60,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   const [selectedLeft, setSelectedLeft] = useState<string>();
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
-  const [mistakes, setMistakes] = useState<{ [key: string]: number }>({});
+  const [mistakes, setMistakes] = useState<Record<string, number>>({});
   const [, dispatch] = useAtom(categoryAtom);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   function finishedPractice() {
     leftSets.forEach(set => {
       const newMistakes = mistakes[set.id] || 0;
-      const previousMistakes = set.mistakes || 0;
+      const previousMistakes = set.mistakes ?? 0;
       const updatedSet = {
         ...set,
         practiced: set.practiced ? set.practiced + 1 : 1,

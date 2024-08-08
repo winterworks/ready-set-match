@@ -19,7 +19,7 @@ export default function Practice() {
   }
 
   const selectedCategory = getCategory(categoryId);
-  if (!selectedCategory || selectedCategory.sets.length < setSizeOption) {
+  if (selectedCategory.sets.length < setSizeOption) {
     return <>Not enough sets</>
   }
 

@@ -17,7 +17,7 @@ export default function PracticeOptionSelector() {
           key={id}
           variant={practiceType === id ? "contained" : "outlined" }
           disabled={disabled}
-          onClick={() => setPracticeType(id)}
+          onClick={() => { setPracticeType(id); }}
         >
           { text }
         </Button>

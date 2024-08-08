@@ -2,9 +2,7 @@ export interface Data {
     categories: Categories;
 }
 
-export interface Categories {
-    [key: string]: Category
-}
+export type Categories = Record<string, Category>;
 
 export interface Category {
     name: string;

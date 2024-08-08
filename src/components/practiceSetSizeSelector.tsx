@@ -20,7 +20,7 @@ export default function PracticeSetSizeSelector() {
       }}
       value={setSize}
       variant="filled"
-      onChange={(e) => setSetSize(Number(e.target.value))}
+      onChange={(e) => { setSetSize(Number(e.target.value)); }}
     />
   );
 }
