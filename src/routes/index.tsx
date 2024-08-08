@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useAtom } from "jotai";
 import CategoryTile from "src/components/categoryTile";
 import { stateAtom } from "src/data/state";
@@ -27,6 +27,11 @@ export default function Root() {
         <PracticeSetSizeSelector />
       </Grid>
       {categoryTiles}
+      <Grid item xs={12}>
+        <Button href='/data'>
+          Import / Export
+        </Button>
+      </Grid>
     </Grid>
   );
 }

@@ -132,7 +132,9 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
       width: 100,
       cellClassName: 'actions',
       getActions: ({ id }) => {
-        const isInEditMode = rowModesModel[id].mode === GridRowModes.Edit;
+        // It actually is necessary
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
           return [
