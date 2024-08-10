@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
 import { categoryAtom, CategoryReducerAction} from 'src/data/categoryReducer';
 import SetsTable from 'src/components/setsTable';
+import CategoryDelete from 'src/components/categoryDelete';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();
@@ -20,6 +21,7 @@ export default function CategoryDetail() {
       <Typography component="h2" variant="h4" gutterBottom>
         {category.name}
       </Typography>
+      <CategoryDelete categoryId={categoryId} category={category} />
       <Box
         component="form"
         sx={{
