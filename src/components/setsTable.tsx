@@ -30,15 +30,16 @@ interface EditToolbarProps {
   ) => void;
 }
 
+const NEW_ITEM_ID = 'newItem';
+
 function EditToolbar(props: EditToolbarProps) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-    const id = 'newItem';
-    setRows((oldRows) => [{ id, name: '', age: ''}, ...oldRows]);
+    setRows((oldRows) => [{ id: NEW_ITEM_ID, name: '', age: ''}, ...oldRows]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [NEW_ITEM_ID]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
     }));
   };
 
@@ -74,13 +75,14 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
   const handleSaveClick = (id: GridRowId) => () => {
     const set = rows.find(set => set.id === id);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    if (set) {
+    if (set && set.id === NEW_ITEM_ID) {
       setSet({ action: SetReducerAction.ADD_SET, categoryId, set });
     }
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
     setRows(rows.filter((row) => row.id !== id));
+    setSet({ action: SetReducerAction.DELETE_SET, categoryId, setId: id as string });
   };
 
   const handleCancelClick = (id: GridRowId) => () => {

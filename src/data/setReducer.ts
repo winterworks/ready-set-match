@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 export enum SetReducerAction {
   ADD_SET = "ADD_SET",
   UPDATE_SET = "UPDATE_SET",
+  DELETE_SET = "DELETE_SET"
 }
 
 export type NewSet = Pick<Set, "a" | "b">;
@@ -25,7 +26,12 @@ interface SetUpdatePayload extends PayloadBase  {
   set: Set;
 }
 
-type Payload = SetAddPayload | SetUpdatePayload;
+interface SetDeletePayload extends PayloadBase  {
+  action: SetReducerAction.DELETE_SET;
+  setId: string;
+}
+
+type Payload = SetAddPayload | SetUpdatePayload | SetDeletePayload;
 
 const categoryReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
@@ -51,6 +57,19 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
             ...prevState.categories[payload.categoryId],
             sets: prevState.categories[payload.categoryId].sets.map(
               set => set.id === payload.set.id ? payload.set : set
+            )
+          }
+        }
+      };
+    case SetReducerAction.DELETE_SET:
+      return {
+        ...prevState,
+        categories: {
+          ...prevState.categories,
+          [payload.categoryId]: {
+            ...prevState.categories[payload.categoryId],
+            sets: prevState.categories[payload.categoryId].sets.filter(
+              set => set.id !== payload.setId
             )
           }
         }
