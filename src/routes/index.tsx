@@ -22,8 +22,6 @@ export default function Root() {
     >
       <Grid item xs={12}>
         <PracticeOptionSelector />
-      </Grid>
-      <Grid item xs={12}>
         <PracticeSetSizeSelector />
       </Grid>
       {categoryTiles}

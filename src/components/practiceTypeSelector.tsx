@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ButtonGroup } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { PracticeOption, practiceOptions } from "src/helpers/setSorting";
@@ -10,18 +10,24 @@ export const practiceTypeAtom = atomWithStorage(practiceTypeKey, PracticeOption.
 export default function PracticeOptionSelector() {
   const [practiceType, setPracticeType] = useAtom(practiceTypeAtom);
 
+  const handleChange = (event: SelectChangeEvent) => {
+    setPracticeType(event.target.value as PracticeOption);
+  };
+
   return (
-    <ButtonGroup size="large" aria-label="Large button group">
-      {practiceOptions.map(({ id, text, disabled }) => (
-        <Button
-          key={id}
-          variant={practiceType === id ? "contained" : "outlined" }
-          disabled={disabled}
-          onClick={() => { setPracticeType(id); }}
-        >
-          { text }
-        </Button>
-      ))}
-    </ButtonGroup>
+    <FormControl variant="filled" sx={{ marginRight: 1, width: 200 }}>
+      <InputLabel id="practice-option-select">Set selection</InputLabel>
+      <Select
+        labelId="practice-option-select"
+        id="practice-option-select"
+        value={practiceType}
+        label="Set selection"
+        onChange={handleChange}
+      >
+        {practiceOptions.map(({ id, text, disabled }) => (
+          <MenuItem key={id} value={id} disabled={disabled}>{text}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
