@@ -1,58 +1,52 @@
 import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
-import { Data, Set } from "src/types";
-import { v4 as uuidv4 } from 'uuid';
+import { Data, Category } from "src/types";
 
 export enum CategoryReducerAction {
-  ADD_SET = "ADD_SET",
-  UPDATE_SET = "UPDATE_SET",
+  ADD_CATEGORY = "ADD_CATEGORY",
+  UPDATE_CATEGORY = "UPDATE_CATEGORY",
 }
 
-export type NewSet = Pick<Set, "a" | "b">;
+export type NewCategory = Pick<Category, "name" | "icon">;
 
 interface PayloadBase {
-  categoryId: string;
   action: CategoryReducerAction;
+  categoryId: string;
 }
 
-interface SetAddPayload extends PayloadBase {
-  action: CategoryReducerAction.ADD_SET;
-  set: NewSet;
+interface CategoryAddPayload extends PayloadBase {
+  action: CategoryReducerAction.ADD_CATEGORY;
+  category: NewCategory;
 }
 
-interface SetUpdatePayload extends PayloadBase  {
-  action: CategoryReducerAction.UPDATE_SET;
-  set: Set;
+interface CategoryUpdatePayload extends PayloadBase  {
+  action: CategoryReducerAction.UPDATE_CATEGORY;
+  category: Category;
 }
 
-type Payload = SetAddPayload | SetUpdatePayload;
+type Payload = CategoryAddPayload | CategoryUpdatePayload;
 
 const categoryReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
-    case CategoryReducerAction.ADD_SET: {
-      const prevSets = prevState.categories[payload.categoryId].sets;
+    case CategoryReducerAction.ADD_CATEGORY: {
+      const newCategory = {
+        ...payload.category,
+        sets: []
+      }
       return {
         ...prevState,
         categories: {
           ...prevState.categories,
-          [payload.categoryId]: {
-            ...prevState.categories[payload.categoryId],
-            sets: [{ id: uuidv4(), ...payload.set }, ...prevSets, ]
-          }
+          [newCategory.name]: newCategory
         }
       };
     }
-    case CategoryReducerAction.UPDATE_SET:
+    case CategoryReducerAction.UPDATE_CATEGORY:
       return {
         ...prevState,
         categories: {
           ...prevState.categories,
-          [payload.categoryId]: {
-            ...prevState.categories[payload.categoryId],
-            sets: prevState.categories[payload.categoryId].sets.map(
-              set => set.id === payload.set.id ? payload.set : set
-            )
-          }
+          [payload.categoryId]: payload.category
         }
       };
     default:
@@ -62,7 +56,8 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
 
 export const categoryAtom = atom(
   (get) => (categoryId: string) => get(stateAtom).categories[categoryId],
-  (get, set, action: Payload) => {
-    set(stateAtom, categoryReducer(get(stateAtom), action))
+  (get, category, action: Payload) => {
+    category(stateAtom, categoryReducer(get(stateAtom), action))
   }
 );
+

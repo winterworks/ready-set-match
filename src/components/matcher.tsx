@@ -4,7 +4,7 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Category, Set } from "src/types";
 import { useAtom } from "jotai";
-import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
+import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 
 interface Props {
   categoryId: string;
@@ -61,7 +61,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
   const [mistakes, setMistakes] = useState<Record<string, number>>({});
-  const [, dispatch] = useAtom(categoryAtom);
+  const [, setSet] = useAtom(setsAtom);
 
   useEffect(() => {
     if (selectedLeft !== undefined && selectedRight !== undefined) {
@@ -95,7 +95,7 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
         practiced: set.practiced ? set.practiced + 1 : 1,
         mistakes: previousMistakes + newMistakes
       };
-      dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, set: updatedSet });
+      setSet({ action: SetReducerAction.UPDATE_SET, categoryId, set: updatedSet });
     });
   }
 

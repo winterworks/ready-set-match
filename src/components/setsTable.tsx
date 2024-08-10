@@ -20,7 +20,7 @@ import {
   GridSlots,
 } from '@mui/x-data-grid';
 import { Set } from 'src/types';
-import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
+import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 import { useAtom } from 'jotai';
 
 interface EditToolbarProps {
@@ -59,7 +59,7 @@ interface TableProps {
 export default function SetsTable({ categoryId, sets }: TableProps) {
   const [rows, setRows] = React.useState(sets);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
-  const [, dispatch] = useAtom(categoryAtom);
+  const [, setSet] = useAtom(setsAtom);
 
   const handleRowEditStop: GridEventListener<'rowEditStop'> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -75,7 +75,7 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
     const set = rows.find(set => set.id === id);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     if (set) {
-      dispatch({ action: CategoryReducerAction.ADD_SET, categoryId, set });
+      setSet({ action: SetReducerAction.ADD_SET, categoryId, set });
     }
   };
 
@@ -96,7 +96,7 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
   };
 
   const processRowUpdate = (set: Set) => {
-    dispatch({ action: CategoryReducerAction.UPDATE_SET, categoryId, set });
+    setSet({ action: SetReducerAction.UPDATE_SET, categoryId, set });
     return  { ...set };
   };
 
