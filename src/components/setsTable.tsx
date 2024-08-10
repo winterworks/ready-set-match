@@ -22,6 +22,7 @@ import {
 import { Set } from 'src/types';
 import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 import { useAtom } from 'jotai';
+import { v4 as uuidv4 } from 'uuid';
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -36,10 +37,10 @@ function EditToolbar(props: EditToolbarProps) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-    setRows((oldRows) => [{ id: NEW_ITEM_ID, name: '', age: ''}, ...oldRows]);
+    setRows((oldRows) => [{ id: NEW_ITEM_ID, }, ...oldRows]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [NEW_ITEM_ID]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [NEW_ITEM_ID]: { mode: GridRowModes.Edit, fieldToFocus: 'a' },
     }));
   };
 
@@ -58,7 +59,7 @@ interface TableProps {
 }
 
 export default function SetsTable({ categoryId, sets }: TableProps) {
-  const [rows, setRows] = React.useState(sets);
+  const [rows, setRows] = React.useState<Set[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
   const [, setSet] = useAtom(setsAtom);
 
@@ -73,11 +74,7 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
   };
 
   const handleSaveClick = (id: GridRowId) => () => {
-    const set = rows.find(set => set.id === id);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-    if (set && set.id === NEW_ITEM_ID) {
-      setSet({ action: SetReducerAction.CREATE_SET, categoryId, set });
-    }
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
@@ -92,13 +89,19 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
     });
 
     const editedRow = rows.find((row) => row.id === id);
-    if (editedRow?.id === 'newItem') {
+    if (editedRow?.id === NEW_ITEM_ID) {
       setRows(rows.filter((row) => row.id !== id));
     }
   };
 
   const processRowUpdate = (set: Set) => {
-    setSet({ action: SetReducerAction.UPDATE_SET, categoryId, set });
+    if (set.id === NEW_ITEM_ID) {
+      const newSet = { ...set, id: uuidv4() }
+      setSet({ action: SetReducerAction.CREATE_SET, categoryId, set: newSet });
+      setRows([...rows.filter((row) => row.id !== NEW_ITEM_ID), ]);
+    } else {
+      setSet({ action: SetReducerAction.UPDATE_SET, categoryId, set });
+    }
     return  { ...set };
   };
 
@@ -195,7 +198,7 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
       }}
     >
       <DataGrid
-        rows={rows}
+        rows={[...rows, ...sets]}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

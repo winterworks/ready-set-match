@@ -1,15 +1,12 @@
 import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
 import { Data, Set } from "src/types";
-import { v4 as uuidv4 } from 'uuid';
 
 export enum SetReducerAction {
   CREATE_SET = "CREATE_SET",
   UPDATE_SET = "UPDATE_SET",
   DELETE_SET = "DELETE_SET"
 }
-
-export type NewSet = Pick<Set, "a" | "b">;
 
 interface PayloadBase {
   categoryId: string;
@@ -18,7 +15,7 @@ interface PayloadBase {
 
 interface SetAddPayload extends PayloadBase {
   action: SetReducerAction.CREATE_SET;
-  set: NewSet;
+  set: Set;
 }
 
 interface SetUpdatePayload extends PayloadBase  {
@@ -43,7 +40,7 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
           ...prevState.categories,
           [payload.categoryId]: {
             ...prevState.categories[payload.categoryId],
-            sets: [{ id: uuidv4(), ...payload.set }, ...prevSets, ]
+            sets: [payload.set, ...prevSets, ]
           }
         }
       };

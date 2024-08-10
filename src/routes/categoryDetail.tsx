@@ -11,7 +11,7 @@ export default function CategoryDetail() {
   const { categoryId } = useParams();
   const [getCategory, setCategory] = useAtom(categoryAtom);
 
-  const category = categoryId && getCategory(categoryId);
+  const category = categoryId ? getCategory(categoryId) : undefined;
   if (!categoryId || !category) {
     return <>This category does not exit</>
   }
