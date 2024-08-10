@@ -4,7 +4,7 @@ import { Data, Set } from "src/types";
 import { v4 as uuidv4 } from 'uuid';
 
 export enum SetReducerAction {
-  ADD_SET = "ADD_SET",
+  CREATE_SET = "CREATE_SET",
   UPDATE_SET = "UPDATE_SET",
   DELETE_SET = "DELETE_SET"
 }
@@ -17,7 +17,7 @@ interface PayloadBase {
 }
 
 interface SetAddPayload extends PayloadBase {
-  action: SetReducerAction.ADD_SET;
+  action: SetReducerAction.CREATE_SET;
   set: NewSet;
 }
 
@@ -35,7 +35,7 @@ type Payload = SetAddPayload | SetUpdatePayload | SetDeletePayload;
 
 const categoryReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
-    case SetReducerAction.ADD_SET: {
+    case SetReducerAction.CREATE_SET: {
       const prevSets = prevState.categories[payload.categoryId].sets;
       return {
         ...prevState,
@@ -80,7 +80,7 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
 }
 
 export const setsAtom = atom(
-  (get) => (categoryId: string) => get(stateAtom).categories[categoryId].sets,
+  (get) => (categoryId: string): Set[] | undefined => get(stateAtom).categories[categoryId].sets,
   (get, set, action: Payload) => {
     set(stateAtom, categoryReducer(get(stateAtom), action))
   }

@@ -3,7 +3,7 @@ import { stateAtom } from "src/data/state";
 import { Data, Category } from "src/types";
 
 export enum CategoryReducerAction {
-  ADD_CATEGORY = "ADD_CATEGORY",
+  CREATE_CATEGORY = "CREATE_CATEGORY",
   UPDATE_CATEGORY = "UPDATE_CATEGORY",
 }
 
@@ -15,7 +15,7 @@ interface PayloadBase {
 }
 
 interface CategoryAddPayload extends PayloadBase {
-  action: CategoryReducerAction.ADD_CATEGORY;
+  action: CategoryReducerAction.CREATE_CATEGORY;
   category: NewCategory;
 }
 
@@ -28,7 +28,7 @@ type Payload = CategoryAddPayload | CategoryUpdatePayload;
 
 const categoryReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
-    case CategoryReducerAction.ADD_CATEGORY: {
+    case CategoryReducerAction.CREATE_CATEGORY: {
       const newCategory = {
         ...payload.category,
         sets: []
@@ -55,7 +55,7 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
 }
 
 export const categoryAtom = atom(
-  (get) => (categoryId: string) => get(stateAtom).categories[categoryId],
+  (get) => (categoryId: string): Category | undefined => get(stateAtom).categories[categoryId],
   (get, category, action: Payload) => {
     category(stateAtom, categoryReducer(get(stateAtom), action))
   }

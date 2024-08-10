@@ -10,11 +10,10 @@ export default function CategoryDetail() {
   const { categoryId } = useParams();
   const [getCategory, setCategory] = useAtom(categoryAtom);
 
-  if (!categoryId) {
+  const category = categoryId && getCategory(categoryId);
+  if (!categoryId || !category) {
     return <>This category does not exit</>
   }
-
-  const category = getCategory(categoryId);
 
   return (
     <>

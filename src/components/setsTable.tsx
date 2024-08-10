@@ -76,7 +76,7 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
     const set = rows.find(set => set.id === id);
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
     if (set && set.id === NEW_ITEM_ID) {
-      setSet({ action: SetReducerAction.ADD_SET, categoryId, set });
+      setSet({ action: SetReducerAction.CREATE_SET, categoryId, set });
     }
   };
 
