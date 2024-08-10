@@ -19,6 +19,7 @@ export default function PracticeSetSizeSelector() {
         InputLabelProps={{
           shrink: true,
         }}
+        sx={{ width: 120 }}
         value={setSize}
         variant="filled"
         onChange={(e) => { setSetSize(Number(e.target.value)); }}

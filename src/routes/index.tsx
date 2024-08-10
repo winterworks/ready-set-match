@@ -24,17 +24,15 @@ export default function Root() {
       rowSpacing={4}
       columnSpacing={4}
     >
-      <Grid item xs={12}>
+      <Grid container item xs={12} md={7} direction="row">
         <PracticeOptionSelector />
         <PracticeSetSizeSelector />
-        <CategoryCreate />
+      </Grid>
+      <Grid container item xs={12} md={5} justifyContent="flex-end">
+        <Button href='/data' sx={{ marginRight: 1 }}>Import / Export</Button>
+        <CategoryCreate/>
       </Grid>
       {renderCategories()}
-      <Grid item xs={12}>
-        <Button href='/data'>
-          Import / Export
-        </Button>
-      </Grid>
     </Grid>
   );
 }
