@@ -43,12 +43,32 @@ function sortRandom(sets: Set[]) {
   return sets.slice(0).sort(() => 0.5 - Math.random());
 }
 
+function sortSetsBySkill(sets: Set[], ascending: boolean){
+  return sets.slice(0).sort((setA, setB) => {
+    const aP = setA.practiced ?? 1;
+    const bP = setB.practiced ?? 1;
+    const aM = setA.mistakes ?? 0;
+    const bM = setB.mistakes ?? 0;
+    const a = aM / aP;
+    const b = bM / bP;
+
+    if (a === b) {
+      return 0.5 - Math.random();
+    }
+    if (ascending) {
+      return a - b;
+    }
+    return b - a;
+  });
+
+}
+
 function sortWeakest(sets: Set[]) {
-  return sortSetsBy(sets, "mistakes", false);
+  return sortSetsBySkill(sets, false);
 }
 
 function sortStrongest(sets: Set[]) {
-  return sortSetsBy(sets, "mistakes", true);
+  return sortSetsBySkill(sets, true);
 }
 
 export const practiceOptions: PracticeElement[] = [
