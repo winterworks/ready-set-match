@@ -1,15 +1,18 @@
 import React from 'react';
 import { Button, Grid, Typography } from "@mui/material";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import { Set } from "src/types";
+import { Category, Set } from "src/types";
 import { useAtom } from "jotai";
 import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 import { Link } from 'react-router-dom';
+import { shuffle } from "src/helpers/shuffle";
+import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
+import { PracticeElement } from 'src/helpers/setSorting';
 
 interface Props {
   categoryId: string;
-  leftSets: Set[];
-  rightSets: Set[];
+  category: Category;
+  practiceOption: PracticeElement;
 }
 
 interface MatchItemProps {
@@ -49,12 +52,19 @@ function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRi
   );
 }
 
-export default function Matcher({ categoryId, leftSets, rightSets }: Props) {
+export default function Matcher({ categoryId, category, practiceOption }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<string>();
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
   const [mistakes, setMistakes] = useState<Record<string, number>>({});
+  const [setSizeOption] = useAtom(setSizeAtom);
   const [, setSet] = useAtom(setsAtom);
+  const [leftSets, setLeftSets] = useState<Set[]>([]);
+  const [rightSets, SetRightSets] = useState<Set[]>([]);
+
+  useEffect(() => {
+    initSets();
+  }, []);
 
   useEffect(() => {
     if (selectedLeft !== undefined && selectedRight !== undefined) {
@@ -78,6 +88,25 @@ export default function Matcher({ categoryId, leftSets, rightSets }: Props) {
       finishedPractice();
     }
   }, [correctSets, selectedLeft, selectedRight]);
+
+
+  function initSets() {
+    // Sort by the selected practice option (sort type)
+    const sortedSets = practiceOption.sort(category.sets)
+
+    // Select only a number of these least practiced sets
+    const practiceSets = sortedSets.slice(0, setSizeOption);
+
+    // Split the sets in 2 shuffled collections
+    setLeftSets(shuffle(practiceSets));
+    SetRightSets(shuffle(practiceSets));
+  }
+
+  function resetAll() {
+    setCorrectSets([]);
+    setMistakes({});
+    initSets();
+  }
 
   function finishedPractice() {
     leftSets.forEach(set => {
@@ -165,11 +194,9 @@ export default function Matcher({ categoryId, leftSets, rightSets }: Props) {
           </Typography>
         )}
         {correctSets.length !== leftSets.length ? <></> : (
-          <Link to={`/practice/${categoryId}`}>
-            <Button size="large" variant="contained" color="success">
-              Again
-            </Button>
-          </Link>
+          <Button size="large" variant="contained" color="success" onClick={resetAll}>
+            Again
+          </Button>
         )}
       </Grid>
     </Grid>

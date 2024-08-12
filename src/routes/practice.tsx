@@ -4,8 +4,6 @@ import { useAtom } from "jotai";
 import { Link, useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
 import { practiceOptions } from "src/helpers/setSorting";
-import { shuffle } from "src/helpers/shuffle";
-import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
 import { categoryAtom } from 'src/data/categoryReducer';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
@@ -13,7 +11,6 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 export default function Practice() {
   const { categoryId } = useParams();
   const [getCategory] = useAtom(categoryAtom);
-  const [setSizeOption] = useAtom(setSizeAtom);
 
   const category = categoryId ? getCategory(categoryId) : undefined;
   if (!categoryId || !category) {
@@ -26,16 +23,6 @@ export default function Practice() {
   if (!practiceOption) {
     return <>Practice option is not defined</>
   }
-
-  // Sort by the selected practice option (sort type)
-  const sortedSets = practiceOption.sort(category.sets)
-
-  // Select only a number of these least practiced sets
-  const practiceSets = sortedSets.slice(0, setSizeOption);
-
-  // Split the sets in 2 shuffled collections
-  const leftSets = shuffle(practiceSets);
-  const rightSets = shuffle(practiceSets);
 
   return React.useMemo(() => (
     <>
@@ -58,9 +45,9 @@ export default function Practice() {
         }
       </Grid>
       <Matcher
-        leftSets={leftSets}
-        rightSets={rightSets}
         categoryId={categoryId}
+        category={category}
+        practiceOption={practiceOption}
       />
     </>
   ), []);

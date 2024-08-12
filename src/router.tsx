@@ -5,7 +5,6 @@ import CategoryDetail from "src/routes/categoryDetail";
 import DataDetail from 'src/routes/dataDetail';
 import Practice from 'src/routes/practice';
 
-
 export function AppRouter() {
   return (
     <Routes>
