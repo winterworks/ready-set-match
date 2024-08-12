@@ -1,14 +1,12 @@
 import React from 'react';
-import { Button, Grid, Link, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Category, Set } from "src/types";
+import { Set } from "src/types";
 import { useAtom } from "jotai";
 import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 
 interface Props {
   categoryId: string;
-  category: Category;
   leftSets: Set[];
   rightSets: Set[];
 }
@@ -37,26 +35,20 @@ function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRi
   const color = (isCorrect ? "success" : undefined) ?? (isWrong ? "error" : undefined);
 
   return (
-    <Grid
-      key={id}
-      item
-      container
-      justifyContent="center"
+    <Button
+      size="large"
+      onClick={!isCorrect ? () => { onClick(id); } : undefined}
+      variant={variant}
+      color={color}
+      fullWidth
+      sx={{ ml:6, textTransform: 'none', marginLeft: 0 }}
     >
-      <Button
-        size="large"
-        onClick={!isCorrect ? () => { onClick(id); } : undefined}
-        variant={variant}
-        color={color}
-        fullWidth
-      >
-        {text}
-      </Button>
-    </Grid>
+      {text}
+    </Button>
   );
 }
 
-export default function Matcher({ categoryId, category, leftSets, rightSets }: Props) {
+export default function Matcher({ categoryId, leftSets, rightSets }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<string>();
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
@@ -124,8 +116,8 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
 
     for (let index = 0; index < leftSets.length; index++) {
       items.push(
-        <Grid key={index} container item columnSpacing={8} xs={12} >
-          <Grid container item xs={6}>
+        <Grid key={index} container item columnSpacing={4} xs={12} >
+          <Grid container item xs={6} justifyContent="center">
             <MatchItem
               id={leftSets[index].id}
               text={leftSets[index].a}
@@ -157,24 +149,9 @@ export default function Matcher({ categoryId, category, leftSets, rightSets }: P
   return (
     <Grid
       container
-      columnSpacing={4}
       rowSpacing={4}
     >
       {renderItems()}
-      <Grid container item xs={12} direction="column">
-        <Typography component="h3" variant="h5" align="center">
-          Practicing: {category.name}
-        </Typography>
-        <Link
-          href={category.link}
-          target="_blank"
-          rel="noopener"
-          align="center"
-        >
-          View more information
-          <OpenInNewIcon fontSize="small" />
-        </Link>
-      </Grid>
       <Grid container item xs={12} justifyContent="space-between">
         <Button
           href={`/`}

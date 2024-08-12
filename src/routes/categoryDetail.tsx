@@ -13,7 +13,7 @@ export default function CategoryDetail() {
 
   const category = categoryId ? getCategory(categoryId) : undefined;
   if (!categoryId || !category) {
-    return <>This category does not exit</>
+    return <>This category does not exist</>
   }
 
   return (
