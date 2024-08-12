@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot} from 'react-dom/client';
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
+import { CssBaseline, Divider } from '@mui/material';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import theme from 'src/theme';
@@ -19,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
             Ready Set Match
           </Typography>
         </a>
+        <Divider sx={{ width: "100%", marginBottom: 4 }}/>
         <RouterProvider router={router} />
       </Container>
     </ThemeProvider>

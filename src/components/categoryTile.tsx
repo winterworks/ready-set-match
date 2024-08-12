@@ -24,7 +24,10 @@ export default function CategoryTile({ categoryId, category: { name, icon, sets 
             {name}{icon && (<Icon fontSize="large" iconName={icon} />)}
           </Typography>
           <Typography>
-            Sets practiced: {totalPracticed}
+            Sets: {sets.length}
+          </Typography>
+          <Typography>
+            Practiced: {totalPracticed}
           </Typography>
         </CardContent>
         <CardActions sx={{

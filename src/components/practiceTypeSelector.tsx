@@ -25,7 +25,9 @@ export default function PracticeOptionSelector() {
         onChange={handleChange}
       >
         {practiceOptions.map(({ id, text, disabled }) => (
-          <MenuItem key={id} value={id} disabled={disabled}>{text}</MenuItem>
+          <MenuItem key={id} value={id} disabled={disabled}>
+            {text}
+          </MenuItem>
         ))}
       </Select>
     </FormControl>
