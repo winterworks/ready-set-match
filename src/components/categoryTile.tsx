@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material";
 import { Category } from "src/types";
 import Icon from "./icon";
+import { Link } from 'react-router-dom';
 
 interface Props {
   categoryId: string;
@@ -31,14 +32,18 @@ export default function CategoryTile({ categoryId, category: { name, icon, sets 
           </Typography>
         </CardContent>
         <CardActions sx={{
-          'justify-content': 'space-between'
+          justifyContent: 'space-between'
         }}>
-          <Button size="small" color="secondary" href={`/category/${categoryId}`}>
-            edit
-          </Button>
-          <Button size="small" color="primary" variant="contained" href={`/practice/${categoryId}`} >
-            Practice
-          </Button>
+          <Link to={`/category/${categoryId}`}>
+            <Button size="small" color="secondary">
+              edit
+            </Button>
+          </Link>
+          <Link to={`/practice/${categoryId}`}>
+            <Button size="small" color="primary" variant="contained">
+              Practice
+            </Button>
+          </Link>
         </CardActions>
       </Card>
     </Grid>

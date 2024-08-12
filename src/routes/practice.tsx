@@ -1,7 +1,7 @@
 import React from 'react';
-import { Grid, Link, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
 import { practiceOptions } from "src/helpers/setSorting";
 import { shuffle } from "src/helpers/shuffle";
@@ -46,15 +46,16 @@ export default function Practice() {
         <Typography>
           Exercise: {practiceOptions.find(({ id }) => id === selectedOption)?.text}
         </Typography>
-        <Link
-          href={category.link}
-          target="_blank"
-          rel="noopener"
-          align="center"
-        >
-          View more information
-          <OpenInNewIcon fontSize="small" />
-        </Link>
+        {category.link &&
+          <Link
+            to={category.link}
+            target="_blank"
+            rel="noopener"
+          >
+            View more information
+            <OpenInNewIcon fontSize="small" />
+          </Link>
+        }
       </Grid>
       <Matcher
         leftSets={leftSets}

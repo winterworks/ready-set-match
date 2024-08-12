@@ -4,6 +4,7 @@ import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { Set } from "src/types";
 import { useAtom } from "jotai";
 import { setsAtom, SetReducerAction } from 'src/data/setReducer';
+import { Link } from 'react-router-dom';
 
 interface Props {
   categoryId: string;
@@ -153,27 +154,22 @@ export default function Matcher({ categoryId, leftSets, rightSets }: Props) {
     >
       {renderItems()}
       <Grid container item xs={12} justifyContent="space-between">
-        <Button
-          href={`/`}
-          size="large"
-          variant="contained"
-        >
-          Back
-        </Button>
+        <Link to="/">
+          <Button size="large" variant="contained">
+            Back
+          </Button>
+        </Link>
         {correctSets.length === leftSets.length && (
           <Typography component="h3" variant="h5" align="center" gutterBottom>
             All correct!
           </Typography>
         )}
         {correctSets.length !== leftSets.length ? <></> : (
-          <Button
-            href={`/practice/${categoryId}`}
-            size="large"
-            variant="contained"
-            color="success"
-          >
-            Again
-          </Button>
+          <Link to={`/practice/${categoryId}`}>
+            <Button size="large" variant="contained" color="success">
+              Again
+            </Button>
+          </Link>
         )}
       </Grid>
     </Grid>
