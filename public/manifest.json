@@ -1,0 +1,11 @@
+{
+  "name": "Ready Set Match",
+  "start_url": "../",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/images/logo.svg",
+      "sizes": "any"
+    }
+  ]
+}
