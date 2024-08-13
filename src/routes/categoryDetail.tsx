@@ -1,11 +1,12 @@
 import React from 'react';
-import { Box, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
 import { categoryAtom, CategoryReducerAction} from 'src/data/categoryReducer';
 import SetsTable from 'src/components/setsTable';
 import CategoryDelete from 'src/components/categoryDelete';
+import { Category } from 'src/types';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();
@@ -14,6 +15,14 @@ export default function CategoryDetail() {
   const category = categoryId ? getCategory(categoryId) : undefined;
   if (!categoryId || !category) {
     return <>This category does not exist</>
+  }
+
+  function updateCategory(categoryId: string, category: Category) {
+    setCategory({
+      action: CategoryReducerAction.UPDATE_CATEGORY,
+      categoryId: categoryId,
+      category
+    });
   }
 
   return (
@@ -37,11 +46,7 @@ export default function CategoryDetail() {
           variant="standard"
           value={category.name}
           onChange={(e) => {
-            setCategory({
-              action: CategoryReducerAction.UPDATE_CATEGORY,
-              categoryId: categoryId,
-              category: { ...category, name: e.target.value }
-            });
+            updateCategory(categoryId, { ...category, name: e.target.value })
           }}/>
         <FormControl variant="standard" sx={{ marginRight: 1, width: 100 }}>
           <InputLabel id="category-icon">Icon</InputLabel>
@@ -51,11 +56,7 @@ export default function CategoryDetail() {
             value={category.icon}
             label="Icon"
             onChange={(e) => {
-              setCategory({
-                action: CategoryReducerAction.UPDATE_CATEGORY,
-                categoryId: categoryId,
-                category: { ...category, icon: (e.target.value as ENABLED_ICON) }
-             });
+              updateCategory(categoryId, { ...category, icon: (e.target.value as ENABLED_ICON) })
             }}
           >
             {Object.values(ENABLED_ICON).map((enabledIcon) => (
@@ -71,12 +72,33 @@ export default function CategoryDetail() {
           variant="standard"
           value={category.link}
           onChange={(e) => {
-            setCategory({
-              action: CategoryReducerAction.UPDATE_CATEGORY,
-              categoryId: categoryId,
-              category: { ...category, link: e.target.value }
-            });
+            updateCategory(categoryId, { ...category, link: e.target.value })
           }}/>
+        <br/>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={category.aIsLarge}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                updateCategory(categoryId, { ...category, aIsLarge: e.target.checked })
+              }}
+            />
+          }
+          label="Value A large"
+          labelPlacement="start"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              checked={category.bIsLarge}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                updateCategory(categoryId, { ...category, bIsLarge: e.target.checked })
+              }}
+            />
+          }
+          label="Value B large"
+          labelPlacement="start"
+        />
         <Typography component="h3" variant="h5" gutterBottom>
           Sets
         </Typography>

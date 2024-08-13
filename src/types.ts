@@ -11,6 +11,8 @@ export interface Category {
     link?: string;
     icon?: string;
     categories?: Category[];
+    aIsLarge?: boolean;
+    bIsLarge?: boolean;
 }
 
 export interface Set {

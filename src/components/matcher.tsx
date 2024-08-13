@@ -23,11 +23,12 @@ interface MatchItemProps {
   selectedLeft?: string;
   selectedRight?: string;
   selectedId?: string;
+  isLarge?: boolean;
 
   onClick: (id: string) => void;
 }
 
-function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRight, onClick}: MatchItemProps) {
+function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRight, isLarge, onClick}: MatchItemProps) {
   const isSelected = id === selectedId;
   const isCorrect = correctSets.includes(id);
   const isWrong = isSelected
@@ -47,7 +48,10 @@ function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRi
       fullWidth
       sx={{ ml:6, textTransform: 'none', marginLeft: 0 }}
     >
-      {text}
+      {isLarge
+        ? <span style={{ fontSize: 35, lineHeight: 1 }}>{text}</span>
+        : text
+      }
     </Button>
   );
 }
@@ -155,6 +159,7 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
               selectedLeft={selectedLeft}
               selectedRight={selectedRight}
               selectedId={selectedLeft}
+              isLarge={category.aIsLarge}
               onClick={leftClicked}
             />
           </Grid>
@@ -166,6 +171,7 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
               selectedLeft={selectedLeft}
               selectedRight={selectedRight}
               selectedId={selectedRight}
+              isLarge={category.bIsLarge}
               onClick={rightClicked}
             />
           </Grid>
