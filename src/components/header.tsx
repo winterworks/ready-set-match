@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export function Header() {
   return (
     <>
-      <Grid container item justifyContent={"center"} columnGap={2} >
+      <Grid container item justifyContent={"center"} columnGap={2} sx={{ marginTop: 1 }} >
         <Grid item alignContent={"center"}>
           <Link to="/" >
             <img src="/images/icon.svg" width="50px" />

@@ -25,7 +25,7 @@ export default function Index() {
       rowSpacing={4}
       columnSpacing={4}
     >
-      <Grid container item xs={12} md={7} direction="row">
+      <Grid container item xs={12} md={7} direction="row" rowGap={1}>
         <PracticeOptionSelector />
         <PracticeSetSizeSelector />
       </Grid>
