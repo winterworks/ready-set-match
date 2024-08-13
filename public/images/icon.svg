@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+  aria-hidden="true"
+  role="img"
+  preserveAspectRatio="xMidYMid meet"
+  width="128"
+  height="128"
+  viewBox="0 0 128 128"
+>
+  <rect width="128" height="128" rx="24" fill="#556CD6"/>
+  <rect width="86" height="86" rx="12" x="21" y="21" fill="#FFFFFF" transform="rotate(45, 64, 64)" />
+  <circle cx="48" cy="60" r="17" fill="#556CD6"/>
+  <circle cx="90" cy="60" r="17" fill="#556CD6"/>
+</svg>
