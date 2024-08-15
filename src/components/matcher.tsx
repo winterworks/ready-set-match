@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Grid, Typography } from "@mui/material";
+import { Alert, Button, Grid, Snackbar } from "@mui/material";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
 import { Category, Set } from "src/types";
 import { useAtom } from "jotai";
@@ -8,52 +8,12 @@ import { Link } from 'react-router-dom';
 import { shuffle } from "src/helpers/shuffle";
 import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
 import { PracticeElement } from 'src/helpers/setSorting';
+import { MatcherItem } from 'src/components/matcherItem';
 
 interface Props {
   categoryId: string;
   category: Category;
   practiceOption: PracticeElement;
-}
-
-interface MatchItemProps {
-  id: string;
-  text: string;
-  correctSets: string[];
-
-  selectedLeft?: string;
-  selectedRight?: string;
-  selectedId?: string;
-  isLarge?: boolean;
-
-  onClick: (id: string) => void;
-}
-
-function MatchItem({ id, text, selectedId, correctSets, selectedLeft, selectedRight, isLarge, onClick}: MatchItemProps) {
-  const isSelected = id === selectedId;
-  const isCorrect = correctSets.includes(id);
-  const isWrong = isSelected
-    && selectedLeft !== undefined
-    && selectedRight !== undefined
-    && selectedLeft !== selectedRight;
-
-  const variant = isSelected || isCorrect ? 'contained' : 'outlined';
-  const color = (isCorrect ? "success" : undefined) ?? (isWrong ? "error" : undefined);
-
-  return (
-    <Button
-      size="large"
-      onClick={!isCorrect ? () => { onClick(id); } : undefined}
-      variant={variant}
-      color={color}
-      fullWidth
-      sx={{ ml:6, textTransform: 'none', marginLeft: 0 }}
-    >
-      {isLarge
-        ? <span style={{ fontSize: 35, lineHeight: 1 }}>{text}</span>
-        : text
-      }
-    </Button>
-  );
 }
 
 export default function Matcher({ categoryId, category, practiceOption }: Props) {
@@ -65,10 +25,17 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
   const [, setSet] = useAtom(setsAtom);
   const [leftSets, setLeftSets] = useState<Set[]>([]);
   const [rightSets, SetRightSets] = useState<Set[]>([]);
+  const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = React.useState(false);
 
   useEffect(() => {
     initSets();
   }, []);
+
+  useEffect(() => {
+    if (correctSets.length === leftSets.length) {
+      setIsSuccessSnackbarOpen(true);
+    }
+  }, [correctSets, leftSets]);
 
   useEffect(() => {
     if (selectedLeft !== undefined && selectedRight !== undefined) {
@@ -112,6 +79,14 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
     initSets();
   }
 
+  function resetSets() {
+    setCorrectSets([]);
+    setMistakes({});
+
+    setLeftSets(shuffle(leftSets));
+    SetRightSets(shuffle(rightSets));
+  }
+
   function finishedPractice() {
     leftSets.forEach(set => {
       const newMistakes = mistakes[set.id] || 0;
@@ -149,34 +124,36 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
     const items: ReactNode[] = [];
 
     for (let index = 0; index < leftSets.length; index++) {
+      const leftId = leftSets[index].id;
+      const rightId = rightSets[index].id;
       items.push(
         <Grid key={index} container item columnSpacing={4} xs={12} >
           <Grid container item xs={6} justifyContent="center">
-            <MatchItem
-              id={leftSets[index].id}
+            <MatcherItem
+              id={leftId}
               text={leftSets[index].a}
-              correctSets={correctSets}
+              isCorrect={correctSets.includes(leftId)}
               selectedLeft={selectedLeft}
               selectedRight={selectedRight}
-              selectedId={selectedLeft}
+              isSelected={selectedLeft === leftId}
               isLarge={category.aIsLarge}
               onClick={leftClicked}
             />
           </Grid>
           <Grid container item xs={6}>
-            <MatchItem
-              id={rightSets[index].id}
+            <MatcherItem
+              id={rightId}
               text={rightSets[index].b}
-              correctSets={correctSets}
+              isCorrect={correctSets.includes(rightId)}
               selectedLeft={selectedLeft}
               selectedRight={selectedRight}
-              selectedId={selectedRight}
+              isSelected={selectedRight === rightId}
               isLarge={category.bIsLarge}
               onClick={rightClicked}
             />
           </Grid>
         </Grid>
-      )
+      );
     }
 
     return items;
@@ -188,6 +165,23 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
       rowSpacing={4}
     >
       {renderItems()}
+      <Snackbar
+        open={isSuccessSnackbarOpen}
+        onClick={() => { setIsSuccessSnackbarOpen(false) }}
+        onClose={() => { setIsSuccessSnackbarOpen(false) }}
+        key={"successSnackbar"}
+        autoHideDuration={5000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Alert
+          // onClose={handleClose}
+          severity="success"
+          variant="outlined"
+          sx={{ width: '100%' }}
+        >
+          You got all sets matched correctly!
+        </Alert>
+      </Snackbar>
       <Grid container item xs={12} justifyContent="space-between">
         <Link to="/">
           <Button size="large" variant="contained">
@@ -195,14 +189,14 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
           </Button>
         </Link>
         {correctSets.length === leftSets.length && (
-          <Typography component="h3" variant="h5" align="center" gutterBottom>
-            All correct!
-          </Typography>
-        )}
-        {correctSets.length !== leftSets.length ? <></> : (
-          <Button size="large" variant="contained" color="success" onClick={resetAll}>
-            Again
-          </Button>
+          <div>
+            <Button size="large" variant="outlined" color="success" onClick={resetSets} sx={{ marginRight: 2 }}>
+              Again
+            </Button>
+            <Button size="large" variant="contained" color="success" onClick={resetAll}>
+              New sets
+            </Button>
+          </div>
         )}
       </Grid>
     </Grid>

@@ -26,10 +26,10 @@ export default function Practice() {
 
   return React.useMemo(() => (
     <>
-      <Typography component="h3" variant="h5" align="center">
-        {category.name}
-      </Typography>
-      <Grid container xs={12}  justifyContent="space-between" sx={{ marginBottom: 4 }}>
+      <Grid container item xs={12} justifyContent="space-between" sx={{ marginBottom: 4 }}>
+        <Typography component="h3" variant="h5" align="center">
+          {category.name}
+        </Typography>
         <Typography>
           Exercise: {practiceOptions.find(({ id }) => id === selectedOption)?.text}
         </Typography>
