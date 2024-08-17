@@ -10,6 +10,12 @@ export const setSizeAtom = atomWithStorage(setSizeKey, setSizeDefault, undefined
 export default function PracticeSetSizeSelector() {
   const [setSize, setSetSize] = useAtom(setSizeAtom);
 
+  function updatedSetSize (newSize: number) {
+    if (newSize > 0) {
+      setSetSize(newSize);
+    }
+  }
+
   return (
     <FormControl sx={{ marginRight: 1, width: 200 }}>
       <TextField
@@ -22,7 +28,7 @@ export default function PracticeSetSizeSelector() {
         sx={{ width: 120 }}
         value={setSize}
         variant="filled"
-        onChange={(e) => { setSetSize(Number(e.target.value)); }}
+        onChange={(e) => { updatedSetSize(Number(e.target.value)); }}
       />
     </FormControl>
   );
