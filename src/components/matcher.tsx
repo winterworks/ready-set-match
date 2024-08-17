@@ -32,10 +32,10 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
   }, []);
 
   useEffect(() => {
-    if (correctSets.length === leftSets.length) {
+    if (correctSets.length === setSizeOption) {
       setIsSuccessSnackbarOpen(true);
     }
-  }, [correctSets, leftSets]);
+  }, [correctSets, setSizeOption]);
 
   useEffect(() => {
     if (selectedLeft !== undefined && selectedRight !== undefined) {
