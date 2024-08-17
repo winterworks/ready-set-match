@@ -40,7 +40,14 @@ function sortMostPracticed(sets: Set[]) {
 }
 
 function sortRandom(sets: Set[]) {
-  return sets.slice(0).sort(() => 0.5 - Math.random());
+  const randomSets = sets.slice(0);
+  for (let i = randomSets.length - 1; i > 0; i--) {
+    const randomIndex = Math.floor(Math.random() * (i + 1));
+    const set = sets[i];
+    sets[i] = sets[randomIndex];
+    sets[randomIndex] = set;
+  }
+  return randomSets;
 }
 
 function sortSetsBySkill(sets: Set[], ascending: boolean){
