@@ -5,16 +5,16 @@ import { Link, useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
 import { practiceOptions } from "src/helpers/setSorting";
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
-import { categoryAtom } from 'src/data/categoryReducer';
+import { collectionAtom } from 'src/data/collectionReducer';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export default function Practice() {
-  const { categoryId } = useParams();
-  const [getCategory] = useAtom(categoryAtom);
+  const { collectionId } = useParams();
+  const [getCollection] = useAtom(collectionAtom);
 
-  const category = categoryId ? getCategory(categoryId) : undefined;
-  if (!categoryId || !category) {
-    return <>This category does not exist</>
+  const collection = collectionId ? getCollection(collectionId) : undefined;
+  if (!collectionId || !collection) {
+    return <>This collection does not exist</>
   }
 
   const [selectedOption] = useAtom(practiceTypeAtom);
@@ -28,14 +28,14 @@ export default function Practice() {
     <>
       <Grid container item xs={12} justifyContent="space-between" sx={{ marginBottom: 4 }}>
         <Typography component="h3" variant="h5" align="center">
-          {category.name}
+          {collection.name}
         </Typography>
         <Typography>
           Exercise: {practiceOptions.find(({ id }) => id === selectedOption)?.text}
         </Typography>
-        {category.link &&
+        {collection.link &&
           <Link
-            to={category.link}
+            to={collection.link}
             target="_blank"
             rel="noopener"
           >
@@ -45,8 +45,8 @@ export default function Practice() {
         }
       </Grid>
       <Matcher
-        categoryId={categoryId}
-        category={category}
+        collectionId={collectionId}
+        collection={collection}
         practiceOption={practiceOption}
       />
     </>

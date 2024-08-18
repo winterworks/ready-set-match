@@ -9,7 +9,7 @@ export enum SetReducerAction {
 }
 
 interface PayloadBase {
-  categoryId: string;
+  collectionId: string;
   action: SetReducerAction;
 }
 
@@ -30,16 +30,16 @@ interface SetDeletePayload extends PayloadBase  {
 
 type Payload = SetAddPayload | SetUpdatePayload | SetDeletePayload;
 
-const categoryReducer = (prevState: Data, payload: Payload): Data => {
+const collectionReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
     case SetReducerAction.CREATE_SET: {
-      const prevSets = prevState.categories[payload.categoryId].sets;
+      const prevSets = prevState.collections[payload.collectionId].sets;
       return {
         ...prevState,
-        categories: {
-          ...prevState.categories,
-          [payload.categoryId]: {
-            ...prevState.categories[payload.categoryId],
+        collections: {
+          ...prevState.collections,
+          [payload.collectionId]: {
+            ...prevState.collections[payload.collectionId],
             sets: [payload.set, ...prevSets, ]
           }
         }
@@ -48,11 +48,11 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
     case SetReducerAction.UPDATE_SET:
       return {
         ...prevState,
-        categories: {
-          ...prevState.categories,
-          [payload.categoryId]: {
-            ...prevState.categories[payload.categoryId],
-            sets: prevState.categories[payload.categoryId].sets.map(
+        collections: {
+          ...prevState.collections,
+          [payload.collectionId]: {
+            ...prevState.collections[payload.collectionId],
+            sets: prevState.collections[payload.collectionId].sets.map(
               set => set.id === payload.set.id ? payload.set : set
             )
           }
@@ -61,11 +61,11 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
     case SetReducerAction.DELETE_SET:
       return {
         ...prevState,
-        categories: {
-          ...prevState.categories,
-          [payload.categoryId]: {
-            ...prevState.categories[payload.categoryId],
-            sets: prevState.categories[payload.categoryId].sets.filter(
+        collections: {
+          ...prevState.collections,
+          [payload.collectionId]: {
+            ...prevState.collections[payload.collectionId],
+            sets: prevState.collections[payload.collectionId].sets.filter(
               set => set.id !== payload.setId
             )
           }
@@ -77,9 +77,9 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
 }
 
 export const setsAtom = atom(
-  (get) => (categoryId: string): Set[] | undefined => get(stateAtom).categories[categoryId].sets,
+  (get) => (collectionId: string): Set[] | undefined => get(stateAtom).collections[collectionId].sets,
   (get, set, action: Payload) => {
-    set(stateAtom, categoryReducer(get(stateAtom), action))
+    set(stateAtom, collectionReducer(get(stateAtom), action))
   }
 );
 

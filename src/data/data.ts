@@ -1,7 +1,7 @@
 import { Data } from "src/types"
 
 export const data: Data = {
-    categories: {
+    collections: {
         "morse-code": {
             name: "Morse code",
             icon: "CellTower",

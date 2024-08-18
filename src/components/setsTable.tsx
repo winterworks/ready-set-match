@@ -54,11 +54,11 @@ function EditToolbar(props: EditToolbarProps) {
 }
 
 interface TableProps {
-  categoryId: string;
+  collectionId: string;
   sets: Set[];
 }
 
-export default function SetsTable({ categoryId, sets }: TableProps) {
+export default function SetsTable({ collectionId, sets }: TableProps) {
   const [rows, setRows] = React.useState<Set[]>([]);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
   const [, setSet] = useAtom(setsAtom);
@@ -79,7 +79,7 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
 
   const handleDeleteClick = (id: GridRowId) => () => {
     setRows(rows.filter((row) => row.id !== id));
-    setSet({ action: SetReducerAction.DELETE_SET, categoryId, setId: id as string });
+    setSet({ action: SetReducerAction.DELETE_SET, collectionId, setId: id as string });
   };
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -97,10 +97,10 @@ export default function SetsTable({ categoryId, sets }: TableProps) {
   const processRowUpdate = (set: Set) => {
     if (set.id === NEW_ITEM_ID) {
       const newSet = { ...set, id: uuidv4() }
-      setSet({ action: SetReducerAction.CREATE_SET, categoryId, set: newSet });
+      setSet({ action: SetReducerAction.CREATE_SET, collectionId, set: newSet });
       setRows([...rows.filter((row) => row.id !== NEW_ITEM_ID), ]);
     } else {
-      setSet({ action: SetReducerAction.UPDATE_SET, categoryId, set });
+      setSet({ action: SetReducerAction.UPDATE_SET, collectionId, set });
     }
     return  { ...set };
   };

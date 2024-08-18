@@ -6,13 +6,13 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
 import { useAtom } from 'jotai';
+import { collectionAtom, CollectionReducerAction } from 'src/data/collectionReducer';
 
-export default function CategoryCreate() {
+export default function CollectionCreate() {
   const [open, setOpen] = React.useState(false);
-  const [newCategoryName, setNewCategoryName] = React.useState('');
-  const [getCategory, setCategory] = useAtom(categoryAtom);
+  const [newCollectionName, setNewCollectionName] = React.useState('');
+  const [getCollection, setCollection] = useAtom(collectionAtom);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,7 +29,7 @@ export default function CategoryCreate() {
         startIcon={<Add />}
         onClick={handleClickOpen}
       >
-        Add Category
+        Add Collection
       </Button>
       <Dialog
         open={open}
@@ -38,28 +38,28 @@ export default function CategoryCreate() {
           component: 'form',
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            const newCategory = {
-              name: newCategoryName
+            const newCollection = {
+              name: newCollectionName
             }
-            setCategory({ action: CategoryReducerAction.CREATE_CATEGORY, categoryId: newCategoryName, category: newCategory })
+            setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collectionId: newCollectionName, collection: newCollection })
             handleClose();
           },
         }}
       >
-        <DialogTitle>Create a new category</DialogTitle>
+        <DialogTitle>Create a new collection</DialogTitle>
         <DialogContent sx={{ width: 500 }}>
           <TextField
             autoFocus
             required
             id="name"
-            label="Category name"
+            label="Collection name"
             type="text"
             fullWidth
             variant="standard"
-            value={newCategoryName}
-            onChange={(e) => { setNewCategoryName(e.target.value); }}
+            value={newCollectionName}
+            onChange={(e) => { setNewCollectionName(e.target.value); }}
           />
-          {getCategory(newCategoryName) && <DialogContentText>This name already exists</DialogContentText>}
+          {getCollection(newCollectionName) && <DialogContentText>This name already exists</DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

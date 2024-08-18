@@ -1,22 +1,22 @@
 import React from 'react';
 import { Button, Grid } from "@mui/material";
 import { useAtom } from "jotai";
-import CategoryTile from "src/components/categoryTile";
+import CollectionTile from "src/components/collectionTile";
 import { stateAtom } from "src/data/state";
 import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector';
 import PracticeOptionSelector from 'src/components/practiceTypeSelector';
-import CategoryCreate from 'src/components/categoryCreate';
+import CollectionCreate from 'src/components/collectionCreate';
 import { Link } from 'react-router-dom';
 
 export default function Index() {
   const [state] = useAtom(stateAtom);
 
-  function renderCategories() {
-    const categoryTiles = [];
-    for (const [id, category] of Object.entries(state.categories)) {
-      categoryTiles.push(<CategoryTile key={id} categoryId={id} category={category} />);
+  function renderCollections() {
+    const collectionTiles = [];
+    for (const [id, collection] of Object.entries(state.collections)) {
+      collectionTiles.push(<CollectionTile key={id} collectionId={id} collection={collection} />);
     };
-    return categoryTiles;
+    return collectionTiles;
   }
 
   return (
@@ -34,10 +34,10 @@ export default function Index() {
           <Button sx={{ marginRight: 1 }}>Import / Export</Button>
         </Link>
         <div>
-          <CategoryCreate/>
+          <CollectionCreate/>
         </div>
       </Grid>
-      {renderCategories()}
+      {renderCollections()}
     </Grid>
   );
 }

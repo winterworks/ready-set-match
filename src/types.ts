@@ -1,16 +1,16 @@
 export interface Data {
-    categories: Categories;
+    collections: Collections;
 }
 
-export type Categories = Record<string, Category>;
+export type Collections = Record<string, Collection>;
 
-export interface Category {
+export interface Collection {
     name: string;
     sets: Set[];
 
     link?: string;
     icon?: string;
-    categories?: Category[];
+    collections?: Collection[];
     aIsLarge?: boolean;
     bIsLarge?: boolean;
 }

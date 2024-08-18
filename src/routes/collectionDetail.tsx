@@ -3,34 +3,34 @@ import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switc
 import { useAtom } from "jotai";
 import { useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
-import { categoryAtom, CategoryReducerAction} from 'src/data/categoryReducer';
+import { collectionAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
-import CategoryDelete from 'src/components/categoryDelete';
-import { Category } from 'src/types';
+import CollectionDelete from 'src/components/collectionDelete';
+import { Collection } from 'src/types';
 
-export default function CategoryDetail() {
-  const { categoryId } = useParams();
-  const [getCategory, setCategory] = useAtom(categoryAtom);
+export default function CollectionDetail() {
+  const { collectionId } = useParams();
+  const [getCollection, setCollection] = useAtom(collectionAtom);
 
-  const category = categoryId ? getCategory(categoryId) : undefined;
-  if (!categoryId || !category) {
-    return <>This category does not exist</>
+  const collection = collectionId ? getCollection(collectionId) : undefined;
+  if (!collectionId || !collection) {
+    return <>This collection does not exist</>
   }
 
-  function updateCategory(categoryId: string, category: Category) {
-    setCategory({
-      action: CategoryReducerAction.UPDATE_CATEGORY,
-      categoryId: categoryId,
-      category
+  function updateCollection(collectionId: string, collection: Collection) {
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collectionId: collectionId,
+      collection
     });
   }
 
   return (
     <>
       <Typography component="h2" variant="h4" gutterBottom>
-        {category.name}
+        {collection.name}
       </Typography>
-      <CategoryDelete categoryId={categoryId} category={category} />
+      <CollectionDelete collectionId={collectionId} collection={collection} />
       <Box
         component="form"
         sx={{
@@ -44,19 +44,19 @@ export default function CategoryDetail() {
           id="name"
           label="Name"
           variant="standard"
-          value={category.name}
+          value={collection.name}
           onChange={(e) => {
-            updateCategory(categoryId, { ...category, name: e.target.value })
+            updateCollection(collectionId, { ...collection, name: e.target.value })
           }}/>
         <FormControl variant="standard" sx={{ marginRight: 1, width: 100 }}>
-          <InputLabel id="category-icon">Icon</InputLabel>
+          <InputLabel id="collection-icon">Icon</InputLabel>
           <Select
-            labelId="category-icon"
-            id="category-icon"
-            value={category.icon}
+            labelId="collection-icon"
+            id="collection-icon"
+            value={collection.icon}
             label="Icon"
             onChange={(e) => {
-              updateCategory(categoryId, { ...category, icon: (e.target.value as ENABLED_ICON) })
+              updateCollection(collectionId, { ...collection, icon: (e.target.value as ENABLED_ICON) })
             }}
           >
             {Object.values(ENABLED_ICON).map((enabledIcon) => (
@@ -70,17 +70,17 @@ export default function CategoryDetail() {
           id="link"
           label="Link"
           variant="standard"
-          value={category.link}
+          value={collection.link}
           onChange={(e) => {
-            updateCategory(categoryId, { ...category, link: e.target.value })
+            updateCollection(collectionId, { ...collection, link: e.target.value })
           }}/>
         <br/>
         <FormControlLabel
           control={
             <Switch
-              checked={category.aIsLarge}
+              checked={collection.aIsLarge}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateCategory(categoryId, { ...category, aIsLarge: e.target.checked })
+                updateCollection(collectionId, { ...collection, aIsLarge: e.target.checked })
               }}
             />
           }
@@ -90,9 +90,9 @@ export default function CategoryDetail() {
         <FormControlLabel
           control={
             <Switch
-              checked={category.bIsLarge}
+              checked={collection.bIsLarge}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateCategory(categoryId, { ...category, bIsLarge: e.target.checked })
+                updateCollection(collectionId, { ...collection, bIsLarge: e.target.checked })
               }}
             />
           }
@@ -102,7 +102,7 @@ export default function CategoryDetail() {
         <Typography component="h3" variant="h5" gutterBottom>
           Sets
         </Typography>
-        <SetsTable categoryId={categoryId} sets={category.sets}/>
+        <SetsTable collectionId={collectionId} sets={collection.sets}/>
       </Box>
     </>
   );

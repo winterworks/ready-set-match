@@ -5,19 +5,19 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Category } from 'src/types';
+import { Collection } from 'src/types';
 import { useNavigate } from 'react-router-dom';
-import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
+import { collectionAtom, CollectionReducerAction } from 'src/data/collectionReducer';
 import { useAtom } from 'jotai';
 
 interface props {
-  categoryId: string;
-  category: Category;
+  collectionId: string;
+  collection: Collection;
 }
 
-export default function CategoryDelete({ categoryId, category }: props) {
+export default function CollectionDelete({ collectionId, collection }: props) {
   const [open, setOpen] = React.useState(false);
-  const [, setCategory] = useAtom(categoryAtom);
+  const [, setCollection] = useAtom(collectionAtom);
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -29,7 +29,7 @@ export default function CategoryDelete({ categoryId, category }: props) {
   };
 
   const handleDelete = () => {
-    setCategory({ action: CategoryReducerAction.DELETE_CATEGORY, categoryId });
+    setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId });
     navigate("/");
   }
 
@@ -50,11 +50,11 @@ export default function CategoryDelete({ categoryId, category }: props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Delete ${category.name}`}
+          {`Delete ${collection.name}`}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete <b>{category.name}</b> and all the sets?
+            Are you sure you want to delete <b>{collection.name}</b> and all the sets?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

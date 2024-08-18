@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Button, Grid, Snackbar } from "@mui/material";
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react';
-import { Category, Set } from "src/types";
+import { Collection, Set } from "src/types";
 import { useAtom } from "jotai";
 import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 import { Link } from 'react-router-dom';
@@ -11,12 +11,12 @@ import { PracticeElement } from 'src/helpers/setSorting';
 import { MatcherItem } from 'src/components/matcherItem';
 
 interface Props {
-  categoryId: string;
-  category: Category;
+  collectionId: string;
+  collection: Collection;
   practiceOption: PracticeElement;
 }
 
-export default function Matcher({ categoryId, category, practiceOption }: Props) {
+export default function Matcher({ collectionId, collection, practiceOption }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<string>();
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
@@ -63,7 +63,7 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
 
   function initSets() {
     // Sort by the selected practice option (sort type)
-    const sortedSets = practiceOption.sort(category.sets)
+    const sortedSets = practiceOption.sort(collection.sets)
 
     // Select only a number of these least practiced sets
     const practiceSets = sortedSets.slice(0, setSizeOption);
@@ -96,7 +96,7 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
         practiced: set.practiced ? set.practiced + 1 : 1,
         mistakes: previousMistakes + newMistakes
       };
-      setSet({ action: SetReducerAction.UPDATE_SET, categoryId, set: updatedSet });
+      setSet({ action: SetReducerAction.UPDATE_SET, collectionId, set: updatedSet });
     });
   }
 
@@ -136,7 +136,7 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
               selectedLeft={selectedLeft}
               selectedRight={selectedRight}
               isSelected={selectedLeft === leftId}
-              isLarge={category.aIsLarge}
+              isLarge={collection.aIsLarge}
               onClick={leftClicked}
             />
           </Grid>
@@ -148,7 +148,7 @@ export default function Matcher({ categoryId, category, practiceOption }: Props)
               selectedLeft={selectedLeft}
               selectedRight={selectedRight}
               isSelected={selectedRight === rightId}
-              isLarge={category.bIsLarge}
+              isLarge={collection.bIsLarge}
               onClick={rightClicked}
             />
           </Grid>

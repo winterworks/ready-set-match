@@ -1,15 +1,15 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material";
-import { Category } from "src/types";
+import { Collection } from "src/types";
 import Icon from "./icon";
 import { Link } from 'react-router-dom';
 
 interface Props {
-  categoryId: string;
-  category: Category;
+  collectionId: string;
+  collection: Collection;
 }
 
-export default function CategoryTile({ categoryId, category: { name, icon, sets } }: Props) {
+export default function CollectionTile({ collectionId, collection: { name, icon, sets } }: Props) {
   const totalPracticed = sets.reduce((acc, set) => {
     if (set.practiced) {
       return acc + set.practiced;
@@ -34,12 +34,12 @@ export default function CategoryTile({ categoryId, category: { name, icon, sets 
         <CardActions sx={{
           justifyContent: 'space-between'
         }}>
-          <Link to={`/category/${categoryId}`}>
+          <Link to={`/collection/${collectionId}`}>
             <Button size="small" color="secondary">
               edit
             </Button>
           </Link>
-          <Link to={`/practice/${categoryId}`}>
+          <Link to={`/practice/${collectionId}`}>
             <Button size="small" color="primary" variant="contained">
               Practice
             </Button>
