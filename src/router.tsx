@@ -5,6 +5,7 @@ import CollectionDetail from "src/routes/collectionDetail";
 import DataDetail from 'src/routes/dataDetail';
 import Practice from 'src/routes/practice';
 
+// TODO define the routes and paths together
 export function AppRouter() {
   return (
     <Routes>

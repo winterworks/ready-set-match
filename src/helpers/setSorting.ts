@@ -40,6 +40,7 @@ function sortMostPracticed(sets: Set[]) {
 }
 
 function sortRandom(sets: Set[]) {
+  // Use Durstenfeld algorithm to shuffle the array randomly
   const randomSets = sets.slice(0);
   for (let i = randomSets.length - 1; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * (i + 1));
