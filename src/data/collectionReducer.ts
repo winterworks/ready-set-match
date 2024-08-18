@@ -1,6 +1,8 @@
 import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
-import { Data, Collection, Collections } from "src/types";
+import { persistCollection } from "src/data/dbConnector";
+import { Data, Collection } from "src/types";
+import { findCollection } from "src/helpers/findCollection";
 
 export enum CollectionReducerAction {
   CREATE_COLLECTION = "CREATE_COLLECTION",
@@ -23,6 +25,8 @@ interface CollectionAddPayload extends PayloadBase {
 interface CollectionUpdatePayload extends PayloadBase  {
   action: CollectionReducerAction.UPDATE_COLLECTION;
   collection: Collection;
+
+  oldCollectionId?: string;
 }
 
 interface CollectionDeletePayload extends PayloadBase  {
@@ -39,32 +43,31 @@ const collectionReducer = (prevState: Data, payload: Payload): Data => {
         ...payload.collection,
         sets: []
       }
+      persistCollection(newCollection);
       return {
         ...prevState,
-        collections: {
+        collections: [
           ...prevState.collections,
-          [newCollection.name]: newCollection
-        }
+          newCollection
+        ]
       };
     }
-    case CollectionReducerAction.UPDATE_COLLECTION:
+    case CollectionReducerAction.UPDATE_COLLECTION: {
+      persistCollection(payload.collection, payload.collectionId);
       return {
         ...prevState,
-        collections: {
-          ...prevState.collections,
-          [payload.collectionId]: payload.collection
-        }
+        collections: prevState.collections.map((collection) => {
+          if (collection.name !== payload.collectionId) {
+            return collection;
+          }
+          return payload.collection
+        })
       };
+    }
     case CollectionReducerAction.DELETE_COLLECTION:{
-      const filteredCollections: Collections = {};
-      Object.keys(prevState.collections).forEach((key) => {
-        if (key !== payload.collectionId) {
-          filteredCollections[key] = prevState.collections[key];
-        }
-      });
       return {
         ...prevState,
-        collections: filteredCollections
+        collections: prevState.collections.filter(({ name }) => name !== payload.collectionId)
       };
     }
     default:
@@ -73,7 +76,7 @@ const collectionReducer = (prevState: Data, payload: Payload): Data => {
 }
 
 export const collectionAtom = atom(
-  (get) => (collectionId: string): Collection | undefined => get(stateAtom).collections[collectionId],
+  (get) => (collectionId: string): Collection | undefined => findCollection(get(stateAtom).collections , collectionId),
   (get, collection, action: Payload) => {
     collection(stateAtom, collectionReducer(get(stateAtom), action))
   }

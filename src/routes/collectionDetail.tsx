@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
 import { collectionAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
@@ -11,6 +11,7 @@ import { Collection } from 'src/types';
 export default function CollectionDetail() {
   const { collectionId } = useParams();
   const [getCollection, setCollection] = useAtom(collectionAtom);
+  const navigate = useNavigate();
 
   const collection = collectionId ? getCollection(collectionId) : undefined;
   if (!collectionId || !collection) {
@@ -18,10 +19,18 @@ export default function CollectionDetail() {
   }
 
   function updateCollection(collectionId: string, collection: Collection) {
+    let oldCollectionId;
+    if (collectionId !== collection.name) {
+      // The name/key has changed, update the url
+      navigate(`/collection/${collection.name}`);
+      oldCollectionId = collectionId
+    }
+
     setCollection({
       action: CollectionReducerAction.UPDATE_COLLECTION,
-      collectionId: collectionId,
-      collection
+      collectionId,
+      collection,
+      oldCollectionId
     });
   }
 

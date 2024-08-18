@@ -1,5 +1,7 @@
 import { atom } from "jotai";
+import { persistCollection } from "src/data/dbConnector";
 import { stateAtom } from "src/data/state";
+import { findCollection } from "src/helpers/findCollection";
 import { Data, Set } from "src/types";
 
 export enum SetReducerAction {
@@ -33,51 +35,67 @@ type Payload = SetAddPayload | SetUpdatePayload | SetDeletePayload;
 const collectionReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
     case SetReducerAction.CREATE_SET: {
-      const prevSets = prevState.collections[payload.collectionId].sets;
+      const newCollections = prevState.collections.map(collection => {
+        if (collection.name !== payload.collectionId) {
+          return collection;
+        }
+        const updatedCollection = {
+          ...collection,
+          sets: [payload.set, ...collection.sets, ]
+        };
+        persistCollection(updatedCollection);
+        return updatedCollection;
+      });
       return {
         ...prevState,
-        collections: {
-          ...prevState.collections,
-          [payload.collectionId]: {
-            ...prevState.collections[payload.collectionId],
-            sets: [payload.set, ...prevSets, ]
-          }
-        }
+        collections: newCollections
       };
     }
-    case SetReducerAction.UPDATE_SET:
+    case SetReducerAction.UPDATE_SET: {
+      const newCollections = prevState.collections.map(collection => {
+        if (collection.name !== payload.collectionId) {
+          return collection;
+        }
+        const updatedCollection = {
+          ...collection,
+          sets: collection.sets.map(
+            set => set.id === payload.set.id ? payload.set : set
+          )
+        };
+        persistCollection(updatedCollection);
+        return updatedCollection;
+      });
       return {
         ...prevState,
-        collections: {
-          ...prevState.collections,
-          [payload.collectionId]: {
-            ...prevState.collections[payload.collectionId],
-            sets: prevState.collections[payload.collectionId].sets.map(
-              set => set.id === payload.set.id ? payload.set : set
-            )
-          }
-        }
+        collections: newCollections
       };
-    case SetReducerAction.DELETE_SET:
+    }
+    case SetReducerAction.DELETE_SET: {
+      const newCollections = prevState.collections.map(collection => {
+        if (collection.name !== payload.collectionId) {
+          return collection;
+        }
+        const updatedCollection = {
+          ...collection,
+          sets: collection.sets.filter(
+            set => set.id !== payload.setId
+          )
+        }
+        persistCollection(updatedCollection);
+        return updatedCollection;
+      });
       return {
         ...prevState,
-        collections: {
-          ...prevState.collections,
-          [payload.collectionId]: {
-            ...prevState.collections[payload.collectionId],
-            sets: prevState.collections[payload.collectionId].sets.filter(
-              set => set.id !== payload.setId
-            )
-          }
-        }
+        collections: newCollections
       };
+    }
     default:
       return prevState;
   }
 }
 
 export const setsAtom = atom(
-  (get) => (collectionId: string): Set[] | undefined => get(stateAtom).collections[collectionId].sets,
+  (get) => (collectionId: string): Set[] | undefined => findCollection(get(stateAtom).collections, collectionId)?.sets,
   (get, set, action: Payload) => {
     set(stateAtom, collectionReducer(get(stateAtom), action))
   }

@@ -1,9 +1,11 @@
-import { data } from "src/data/data";
-import { atomWithStorage } from 'jotai/utils'
 import { Data } from "src/types";
+import { atom } from "jotai";
+import { getAllCollections, initDB } from 'src/data/dbConnector';
 
-const key = 'readySetMatchData';
+await initDB();
 
-// TODO move from localStorage to IndexedDB
-export const stateAtom = atomWithStorage<Data>(key, data, undefined, { getOnInit: true });
+const initialState: Data = {
+  collections: await getAllCollections(),
+}
 
+export const stateAtom = atom<Data>(initialState);

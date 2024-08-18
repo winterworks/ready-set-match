@@ -12,11 +12,9 @@ export default function Index() {
   const [state] = useAtom(stateAtom);
 
   function renderCollections() {
-    const collectionTiles = [];
-    for (const [id, collection] of Object.entries(state.collections)) {
-      collectionTiles.push(<CollectionTile key={id} collectionId={id} collection={collection} />);
-    };
-    return collectionTiles;
+    return state.collections.map((collection) =>
+      <CollectionTile key={collection.name} collection={collection} />
+    );
   }
 
   return (

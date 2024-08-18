@@ -1,8 +1,6 @@
 export interface Data {
-    collections: Collections;
+    collections: Collection[];
 }
-
-export type Collections = Record<string, Collection>;
 
 export interface Collection {
     name: string;
@@ -10,7 +8,6 @@ export interface Collection {
 
     link?: string;
     icon?: string;
-    collections?: Collection[];
     aIsLarge?: boolean;
     bIsLarge?: boolean;
 }

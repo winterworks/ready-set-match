@@ -1,8 +1,8 @@
 import { Data } from "src/types"
 
 export const data: Data = {
-    collections: {
-        "morse-code": {
+    collections: [
+        {
             name: "Morse code",
             icon: "CellTower",
             link: "https://en.wikipedia.org/wiki/Morse_code",
@@ -45,7 +45,7 @@ export const data: Data = {
                 { id: "36", a: "9", b: "----." },
             ]
         },
-        "periodic-table": {
+        {
             name: "Periodic Table",
             icon: "Science",
             link: "https://en.wikipedia.org/wiki/Periodic_table",
@@ -170,5 +170,5 @@ export const data: Data = {
                 { id: "118", a: "Og", b: "Oganesson" },
             ]
         }
-    }
+    ]
 }

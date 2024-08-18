@@ -5,11 +5,10 @@ import Icon from "./icon";
 import { Link } from 'react-router-dom';
 
 interface Props {
-  collectionId: string;
   collection: Collection;
 }
 
-export default function CollectionTile({ collectionId, collection: { name, icon, sets } }: Props) {
+export default function CollectionTile({ collection: { name, icon, sets } }: Props) {
   const totalPracticed = sets.reduce((acc, set) => {
     if (set.practiced) {
       return acc + set.practiced;
@@ -34,12 +33,13 @@ export default function CollectionTile({ collectionId, collection: { name, icon,
         <CardActions sx={{
           justifyContent: 'space-between'
         }}>
-          <Link to={`/collection/${collectionId}`}>
+          {/* TODO: Deal with text names in the url */}
+          <Link to={`/collection/${name}`}>
             <Button size="small" color="secondary">
               edit
             </Button>
           </Link>
-          <Link to={`/practice/${collectionId}`}>
+          <Link to={`/practice/${name}`}>
             <Button size="small" color="primary" variant="contained">
               Practice
             </Button>
