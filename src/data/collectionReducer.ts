@@ -17,7 +17,7 @@ interface PayloadBase {
   collectionId: string;
 }
 
-interface CollectionAddPayload extends PayloadBase {
+interface CollectionCreatePayload extends PayloadBase {
   action: CollectionReducerAction.CREATE_COLLECTION;
   collection: NewCollection;
 }
@@ -34,42 +34,51 @@ interface CollectionDeletePayload extends PayloadBase  {
   collectionId: string;
 }
 
-type Payload = CollectionAddPayload | CollectionUpdatePayload | CollectionDeletePayload;
+type Payload = CollectionCreatePayload | CollectionUpdatePayload | CollectionDeletePayload;
+
+const collectionCreate = (prevState: Data, payload: CollectionCreatePayload) => {
+  const newCollection = {
+    ...payload.collection,
+    sets: []
+  }
+  persistCollection(newCollection);
+  return {
+    ...prevState,
+    collections: [
+      ...prevState.collections,
+      newCollection
+    ]
+  };
+}
+
+const collectionUpdate = (prevState: Data, payload: CollectionUpdatePayload) => {
+  persistCollection(payload.collection, payload.collectionId);
+  return {
+    ...prevState,
+    collections: prevState.collections.map((collection) => {
+      if (collection.name !== payload.collectionId) {
+        return collection;
+      }
+      return payload.collection
+    })
+  };
+}
+
+const collectionDelete = (prevState: Data, payload: CollectionDeletePayload) => {
+  return {
+    ...prevState,
+    collections: prevState.collections.filter(({ name }) => name !== payload.collectionId)
+  };
+}
 
 const collectionReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
-    case CollectionReducerAction.CREATE_COLLECTION: {
-      const newCollection = {
-        ...payload.collection,
-        sets: []
-      }
-      persistCollection(newCollection);
-      return {
-        ...prevState,
-        collections: [
-          ...prevState.collections,
-          newCollection
-        ]
-      };
-    }
-    case CollectionReducerAction.UPDATE_COLLECTION: {
-      persistCollection(payload.collection, payload.collectionId);
-      return {
-        ...prevState,
-        collections: prevState.collections.map((collection) => {
-          if (collection.name !== payload.collectionId) {
-            return collection;
-          }
-          return payload.collection
-        })
-      };
-    }
-    case CollectionReducerAction.DELETE_COLLECTION:{
-      return {
-        ...prevState,
-        collections: prevState.collections.filter(({ name }) => name !== payload.collectionId)
-      };
-    }
+    case CollectionReducerAction.CREATE_COLLECTION:
+      return collectionCreate(prevState, payload);
+    case CollectionReducerAction.UPDATE_COLLECTION:
+      return collectionUpdate(prevState, payload);
+    case CollectionReducerAction.DELETE_COLLECTION:
+      return collectionDelete(prevState, payload);
     default:
       return prevState;
   }
@@ -77,8 +86,7 @@ const collectionReducer = (prevState: Data, payload: Payload): Data => {
 
 export const collectionAtom = atom(
   (get) => (collectionId: string): Collection | undefined => findCollection(get(stateAtom).collections , collectionId),
-  (get, collection, action: Payload) => {
-    collection(stateAtom, collectionReducer(get(stateAtom), action))
+  (get, set, action: Payload) => {
+    set(stateAtom, collectionReducer(get(stateAtom), action))
   }
 );
-
