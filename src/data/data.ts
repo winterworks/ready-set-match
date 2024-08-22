@@ -1,6 +1,7 @@
 import { Data } from "src/types"
 
 export const data: Data = {
+    categories: [],
     collections: [
         {
             name: "Morse code",

@@ -3,6 +3,7 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import CollectionCreate from 'src/components/collectionCreate';
+import CategoryCreate from 'src/components/categoryCreate';
 import { Link } from 'react-router-dom';
 import ImportExportIcon from '@mui/icons-material/ImportExport';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -41,6 +42,7 @@ export default function MainMenu() {
         }}
       >
         <CollectionCreate onClick={handleClose} />
+        <CategoryCreate onClick={handleClose} />
         <MenuItem onClick={handleClose}>
           <Link to="/data">
             <ImportExportIcon />Import / Export

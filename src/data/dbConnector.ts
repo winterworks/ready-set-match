@@ -1,4 +1,4 @@
-import { Collection } from "src/types";
+import { Category, Collection } from "src/types";
 
 const dbName = "ready-set-match-db";
 const dbVersion = 2;
@@ -6,7 +6,8 @@ const dbVersion = 2;
 let db: IDBDatabase | undefined;
 
 enum OBJECT_STORES {
-  COLLECTIONS = 'collections'
+  COLLECTIONS = 'collections',
+  CATEGORIES = 'categories'
 }
 
 export function initDB(): Promise<void> {
@@ -20,6 +21,9 @@ export function initDB(): Promise<void> {
       db = (event.target as IDBOpenDBRequest).result;
       if (event.oldVersion < 1) {
         db.createObjectStore(OBJECT_STORES.COLLECTIONS, { keyPath: 'name' });
+      }
+      if (event.oldVersion < 2) {
+        db.createObjectStore(OBJECT_STORES.CATEGORIES, { keyPath: 'name' });
       }
     }
 
@@ -104,4 +108,15 @@ export function deleteCollection(id: string) {
 
 export async function getAllCollections() {
   return (await getFromIndexedDB(OBJECT_STORES.COLLECTIONS)) as Collection[];
+}
+
+export function persistCategory(category: Category, oldId?: string) {
+  if (oldId) {
+    removeFromIndexedDB(OBJECT_STORES.CATEGORIES, oldId);
+  }
+  storeToIndexedDB(OBJECT_STORES.CATEGORIES, category);
+}
+
+export async function getAllCategories() {
+  return (await getFromIndexedDB(OBJECT_STORES.CATEGORIES)) as Category[];
 }
