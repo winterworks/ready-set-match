@@ -1,6 +1,6 @@
 import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
-import { persistCollection } from "src/data/dbConnector";
+import { deleteCollection, persistCollection } from "src/data/dbConnector";
 import { Data, Collection } from "src/types";
 import { findCollection } from "src/helpers/findCollection";
 
@@ -65,6 +65,7 @@ const collectionUpdate = (prevState: Data, payload: CollectionUpdatePayload) => 
 }
 
 const collectionDelete = (prevState: Data, payload: CollectionDeletePayload) => {
+  deleteCollection(payload.collectionId);
   return {
     ...prevState,
     collections: prevState.collections.filter(({ name }) => name !== payload.collectionId)

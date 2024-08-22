@@ -1,12 +1,12 @@
 import { Collection } from "src/types";
 
 const dbName = "ready-set-match-db";
-const dbVersion = 1;
+const dbVersion = 2;
 
 let db: IDBDatabase | undefined;
 
 enum OBJECT_STORES {
-  COLLECTIONS = 'collections',
+  COLLECTIONS = 'collections'
 }
 
 export function initDB(): Promise<void> {
@@ -16,9 +16,11 @@ export function initDB(): Promise<void> {
       console.error("The user or browser did not allow the use of the IndexedDB");
     };
 
-    request.onupgradeneeded = (event: Event) => {
+    request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
       db = (event.target as IDBOpenDBRequest).result;
-      db.createObjectStore(OBJECT_STORES.COLLECTIONS, { keyPath: 'name' });
+      if (event.oldVersion < 1) {
+        db.createObjectStore(OBJECT_STORES.COLLECTIONS, { keyPath: 'name' });
+      }
     }
 
     request.onsuccess = (event: Event) => {
@@ -94,6 +96,10 @@ export function persistCollection(collection: Collection, oldId?: string) {
 // TODO fix name collision with getCollection atom
 export async function getCollection(id: string) {
   return getFromIndexedDB(OBJECT_STORES.COLLECTIONS, id);
+}
+
+export function deleteCollection(id: string) {
+  removeFromIndexedDB(OBJECT_STORES.COLLECTIONS, id);
 }
 
 export async function getAllCollections() {

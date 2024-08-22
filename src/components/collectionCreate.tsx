@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, DialogContentText } from "@mui/material";
+import { Button, DialogContentText, MenuItem } from "@mui/material";
 import { Add } from '@mui/icons-material';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -9,7 +9,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useAtom } from 'jotai';
 import { collectionAtom, CollectionReducerAction } from 'src/data/collectionReducer';
 
-export default function CollectionCreate() {
+interface Props {
+  onClick: () => void
+}
+
+export default function CollectionCreate({ onClick }: Props) {
   const [open, setOpen] = React.useState(false);
   const [newCollectionName, setNewCollectionName] = React.useState('');
   const [getCollection, setCollection] = useAtom(collectionAtom);
@@ -20,17 +24,16 @@ export default function CollectionCreate() {
 
   const handleClose = () => {
     setOpen(false);
+    onClick();
   };
+
+  const onClickMenu = () => {
+    handleClickOpen();
+  }
 
   return (
     <React.Fragment>
-      <Button
-        variant='outlined'
-        startIcon={<Add />}
-        onClick={handleClickOpen}
-      >
-        Add Collection
-      </Button>
+      <MenuItem onClick={onClickMenu}><Add />Add Collection</MenuItem>
       <Dialog
         open={open}
         onClose={handleClose}
