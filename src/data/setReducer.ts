@@ -34,7 +34,7 @@ type Payload = SetCreatePayload | SetUpdatePayload | SetDeletePayload;
 
 const setCreate = (prevState: Data, payload: SetCreatePayload) => {
   return prevState.collections.map(collection => {
-    if (collection.name !== payload.collectionId) {
+    if (collection.id !== payload.collectionId) {
       return collection;
     }
     const updatedCollection = {
@@ -48,7 +48,7 @@ const setCreate = (prevState: Data, payload: SetCreatePayload) => {
 
 const setUpdate = (prevState: Data, payload: SetUpdatePayload) => {
   return prevState.collections.map(collection => {
-    if (collection.name !== payload.collectionId) {
+    if (collection.id !== payload.collectionId) {
       return collection;
     }
     const updatedCollection = {
@@ -64,7 +64,7 @@ const setUpdate = (prevState: Data, payload: SetUpdatePayload) => {
 
 const setDelete = (prevState: Data, payload: SetDeletePayload) => {
   return prevState.collections.map(collection => {
-    if (collection.name !== payload.collectionId) {
+    if (collection.id !== payload.collectionId) {
       return collection;
     }
     const updatedCollection = {
