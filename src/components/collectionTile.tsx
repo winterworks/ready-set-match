@@ -1,19 +1,14 @@
 import React from 'react';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from "@mui/material";
-import { Collection } from "src/types";
 import Icon from "./icon";
 import { Link } from 'react-router-dom';
-import { useAtom } from 'jotai';
-import { collectionsAtom } from 'src/data/collectionReducer';
+import { Collection } from 'src/types';
 
 interface Props {
   collection: Collection;
 }
 
-export default function CollectionTile({ collection: { id, name, icon, sets, parentCollectionId } }: Props) {
-  const [collections] = useAtom(collectionsAtom);
-
-  const parentName = collections.find(collection => collection.id === parentCollectionId)?.name || null;
+export default function CollectionTile({ collection: { id, name, icon, sets }}: Props) {
   const totalPracticed = sets.reduce((acc, set) => {
     if (set.practiced) {
       return acc + set.practiced;
@@ -26,7 +21,7 @@ export default function CollectionTile({ collection: { id, name, icon, sets, par
       <Card>
         <CardContent>
           <Typography component="h3" variant="h5" display="flex" justifyContent="space-between">
-            {parentName && `${parentName}, `}{name}{icon && (<Icon fontSize="large" iconName={icon} />)}
+            {name}{icon && (<Icon fontSize="large" iconName={icon} />)}
           </Typography>
           <Typography>
             Sets: {sets.length}
@@ -36,7 +31,8 @@ export default function CollectionTile({ collection: { id, name, icon, sets, par
           </Typography>
         </CardContent>
         <CardActions sx={{
-          justifyContent: 'space-between'
+          justifyContent: 'space-between', height: 70,
+          alignItems: 'flex-end'
         }}>
           <Link to={`/collection/${id}`}>
             <Button size="small" color="secondary">

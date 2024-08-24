@@ -7,11 +7,13 @@ import { collectionsAtom, CollectionReducerAction} from 'src/data/collectionRedu
 import SetsTable from 'src/components/setsTable';
 import { findCollection } from 'src/helpers/findCollection';
 import DeleteConfirm from 'src/components/deleteConfirm';
+import CollectionsGird from 'src/components/collectionGird';
 
 export default function CollectionDetail() {
   const { collectionId } = useParams();
   const [collections, setCollection] = useAtom(collectionsAtom);
 
+  const subCollections = collections.filter(coll => coll.parentCollectionId === collectionId);
   const collection = collectionId ? findCollection(collections, collectionId) : undefined;
   if (!collectionId || !collection) {
     return <>This collection does not exist</>
@@ -85,7 +87,7 @@ export default function CollectionDetail() {
               });
             }}
           >
-            {collections.map((coll) => (
+            {collections.filter(coll => !coll.parentCollectionId).map((coll) => (
               <MenuItem key={coll.id} value={coll.id}>
                 {coll.name}
               </MenuItem>
@@ -137,7 +139,11 @@ export default function CollectionDetail() {
           label="Value B large"
           labelPlacement="start"
         />
-        <Typography component="h3" variant="h5" gutterBottom>
+        <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
+          Sub collections
+        </Typography>
+        <CollectionsGird collections={subCollections} displayWithParent />
+        <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
           Sets
         </Typography>
         <SetsTable collectionId={collectionId} sets={collection.sets}/>
