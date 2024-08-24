@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
 import { persistCategory } from "src/data/dbConnector";
 import { Data, Category } from "src/types";
+import { v4 as uuidv4 } from 'uuid';
 
 export enum CategoryReducerAction {
   CREATE_CATEGORY = "CREATE_CATEGORY",
@@ -9,23 +10,18 @@ export enum CategoryReducerAction {
   DELETE_CATEGORY = "DELETE_CATEGORY",
 }
 
-export type NewCategory = Pick<Category, "name">;
-
 interface PayloadBase {
   action: CategoryReducerAction;
-  categoryId: string;
 }
 
 interface CategoryCreatePayload extends PayloadBase {
   action: CategoryReducerAction.CREATE_CATEGORY;
-  category: NewCategory;
+  category: Pick<Category, "name">;
 }
 
 interface CategoryUpdatePayload extends PayloadBase  {
   action: CategoryReducerAction.UPDATE_CATEGORY;
   category: Category;
-
-  oldCategoryId?: string;
 }
 
 interface CategoryDeletePayload extends PayloadBase  {
@@ -37,6 +33,7 @@ type Payload = CategoryCreatePayload | CategoryUpdatePayload | CategoryDeletePay
 
 const categoryCreate = (prevState: Data, payload: CategoryCreatePayload) => {
   const newCategory = {
+    id: uuidv4(),
     ...payload.category,
     sets: []
   }
@@ -51,11 +48,11 @@ const categoryCreate = (prevState: Data, payload: CategoryCreatePayload) => {
 }
 
 const categoryUpdate = (prevState: Data, payload: CategoryUpdatePayload) => {
-  persistCategory(payload.category, payload.categoryId);
+  persistCategory(payload.category, payload.category.id);
   return {
     ...prevState,
     categories: prevState.categories.map((category) => {
-      if (category.name !== payload.categoryId) {
+      if (category.id !== payload.category.id) {
         return category;
       }
       return payload.category

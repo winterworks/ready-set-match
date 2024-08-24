@@ -4,10 +4,12 @@ export interface Data {
 }
 
 export interface Category {
+    id: string;
     name: string;
 }
 
 export interface Collection {
+    id: string;
     name: string;
     sets: Set[];
 

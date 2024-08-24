@@ -9,7 +9,7 @@ interface Props {
   category: Category;
 }
 
-export default function CategoryTile({ category: { name } }: Props) {
+export default function CategoryTile({ category: { id, name } }: Props) {
   const [collections] = useAtom(collectionsAtom);
 
   return (
@@ -19,19 +19,19 @@ export default function CategoryTile({ category: { name } }: Props) {
           <Typography component="h3" variant="h5" display="flex" justifyContent="space-between">
             {name}
           </Typography>
-          {collections.filter(collection => collection.category === name).map((collection) =>
-            <>{collection.name},</>
+          {collections.filter(collection => collection.category === id).map((collection) =>
+            <>{collection.name}, </>
           )}
         </CardContent>
         <CardActions sx={{
           justifyContent: 'space-between'
         }}>
-          <Link to={`/category/${name}`}>
+          <Link to={`/category/${id}`}>
             <Button size="small" color="secondary">
               edit
             </Button>
           </Link>
-          {/* <Link to={`/practice/${name}`}>
+          {/* <Link to={`/practice/${id}`}>
             <Button size="small" color="primary" variant="contained">
               Practice
             </Button>

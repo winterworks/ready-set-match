@@ -1,7 +1,7 @@
-import { Category, Collection } from "src/types";
+import { Category, Collection, Data } from "src/types";
 
 const dbName = "ready-set-match-db";
-const dbVersion = 2;
+const dbVersion = 1;
 
 let db: IDBDatabase | undefined;
 
@@ -20,10 +20,10 @@ export function initDB(): Promise<void> {
     request.onupgradeneeded = (event: IDBVersionChangeEvent) => {
       db = (event.target as IDBOpenDBRequest).result;
       if (event.oldVersion < 1) {
-        db.createObjectStore(OBJECT_STORES.COLLECTIONS, { keyPath: 'name' });
+        db.createObjectStore(OBJECT_STORES.COLLECTIONS, { keyPath: 'id' });
       }
       if (event.oldVersion < 2) {
-        db.createObjectStore(OBJECT_STORES.CATEGORIES, { keyPath: 'name' });
+        db.createObjectStore(OBJECT_STORES.CATEGORIES, { keyPath: 'id' });
       }
     }
 
@@ -119,4 +119,13 @@ export function persistCategory(category: Category, oldId?: string) {
 
 export async function getAllCategories() {
   return (await getFromIndexedDB(OBJECT_STORES.CATEGORIES)) as Category[];
+}
+
+export function persistFullState(state: Data) {
+  state.categories.forEach(category => {
+    persistCategory(category);
+  });
+  state.collections.forEach(collection => {
+    persistCollection(collection);
+  });
 }

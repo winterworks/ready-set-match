@@ -44,7 +44,7 @@ export default function CategoryCreate({ onClick }: Props) {
             const newCategory = {
               name: newCategoryName
             }
-            setCategory({ action: CategoryReducerAction.CREATE_CATEGORY, categoryId: newCategoryName, category: newCategory })
+            setCategory({ action: CategoryReducerAction.CREATE_CATEGORY, category: newCategory })
             handleClose();
           },
         }}

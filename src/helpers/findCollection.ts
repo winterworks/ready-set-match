@@ -1,5 +1,5 @@
 import { Collection } from "src/types";
 
-export function findCollection(collections: Collection[], findName: string) {
-  return collections.find(({ name }) => name === findName)
+export function findCollection(collections: Collection[], findId: string) {
+  return collections.find(({ id }) => id === findId)
 }

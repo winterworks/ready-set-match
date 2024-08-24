@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { stateAtom } from "src/data/state";
 import { Button, Grid, TextareaAutosize, Typography } from '@mui/material';
 import { Data } from 'src/types';
+import { persistFullState } from 'src/data/dbConnector';
 
 export default function DataDetail() {
   const [state, setState] = useAtom(stateAtom);
@@ -21,6 +22,7 @@ export default function DataDetail() {
     }
     const newData = JSON.parse(dataImportValue) as Data;
     setState(newData);
+    persistFullState(newData);
   }
 
   return (

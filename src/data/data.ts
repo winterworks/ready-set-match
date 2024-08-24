@@ -4,6 +4,7 @@ export const data: Data = {
     categories: [],
     collections: [
         {
+            id: "1",
             name: "Morse code",
             icon: "CellTower",
             link: "https://en.wikipedia.org/wiki/Morse_code",
@@ -47,6 +48,7 @@ export const data: Data = {
             ]
         },
         {
+            id: "2",
             name: "Periodic Table",
             icon: "Science",
             link: "https://en.wikipedia.org/wiki/Periodic_table",

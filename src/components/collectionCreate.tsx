@@ -45,7 +45,7 @@ export default function CollectionCreate({ onClick }: Props) {
             const newCollection = {
               name: newCollectionName
             }
-            setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collectionId: newCollectionName, collection: newCollection })
+            setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
             handleClose();
           },
         }}

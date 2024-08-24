@@ -2,6 +2,7 @@ import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
 import { deleteCollection, persistCollection } from "src/data/dbConnector";
 import { Data, Collection } from "src/types";
+import { v4 as uuidv4 } from 'uuid';
 
 export enum CollectionReducerAction {
   CREATE_COLLECTION = "CREATE_COLLECTION",
@@ -9,23 +10,18 @@ export enum CollectionReducerAction {
   DELETE_COLLECTION = "DELETE_COLLECTION",
 }
 
-export type NewCollection = Pick<Collection, "name" | "icon">;
-
 interface PayloadBase {
   action: CollectionReducerAction;
-  collectionId: string;
 }
 
 interface CollectionCreatePayload extends PayloadBase {
   action: CollectionReducerAction.CREATE_COLLECTION;
-  collection: NewCollection;
+  collection: Pick<Collection, "name" | "icon">;
 }
 
 interface CollectionUpdatePayload extends PayloadBase  {
   action: CollectionReducerAction.UPDATE_COLLECTION;
   collection: Collection;
-
-  oldCollectionId?: string;
 }
 
 interface CollectionDeletePayload extends PayloadBase  {
@@ -37,6 +33,7 @@ type Payload = CollectionCreatePayload | CollectionUpdatePayload | CollectionDel
 
 const collectionCreate = (prevState: Data, payload: CollectionCreatePayload) => {
   const newCollection = {
+    id: uuidv4(),
     ...payload.collection,
     sets: []
   }
@@ -51,11 +48,11 @@ const collectionCreate = (prevState: Data, payload: CollectionCreatePayload) => 
 }
 
 const collectionUpdate = (prevState: Data, payload: CollectionUpdatePayload) => {
-  persistCollection(payload.collection, payload.collectionId);
+  persistCollection(payload.collection, payload.collection.id);
   return {
     ...prevState,
     collections: prevState.collections.map((collection) => {
-      if (collection.name !== payload.collectionId) {
+      if (collection.id !== payload.collection.id) {
         return collection;
       }
       return payload.collection

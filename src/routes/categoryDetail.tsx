@@ -1,36 +1,17 @@
 import React from 'react';
 import { Box, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useNavigate, useParams } from "react-router-dom";
-import { Category } from 'src/types';
+import { useParams } from "react-router-dom";
 import { categoriesAtom, CategoryReducerAction } from 'src/data/categoryReducer';
 import DeleteConfirm from 'src/components/deleteConfirm';
 
 export default function CategoryDetail() {
   const { categoryId } = useParams();
   const [categories, setCategory] = useAtom(categoriesAtom);
-  const navigate = useNavigate();
 
-  console.log(categories)
-  const category = categoryId && categories.find((category) => category.name === categoryId);
+  const category = categoryId && categories.find((category) => category.id === categoryId);
   if (!categoryId || !category) {
     return <>This category does not exist</>
-  }
-
-  function updateCategory(categoryId: string, category: Category) {
-    let oldCategoryId;
-    if (categoryId !== category.name) {
-      // The name/key has changed, update the url
-      navigate(`/category/${category.name}`);
-      oldCategoryId = categoryId
-    }
-
-    setCategory({
-      action: CategoryReducerAction.UPDATE_CATEGORY,
-      categoryId,
-      category,
-      oldCategoryId
-    });
   }
 
   return (
@@ -58,7 +39,10 @@ export default function CategoryDetail() {
           variant="standard"
           value={category.name}
           onChange={(e) => {
-            updateCategory(categoryId, { ...category, name: e.target.value })
+            setCategory({
+              action: CategoryReducerAction.UPDATE_CATEGORY,
+              category: { ...category, name: e.target.value }
+            });
           }}/>
       </Box>
     </>

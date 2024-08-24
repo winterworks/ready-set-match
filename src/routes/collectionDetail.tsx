@@ -1,11 +1,10 @@
 import React from 'react';
 import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
 import { collectionsAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
-import { Collection } from 'src/types';
 import { findCollection } from 'src/helpers/findCollection';
 import { categoriesAtom } from 'src/data/categoryReducer';
 import DeleteConfirm from 'src/components/deleteConfirm';
@@ -14,27 +13,10 @@ export default function CollectionDetail() {
   const { collectionId } = useParams();
   const [collections, setCollection] = useAtom(collectionsAtom);
   const [categories] = useAtom(categoriesAtom);
-  const navigate = useNavigate();
 
   const collection = collectionId ? findCollection(collections, collectionId) : undefined;
   if (!collectionId || !collection) {
     return <>This collection does not exist</>
-  }
-
-  function updateCollection(collectionId: string, collection: Collection) {
-    let oldCollectionId;
-    if (collectionId !== collection.name) {
-      // The name/key has changed, update the url
-      navigate(`/collection/${collection.name}`);
-      oldCollectionId = collectionId
-    }
-
-    setCollection({
-      action: CollectionReducerAction.UPDATE_COLLECTION,
-      collectionId,
-      collection,
-      oldCollectionId
-    });
   }
 
   return (
@@ -64,9 +46,12 @@ export default function CollectionDetail() {
           variant="standard"
           value={collection.name}
           onChange={(e) => {
-            updateCollection(collectionId, { ...collection, name: e.target.value })
+            setCollection({
+              action: CollectionReducerAction.UPDATE_COLLECTION,
+              collection: { ...collection, name: e.target.value }
+            });
           }}/>
-        <FormControl variant="standard" sx={{ marginRight: 1, width: 100 }}>
+        <FormControl variant="standard" sx={{ marginRight: 1, width: 100, }}>
           <InputLabel id="collection-icon">Icon</InputLabel>
           <Select
             labelId="collection-icon"
@@ -74,7 +59,10 @@ export default function CollectionDetail() {
             value={collection.icon}
             label="Icon"
             onChange={(e) => {
-              updateCollection(collectionId, { ...collection, icon: (e.target.value as ENABLED_ICON) })
+              setCollection({
+                action: CollectionReducerAction.UPDATE_COLLECTION,
+                collection: { ...collection, icon: (e.target.value as ENABLED_ICON) }
+              });
             }}
           >
             {Object.values(ENABLED_ICON).map((enabledIcon) => (
@@ -84,22 +72,29 @@ export default function CollectionDetail() {
             ))}
           </Select>
         </FormControl>
-        <FormControl variant="standard" sx={{ marginRight: 1, width: 100 }}>
-          <InputLabel>Category</InputLabel>
+        <FormControl variant="standard" sx={{ marginRight: 1, width: 150, marginTop: 1 }}>
+          <InputLabel id="category">Category</InputLabel>
           <Select
             labelId="category"
             id="category"
-            value={collection.category}
+            value={collection.category || ''}
             label="Category"
             onChange={(e) => {
-              updateCollection(collectionId, { ...collection, category: e.target.value })
+              const category = e.target.value != 'default' ? e.target.value : undefined;
+              setCollection({
+                action: CollectionReducerAction.UPDATE_COLLECTION,
+                collection: { ...collection, category }
+              });
             }}
           >
             {categories.map((category) => (
-              <MenuItem key={category.name} value={category.name}>
+              <MenuItem key={category.id} value={category.id}>
                 {category.name}
               </MenuItem>
             ))}
+            <MenuItem key={'default'} value={'default'}>
+              None
+            </MenuItem>
           </Select>
         </FormControl>
         <TextField
@@ -108,7 +103,10 @@ export default function CollectionDetail() {
           variant="standard"
           value={collection.link}
           onChange={(e) => {
-            updateCollection(collectionId, { ...collection, link: e.target.value })
+            setCollection({
+              action: CollectionReducerAction.UPDATE_COLLECTION,
+              collection: { ...collection, link: e.target.value }
+            });
           }}/>
         <br/>
         <FormControlLabel
@@ -116,7 +114,10 @@ export default function CollectionDetail() {
             <Switch
               checked={collection.aIsLarge}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateCollection(collectionId, { ...collection, aIsLarge: e.target.checked })
+                setCollection({
+                  action: CollectionReducerAction.UPDATE_COLLECTION,
+                  collection: { ...collection, aIsLarge: e.target.checked }
+                });
               }}
             />
           }
@@ -128,7 +129,10 @@ export default function CollectionDetail() {
             <Switch
               checked={collection.bIsLarge}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                updateCollection(collectionId, { ...collection, bIsLarge: e.target.checked })
+                setCollection({
+                  action: CollectionReducerAction.UPDATE_COLLECTION,
+                  collection: { ...collection, bIsLarge: e.target.checked }
+                });
               }}
             />
           }
