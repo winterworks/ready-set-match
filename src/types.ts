@@ -1,11 +1,5 @@
 export interface Data {
     collections: Collection[];
-    categories: Category[];
-}
-
-export interface Category {
-    id: string;
-    name: string;
 }
 
 export interface Collection {
@@ -13,7 +7,7 @@ export interface Collection {
     name: string;
     sets: Set[];
 
-    category?: string;
+    parentCollectionId?: string;
     link?: string;
     icon?: string;
     aIsLarge?: boolean;

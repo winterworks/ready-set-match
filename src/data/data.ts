@@ -1,7 +1,6 @@
 import { Data } from "src/types"
 
 export const data: Data = {
-    categories: [],
     collections: [
         {
             id: "1",

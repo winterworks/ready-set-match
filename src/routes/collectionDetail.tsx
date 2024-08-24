@@ -6,13 +6,11 @@ import Icon, { ENABLED_ICON } from "src/components/icon";
 import { collectionsAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
 import { findCollection } from 'src/helpers/findCollection';
-import { categoriesAtom } from 'src/data/categoryReducer';
 import DeleteConfirm from 'src/components/deleteConfirm';
 
 export default function CollectionDetail() {
   const { collectionId } = useParams();
   const [collections, setCollection] = useAtom(collectionsAtom);
-  const [categories] = useAtom(categoriesAtom);
 
   const collection = collectionId ? findCollection(collections, collectionId) : undefined;
   if (!collectionId || !collection) {
@@ -73,23 +71,23 @@ export default function CollectionDetail() {
           </Select>
         </FormControl>
         <FormControl variant="standard" sx={{ marginRight: 1, width: 150, marginTop: 1 }}>
-          <InputLabel id="category">Category</InputLabel>
+          <InputLabel id="parentCollectionId">Parent collection</InputLabel>
           <Select
-            labelId="category"
-            id="category"
-            value={collection.category || ''}
-            label="Category"
+            labelId="parentCollectionId"
+            id="parentCollectionId"
+            value={collection.parentCollectionId || ''}
+            label="parentCollectionId"
             onChange={(e) => {
-              const category = e.target.value != 'default' ? e.target.value : undefined;
+              const parentCollectionId = e.target.value != 'default' ? e.target.value : undefined;
               setCollection({
                 action: CollectionReducerAction.UPDATE_COLLECTION,
-                collection: { ...collection, category }
+                collection: { ...collection, parentCollectionId }
               });
             }}
           >
-            {categories.map((category) => (
-              <MenuItem key={category.id} value={category.id}>
-                {category.name}
+            {collections.map((coll) => (
+              <MenuItem key={coll.id} value={coll.id}>
+                {coll.name}
               </MenuItem>
             ))}
             <MenuItem key={'default'} value={'default'}>

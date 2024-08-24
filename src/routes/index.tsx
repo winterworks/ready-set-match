@@ -5,19 +5,10 @@ import CollectionTile from "src/components/collectionTile";
 import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector';
 import PracticeOptionSelector from 'src/components/practiceTypeSelector';
 import MainMenu from 'src/components/mainMenu';
-import CategoryTile from 'src/components/categoryTile';
 import { collectionsAtom } from 'src/data/collectionReducer';
-import { categoriesAtom } from 'src/data/categoryReducer';
 
 export default function Index() {
   const [collections] = useAtom(collectionsAtom);
-  const [categories] = useAtom(categoriesAtom);
-
-  function renderCategories() {
-    return categories.map((category) =>
-      <CategoryTile key={category.name} category={category} />
-    );
-  }
 
   function renderCollections() {
     return collections.map((collection) =>
@@ -40,7 +31,6 @@ export default function Index() {
           <MainMenu />
         </div>
       </Grid>
-      {renderCategories()}
       {renderCollections()}
     </Grid>
   );

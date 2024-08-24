@@ -4,17 +4,17 @@ import { Collection } from "src/types";
 import Icon from "./icon";
 import { Link } from 'react-router-dom';
 import { useAtom } from 'jotai';
-import { categoriesAtom } from 'src/data/categoryReducer';
+import { collectionsAtom } from 'src/data/collectionReducer';
 
 interface Props {
   collection: Collection;
 }
 
-export default function CollectionTile({ collection }: Props) {
-  const [categories] = useAtom(categoriesAtom);
+export default function CollectionTile({ collection: { id, name, icon, sets, parentCollectionId } }: Props) {
+  const [collections] = useAtom(collectionsAtom);
 
-  const categoryName = categories.find(category => category.id === collection.category)?.name || null;
-  const totalPracticed = collection.sets.reduce((acc, set) => {
+  const parentName = collections.find(collection => collection.id === parentCollectionId)?.name || null;
+  const totalPracticed = sets.reduce((acc, set) => {
     if (set.practiced) {
       return acc + set.practiced;
     }
@@ -22,14 +22,14 @@ export default function CollectionTile({ collection }: Props) {
   }, 0);
 
   return (
-    <Grid key={collection.name} item xs={12} sm={6} md={4}>
+    <Grid key={name} item xs={12} sm={6} md={4}>
       <Card>
         <CardContent>
           <Typography component="h3" variant="h5" display="flex" justifyContent="space-between">
-            {categoryName && `${categoryName}, `}{collection.name}{collection.icon && (<Icon fontSize="large" iconName={collection.icon} />)}
+            {parentName && `${parentName}, `}{name}{icon && (<Icon fontSize="large" iconName={icon} />)}
           </Typography>
           <Typography>
-            Sets: {collection.sets.length}
+            Sets: {sets.length}
           </Typography>
           <Typography>
             Practiced: {totalPracticed}
@@ -38,12 +38,12 @@ export default function CollectionTile({ collection }: Props) {
         <CardActions sx={{
           justifyContent: 'space-between'
         }}>
-          <Link to={`/collection/${collection.id}`}>
+          <Link to={`/collection/${id}`}>
             <Button size="small" color="secondary">
               edit
             </Button>
           </Link>
-          <Link to={`/practice/${collection.id}`}>
+          <Link to={`/practice/${id}`}>
             <Button size="small" color="primary" variant="contained">
               Practice
             </Button>
