@@ -7,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAtom } from 'jotai';
-import { categoryAtom, CategoryReducerAction } from 'src/data/categoryReducer';
+import { categoriesAtom, CategoryReducerAction } from 'src/data/categoryReducer';
 
 interface Props {
   onClick: () => void
@@ -16,7 +16,7 @@ interface Props {
 export default function CategoryCreate({ onClick }: Props) {
   const [open, setOpen] = React.useState(false);
   const [newCategoryName, setNewCategoryName] = React.useState('');
-  const [getCategory, setCategory] = useAtom(categoryAtom);
+  const [categories, setCategory] = useAtom(categoriesAtom);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,7 +62,7 @@ export default function CategoryCreate({ onClick }: Props) {
             value={newCategoryName}
             onChange={(e) => { setNewCategoryName(e.target.value); }}
           />
-          {getCategory(newCategoryName) && <DialogContentText>This name already exists</DialogContentText>}
+          {categories.find(({ name }) => name === newCategoryName) && <DialogContentText>This name already exists</DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

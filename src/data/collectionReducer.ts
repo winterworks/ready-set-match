@@ -2,7 +2,6 @@ import { atom } from "jotai";
 import { stateAtom } from "src/data/state";
 import { deleteCollection, persistCollection } from "src/data/dbConnector";
 import { Data, Collection } from "src/types";
-import { findCollection } from "src/helpers/findCollection";
 
 export enum CollectionReducerAction {
   CREATE_COLLECTION = "CREATE_COLLECTION",
@@ -85,8 +84,8 @@ const collectionReducer = (prevState: Data, payload: Payload): Data => {
   }
 }
 
-export const collectionAtom = atom(
-  (get) => (collectionId: string): Collection | undefined => findCollection(get(stateAtom).collections , collectionId),
+export const collectionsAtom = atom(
+  (get) => get(stateAtom).collections,
   (get, set, action: Payload) => {
     set(stateAtom, collectionReducer(get(stateAtom), action))
   }

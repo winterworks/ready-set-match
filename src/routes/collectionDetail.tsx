@@ -3,17 +3,20 @@ import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switc
 import { useAtom } from "jotai";
 import { useNavigate, useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
-import { collectionAtom, CollectionReducerAction} from 'src/data/collectionReducer';
+import { collectionsAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
-import CollectionDelete from 'src/components/collectionDelete';
 import { Collection } from 'src/types';
+import { findCollection } from 'src/helpers/findCollection';
+import { categoriesAtom } from 'src/data/categoryReducer';
+import DeleteConfirm from 'src/components/deleteConfirm';
 
 export default function CollectionDetail() {
   const { collectionId } = useParams();
-  const [getCollection, setCollection] = useAtom(collectionAtom);
+  const [collections, setCollection] = useAtom(collectionsAtom);
+  const [categories] = useAtom(categoriesAtom);
   const navigate = useNavigate();
 
-  const collection = collectionId ? getCollection(collectionId) : undefined;
+  const collection = collectionId ? findCollection(collections, collectionId) : undefined;
   if (!collectionId || !collection) {
     return <>This collection does not exist</>
   }
@@ -39,7 +42,13 @@ export default function CollectionDetail() {
       <Typography component="h2" variant="h4" gutterBottom>
         {collection.name}
       </Typography>
-      <CollectionDelete collectionId={collectionId} collection={collection} />
+      <DeleteConfirm
+        onConfirm={() => {
+          setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId });
+        }}
+        title={`Delete ${collection.name}`}
+        message={`Are you sure you want to delete ${collection.name}?`}
+      />
       <Box
         component="form"
         sx={{
@@ -71,6 +80,24 @@ export default function CollectionDetail() {
             {Object.values(ENABLED_ICON).map((enabledIcon) => (
               <MenuItem key={enabledIcon} value={enabledIcon} >
                 <Icon iconName={enabledIcon} />
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControl variant="standard" sx={{ marginRight: 1, width: 100 }}>
+          <InputLabel>Category</InputLabel>
+          <Select
+            labelId="category"
+            id="category"
+            value={collection.category}
+            label="Category"
+            onChange={(e) => {
+              updateCollection(collectionId, { ...collection, category: e.target.value })
+            }}
+          >
+            {categories.map((category) => (
+              <MenuItem key={category.name} value={category.name}>
+                {category.name}
               </MenuItem>
             ))}
           </Select>

@@ -2,16 +2,25 @@ import React from 'react';
 import { Grid } from "@mui/material";
 import { useAtom } from "jotai";
 import CollectionTile from "src/components/collectionTile";
-import { stateAtom } from "src/data/state";
 import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector';
 import PracticeOptionSelector from 'src/components/practiceTypeSelector';
 import MainMenu from 'src/components/mainMenu';
+import CategoryTile from 'src/components/categoryTile';
+import { collectionsAtom } from 'src/data/collectionReducer';
+import { categoriesAtom } from 'src/data/categoryReducer';
 
 export default function Index() {
-  const [state] = useAtom(stateAtom);
+  const [collections] = useAtom(collectionsAtom);
+  const [categories] = useAtom(categoriesAtom);
+
+  function renderCategories() {
+    return categories.map((category) =>
+      <CategoryTile key={category.name} category={category} />
+    );
+  }
 
   function renderCollections() {
-    return state.collections.map((collection) =>
+    return collections.map((collection) =>
       <CollectionTile key={collection.name} collection={collection} />
     );
   }
@@ -31,6 +40,7 @@ export default function Index() {
           <MainMenu />
         </div>
       </Grid>
+      {renderCategories()}
       {renderCollections()}
     </Grid>
   );

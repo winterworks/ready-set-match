@@ -5,14 +5,15 @@ import { Link, useParams } from "react-router-dom";
 import Matcher from "src/components/matcher";
 import { practiceOptions } from "src/helpers/setSorting";
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
-import { collectionAtom } from 'src/data/collectionReducer';
+import { collectionsAtom } from 'src/data/collectionReducer';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { findCollection } from 'src/helpers/findCollection';
 
 export default function Practice() {
   const { collectionId } = useParams();
-  const [getCollection] = useAtom(collectionAtom);
+  const [collections] = useAtom(collectionsAtom);
 
-  const collection = collectionId ? getCollection(collectionId) : undefined;
+  const collection = collectionId ? findCollection(collections, collectionId) : undefined;
   if (!collectionId || !collection) {
     return <>This collection does not exist</>
   }

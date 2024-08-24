@@ -83,8 +83,8 @@ const categoryReducer = (prevState: Data, payload: Payload): Data => {
   }
 }
 
-export const categoryAtom = atom(
-  (get) => (categoryId: string): Category | undefined => get(stateAtom).categories.find(({ name }) => name === categoryId),
+export const categoriesAtom = atom(
+  (get) => get(stateAtom).categories,
   (get, set, action: Payload) => {
     set(stateAtom, categoryReducer(get(stateAtom), action))
   }

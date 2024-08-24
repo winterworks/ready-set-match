@@ -7,7 +7,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAtom } from 'jotai';
-import { collectionAtom, CollectionReducerAction } from 'src/data/collectionReducer';
+import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer';
+import { findCollection } from 'src/helpers/findCollection';
 
 interface Props {
   onClick: () => void
@@ -16,7 +17,7 @@ interface Props {
 export default function CollectionCreate({ onClick }: Props) {
   const [open, setOpen] = React.useState(false);
   const [newCollectionName, setNewCollectionName] = React.useState('');
-  const [getCollection, setCollection] = useAtom(collectionAtom);
+  const [collections, setCollection] = useAtom(collectionsAtom);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -62,7 +63,7 @@ export default function CollectionCreate({ onClick }: Props) {
             value={newCollectionName}
             onChange={(e) => { setNewCollectionName(e.target.value); }}
           />
-          {getCollection(newCollectionName) && <DialogContentText>This name already exists</DialogContentText>}
+          {findCollection(collections, newCollectionName) && <DialogContentText>This name already exists</DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

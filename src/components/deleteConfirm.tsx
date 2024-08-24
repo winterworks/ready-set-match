@@ -5,20 +5,19 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Collection } from 'src/types';
-import { useNavigate } from 'react-router-dom';
-import { collectionAtom, CollectionReducerAction } from 'src/data/collectionReducer';
-import { useAtom } from 'jotai';
 
 interface props {
-  collectionId: string;
-  collection: Collection;
+  title: string;
+  message: string;
+
+  cancelText?: string;
+  confirmText?: string;
+
+  onConfirm: () => void;
 }
 
-export default function CollectionDelete({ collectionId, collection }: props) {
+export default function DeleteConfirm({ title, message, cancelText, confirmText, onConfirm }: props) {
   const [open, setOpen] = React.useState(false);
-  const [, setCollection] = useAtom(collectionAtom);
-  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -27,11 +26,6 @@ export default function CollectionDelete({ collectionId, collection }: props) {
   const handleClose = () => {
     setOpen(false);
   };
-
-  const handleDelete = () => {
-    setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId });
-    navigate("/");
-  }
 
   return (
     <React.Fragment>
@@ -50,16 +44,16 @@ export default function CollectionDelete({ collectionId, collection }: props) {
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {`Delete ${collection.name}`}
+          {title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete <b>{collection.name}</b> and all the sets?
+            {message}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant='contained'>Cancel</Button>
-          <Button onClick={handleDelete} color='error' >Agree</Button>
+          <Button onClick={handleClose} variant='contained'>{cancelText ?? 'Cancel'}</Button>
+          <Button onClick={onConfirm} color='error' >{confirmText ?? 'Delete'}</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
