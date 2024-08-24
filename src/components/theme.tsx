@@ -3,7 +3,7 @@ import { PaletteMode, ThemeProvider } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { createTheme } from '@mui/material/styles';
 
-function getTheme(mode: PaletteMode) {
+const getTheme = (mode: PaletteMode) => {
   return createTheme({
     palette: {
       mode

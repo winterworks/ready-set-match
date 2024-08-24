@@ -61,7 +61,7 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
   }, [correctSets, selectedLeft, selectedRight]);
 
 
-  function initSets() {
+  const initSets = () => {
     // Sort by the selected practice option (sort type)
     const sortedSets = practiceOption.sort(collection.sets)
 
@@ -73,13 +73,13 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
     SetRightSets(shuffle(practiceSets));
   }
 
-  function resetAll() {
+  const resetAll = () => {
     setCorrectSets([]);
     setMistakes({});
     initSets();
   }
 
-  function resetSets() {
+  const resetSets = () => {
     setCorrectSets([]);
     setMistakes({});
 
@@ -87,7 +87,7 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
     SetRightSets(shuffle(rightSets));
   }
 
-  function finishedPractice() {
+  const finishedPractice = () => {
     leftSets.forEach(set => {
       const newMistakes = mistakes[set.id] || 0;
       const previousMistakes = set.mistakes ?? 0;
@@ -100,19 +100,19 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
     });
   }
 
-  function leftClicked(id: string) {
+  const leftClicked = (id: string) => {
     itemClicked(id, selectedLeft, setSelectedLeft);
   }
 
-  function rightClicked(id: string) {
+  const rightClicked = (id: string) =>{
     itemClicked(id, selectedRight, setSelectedRight);
   }
 
-  function itemClicked(
+  const itemClicked = (
     id: string,
     currentValue: string | undefined,
     updateCurrent: Dispatch<SetStateAction<string | undefined>>
-  ) {
+  ) =>{
     if (id === currentValue) {
       updateCurrent(undefined); // Unselect item
     } else {
@@ -120,7 +120,7 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
     }
   }
 
-  function renderItems() {
+  const renderItems = () => {
     const items: ReactNode[] = [];
 
     for (let index = 0; index < leftSets.length; index++) {

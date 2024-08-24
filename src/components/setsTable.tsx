@@ -33,7 +33,7 @@ interface EditToolbarProps {
 
 const NEW_ITEM_ID = 'newItem';
 
-function EditToolbar(props: EditToolbarProps) {
+const EditToolbar = (props: EditToolbarProps) => {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {

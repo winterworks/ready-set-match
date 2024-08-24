@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
 import { collectionsAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
@@ -12,6 +12,7 @@ import CollectionsGird from 'src/components/collectionGird';
 export default function CollectionDetail() {
   const { collectionId } = useParams();
   const [collections, setCollection] = useAtom(collectionsAtom);
+  const navigate = useNavigate();
 
   const subCollections = collections.filter(coll => coll.parentCollectionId === collectionId);
   const collection = collectionId ? findCollection(collections, collectionId) : undefined;
@@ -24,9 +25,23 @@ export default function CollectionDetail() {
       <Typography component="h2" variant="h4" gutterBottom>
         {collection.name}
       </Typography>
+      {subCollections.length > 0 && <>
+        <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
+          Sub collections
+        </Typography>
+        <CollectionsGird collections={subCollections} displayWithParent />
+      </>}
+      <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
+        Sets
+      </Typography>
+      <SetsTable collectionId={collectionId} sets={collection.sets}/>
+      <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
+        Details
+      </Typography>
       <DeleteConfirm
         onConfirm={() => {
           setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId });
+          navigate('/');
         }}
         title={`Delete ${collection.name}`}
         message={`Are you sure you want to delete ${collection.name}?`}
@@ -34,8 +49,11 @@ export default function CollectionDetail() {
       <Box
         component="form"
         sx={{
-          '& .MuiTextField-root': { m: 1, width: '25ch' },
+          '& .MuiFormControl-root': { marginBottom: 4, width: '50ch' },
           '& .MuiTextField-root.number-field': { width: '100px' },
+          marginBottom: 20,
+          display: 'flex',
+          flexDirection: 'column'
         }}
         noValidate
         autoComplete="off"
@@ -51,7 +69,7 @@ export default function CollectionDetail() {
               collection: { ...collection, name: e.target.value }
             });
           }}/>
-        <FormControl variant="standard" sx={{ marginRight: 1, width: 100, }}>
+        <FormControl variant="standard">
           <InputLabel id="collection-icon">Icon</InputLabel>
           <Select
             labelId="collection-icon"
@@ -72,7 +90,7 @@ export default function CollectionDetail() {
             ))}
           </Select>
         </FormControl>
-        <FormControl variant="standard" sx={{ marginRight: 1, width: 150, marginTop: 1 }}>
+        <FormControl variant="standard">
           <InputLabel id="parentCollectionId">Parent collection</InputLabel>
           <Select
             labelId="parentCollectionId"
@@ -122,7 +140,6 @@ export default function CollectionDetail() {
             />
           }
           label="Value A large"
-          labelPlacement="start"
         />
         <FormControlLabel
           control={
@@ -137,16 +154,7 @@ export default function CollectionDetail() {
             />
           }
           label="Value B large"
-          labelPlacement="start"
         />
-        <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
-          Sub collections
-        </Typography>
-        <CollectionsGird collections={subCollections} displayWithParent />
-        <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
-          Sets
-        </Typography>
-        <SetsTable collectionId={collectionId} sets={collection.sets}/>
       </Box>
     </>
   );

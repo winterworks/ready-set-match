@@ -10,7 +10,7 @@ export const setSizeAtom = atomWithStorage(setSizeKey, setSizeDefault, undefined
 export default function PracticeSetSizeSelector() {
   const [setSize, setSetSize] = useAtom(setSizeAtom);
 
-  function updatedSetSize (newSize: number) {
+  const updatedSetSize = (newSize: number) => {
     if (newSize > 0) {
       setSetSize(newSize);
     }

@@ -9,14 +9,14 @@ export default function DataDetail() {
   const [state, setState] = useAtom(stateAtom);
   const [dataImportValue, setDataImportValue] = useState<string>();
 
-  function onCopy() {
+  const onCopy = () => {
     const type = "text/plain";
     const blob = new Blob([JSON.stringify(state)], { type });
     const data = [new ClipboardItem({ [type]: blob })];
     void navigator.clipboard.write(data);
   }
 
-  function onLoad() {
+  const onLoad = () => {
     if (!dataImportValue) {
       return;
     }

@@ -64,7 +64,7 @@ const collectionDelete = (prevState: Data, payload: CollectionDeletePayload) => 
   deleteCollection(payload.collectionId);
   return {
     ...prevState,
-    collections: prevState.collections.filter(({ name }) => name !== payload.collectionId)
+    collections: prevState.collections.filter(({ id }) => id !== payload.collectionId)
   };
 }
 

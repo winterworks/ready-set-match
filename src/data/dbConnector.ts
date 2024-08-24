@@ -67,7 +67,7 @@ function storeToIndexedDB(objectStoreId: OBJECT_STORES, object: unknown) {
 
   const request = store.put(object);
 
-  request.onerror = function() {
+  request.onerror = () => {
     console.error(new Error('Could not store the collection in the IndexedDB'));
   };
 }
@@ -81,7 +81,7 @@ function removeFromIndexedDB(objectStoreId: OBJECT_STORES, id: string) {
 
   const request = store.delete(id);
 
-  request.onerror = function() {
+  request.onerror = () => {
     console.error(new Error('Could not remove collection from the IndexedDB'));
   };
 }
