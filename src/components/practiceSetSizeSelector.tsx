@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControl, TextField } from '@mui/material'
+import { TextField } from '@mui/material'
 import { useAtom } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
 
@@ -17,19 +17,17 @@ export default function PracticeSetSizeSelector() {
   }
 
   return (
-    <FormControl sx={{ marginRight: 1, width: 200 }}>
-      <TextField
-        id="set-size"
-        label="Amount of sets"
-        type="number"
-        InputLabelProps={{
-          shrink: true,
-        }}
-        sx={{ width: 120 }}
-        value={setSize}
-        variant="filled"
-        onChange={(e) => { updatedSetSize(Number(e.target.value)) }}
-      />
-    </FormControl>
+    <TextField
+      id="set-size"
+      label="Amount of sets"
+      type="number"
+      InputLabelProps={{
+        shrink: true,
+      }}
+      sx={{ marginRight: 1, width: 120 }}
+      value={setSize}
+      variant="filled"
+      onChange={(e) => { updatedSetSize(Number(e.target.value)) }}
+    />
   )
 }

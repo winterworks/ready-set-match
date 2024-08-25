@@ -1,11 +1,12 @@
 import React from 'react'
-import { Grid, Typography } from '@mui/material'
+import { Grid } from '@mui/material'
 import { useAtom } from 'jotai'
 import { Link, useParams } from 'react-router-dom'
 import Matcher from 'src/components/matcher'
 import { collectionsAtom } from 'src/data/collectionReducer'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { findCollection } from 'src/helpers/collectionHelpers'
+import { HeaderMenu } from 'src/components/headerMenu'
 
 export default function Practice() {
   const { collectionId } = useParams()
@@ -18,12 +19,9 @@ export default function Practice() {
 
   return React.useMemo(() => (
     <>
-      <Grid container item xs={12} justifyContent="space-between" sx={{ marginBottom: 4 }}>
-        <Typography component="h3" variant="h5" align="center">
-          {collection.name}
-        </Typography>
-        {collection.link
-        && (
+      <Grid container item xs={12} justifyContent="space-between">
+        <HeaderMenu currentPageName="Practice" menuDisabled />
+        {collection.link && (
           <Link
             to={collection.link}
             target="_blank"

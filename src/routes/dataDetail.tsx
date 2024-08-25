@@ -4,6 +4,7 @@ import { stateAtom } from 'src/data/state'
 import { Button, Grid, TextareaAutosize, Typography } from '@mui/material'
 import { Data } from 'src/types'
 import { persistFullState } from 'src/data/dbConnector'
+import { HeaderMenu } from 'src/components/headerMenu'
 
 export default function DataDetail() {
   const [state, setState] = useAtom(stateAtom)
@@ -31,6 +32,7 @@ export default function DataDetail() {
       rowSpacing={4}
       columnSpacing={4}
     >
+      <HeaderMenu />
       <Grid item xs={12}>
         <Typography component="h3" variant="h5" gutterBottom>
           Export

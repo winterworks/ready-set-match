@@ -162,7 +162,7 @@ export default function Matcher({ collection }: Props) {
       const rightId = rightSets[index].id
       items.push(
         <Grid key={index} container item columnSpacing={4} xs={12}>
-          <Grid container item xs={6} justifyContent="center">
+          <Grid item xs={6} justifyContent="center">
             <MatcherItem
               id={leftId}
               text={leftSets[index].a}
@@ -174,7 +174,7 @@ export default function Matcher({ collection }: Props) {
               onClick={leftClicked}
             />
           </Grid>
-          <Grid container item xs={6}>
+          <Grid item xs={6}>
             <MatcherItem
               id={rightId}
               text={rightSets[index].b}

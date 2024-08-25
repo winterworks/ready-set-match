@@ -7,7 +7,11 @@ import { Link } from 'react-router-dom'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
 import MenuIcon from '@mui/icons-material/Menu'
 
-export default function MainMenu() {
+interface Props {
+  disabled?: boolean
+}
+
+export default function MainMenu({ disabled }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const open = Boolean(anchorEl)
 
@@ -24,11 +28,14 @@ export default function MainMenu() {
       <Button
         id="menu-button"
         variant="outlined"
+        size="large"
         endIcon={<MenuIcon />}
         onClick={handleClick}
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        sx={{ height: '100%' }}
+        disabled={disabled}
       >
         Menu
       </Button>

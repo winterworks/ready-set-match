@@ -3,23 +3,21 @@ import { Grid } from '@mui/material'
 import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector'
 import PracticeOptionSelector from 'src/components/practiceTypeSelector'
 import MainMenu from 'src/components/mainMenu'
+import { BreadcrumbsPath } from 'src/components/breadCrumbs'
 
-export function HeaderMenu() {
+interface Props {
+  currentPageName?: string
+  menuDisabled?: boolean
+}
+
+export function HeaderMenu({ currentPageName, menuDisabled }: Props) {
   return (
-    <Grid
-      container
-      rowSpacing={4}
-      columnSpacing={4}
-      marginBottom={4}
-    >
-      <Grid container item xs={12} md={7} direction="row" rowGap={1}>
+    <Grid container item xs={12} marginBottom={4} flexDirection="row" display="flex" justifyContent="space-between" alignContent="center">
+      <BreadcrumbsPath currentPageName={currentPageName} />
+      <Grid item display="flex">
         <PracticeOptionSelector />
         <PracticeSetSizeSelector />
-      </Grid>
-      <Grid container item xs={12} md={5} justifyContent="flex-end">
-        <div>
-          <MainMenu />
-        </div>
+        <MainMenu disabled={menuDisabled} />
       </Grid>
     </Grid>
   )

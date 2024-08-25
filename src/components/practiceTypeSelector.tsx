@@ -15,13 +15,14 @@ export default function PracticeOptionSelector() {
   }
 
   return (
-    <FormControl variant="filled" sx={{ marginRight: 1, width: 200 }}>
+    <FormControl variant="filled">
       <InputLabel id="practice-option-select">Set selection</InputLabel>
       <Select
         labelId="practice-option-select"
         id="practice-option-select"
         value={practiceType}
         label="Set selection"
+        sx={{ marginRight: 1, width: 200 }}
         onChange={handleChange}
       >
         {practiceOptions.map(({ id, text, disabled }) => (
