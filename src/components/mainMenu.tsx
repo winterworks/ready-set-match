@@ -40,6 +40,7 @@ export default function MainMenu() {
         MenuListProps={{
           'aria-labelledby': 'menu-button',
         }}
+        disableScrollLock={true}
       >
         <CollectionCreate onClick={handleClose} />
         <MenuItem onClick={handleClose}>

@@ -8,6 +8,7 @@ import SetsTable from 'src/components/setsTable';
 import { findCollection } from 'src/helpers/findCollection';
 import DeleteConfirm from 'src/components/deleteConfirm';
 import CollectionsGird from 'src/components/collectionGird';
+import { HeaderMenu } from 'src/components/headerMenu';
 
 export default function CollectionDetail() {
   const { collectionId } = useParams();
@@ -22,6 +23,7 @@ export default function CollectionDetail() {
 
   return (
     <>
+      <HeaderMenu />
       <Typography component="h2" variant="h4" gutterBottom>
         {collection.name}
       </Typography>
