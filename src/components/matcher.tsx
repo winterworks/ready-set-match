@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Button, Grid, Snackbar } from '@mui/material'
+import { Alert, Box, Button, CircularProgress, Grid, Snackbar } from '@mui/material'
 import { Dispatch, ReactNode, SetStateAction, useEffect, useState } from 'react'
 import { Collection, Set } from 'src/types'
 import { useAtom } from 'jotai'
@@ -35,6 +35,8 @@ export default function Matcher({ collection }: Props) {
   const [correctSets, setCorrectSets] = useState<string[]>([])
   const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = React.useState(false)
   const [mistakes, setMistakes] = useState<Record<string, number>>({})
+
+  const [isLoading, setLoading] = useState<boolean>(true)
 
   // Practice options
   const [setSizeOption] = useAtom(setSizeAtom)
@@ -100,6 +102,7 @@ export default function Matcher({ collection }: Props) {
     // Split the sets in 2 shuffled collections
     setLeftSets(shuffle(practiceSets))
     SetRightSets(shuffle(practiceSets))
+    setLoading(false)
   }
 
   const resetAll = () => {
@@ -191,6 +194,16 @@ export default function Matcher({ collection }: Props) {
     }
 
     return items
+  }
+
+  if (isLoading) {
+    return (
+      <Grid container xs={12} justifyContent="center">
+        <Box sx={{ display: 'flex' }}>
+          <CircularProgress />
+        </Box>
+      </Grid>
+    )
   }
 
   return (
