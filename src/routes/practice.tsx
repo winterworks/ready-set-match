@@ -7,7 +7,7 @@ import { practiceOptions } from "src/helpers/setSorting";
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
 import { collectionsAtom } from 'src/data/collectionReducer';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { findCollection } from 'src/helpers/findCollection';
+import { findCollection } from 'src/helpers/collectionHelpers';
 
 export default function Practice() {
   const { collectionId } = useParams();

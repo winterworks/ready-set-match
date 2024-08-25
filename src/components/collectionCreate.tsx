@@ -8,7 +8,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAtom } from 'jotai';
 import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer';
-import { findCollection } from 'src/helpers/findCollection';
+import { findCollection } from 'src/helpers/collectionHelpers';
 import { useParams } from 'react-router-dom';
 
 interface Props {

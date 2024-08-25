@@ -1,7 +1,7 @@
 import { atom } from "jotai";
 import { persistCollection } from "src/data/dbConnector";
 import { stateAtom } from "src/data/state";
-import { findCollection } from "src/helpers/findCollection";
+import { findCollection } from "src/helpers/collectionHelpers";
 import { Collection, Data, Set } from "src/types";
 
 export enum SetReducerAction {

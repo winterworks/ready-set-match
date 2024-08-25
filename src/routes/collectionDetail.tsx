@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Icon, { ENABLED_ICON } from "src/components/icon";
 import { collectionsAtom, CollectionReducerAction} from 'src/data/collectionReducer';
 import SetsTable from 'src/components/setsTable';
-import { findCollection } from 'src/helpers/findCollection';
+import { findCollection, findSubCollections } from 'src/helpers/collectionHelpers';
 import DeleteConfirm from 'src/components/deleteConfirm';
 import CollectionsGird from 'src/components/collectionGird';
 import { HeaderMenu } from 'src/components/headerMenu';
@@ -15,11 +15,11 @@ export default function CollectionDetail() {
   const [collections, setCollection] = useAtom(collectionsAtom);
   const navigate = useNavigate();
 
-  const subCollections = collections.filter(coll => coll.parentCollectionId === collectionId);
   const collection = collectionId ? findCollection(collections, collectionId) : undefined;
   if (!collectionId || !collection) {
     return <>This collection does not exist</>
   }
+  const subCollections = findSubCollections(collections, collectionId);
 
   return (
     <>
