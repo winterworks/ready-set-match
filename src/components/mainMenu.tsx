@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem'
 import CollectionCreate from 'src/components/collectionCreate'
 import { Link } from 'react-router-dom'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
+import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
 
 interface Props {
@@ -13,13 +14,14 @@ interface Props {
 
 export default function MainMenu({ disabled }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [createCollectionOpen, setCreateCollectionOpen] = React.useState(false)
   const open = Boolean(anchorEl)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
-  const handleClose = () => {
+  const closeMenu = () => {
     setAnchorEl(null)
   }
 
@@ -39,18 +41,30 @@ export default function MainMenu({ disabled }: Props) {
       >
         Menu
       </Button>
+      <CollectionCreate
+        isOpen={createCollectionOpen}
+        closeDialog={() => { setCreateCollectionOpen(false) }}
+      />
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={closeMenu}
         MenuListProps={{
           'aria-labelledby': 'menu-button',
         }}
         disableScrollLock={true}
       >
-        <CollectionCreate onClick={handleClose} />
-        <MenuItem onClick={handleClose}>
+        <MenuItem
+          onClick={() => {
+            closeMenu()
+            setCreateCollectionOpen(true)
+          }}
+        >
+          <AddIcon />
+          Add Collection
+        </MenuItem>
+        <MenuItem onClick={closeMenu}>
           <Link to="/data">
             <ImportExportIcon />
             Import / Export
