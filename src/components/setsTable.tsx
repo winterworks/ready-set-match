@@ -25,6 +25,7 @@ import { useAtom } from 'jotai'
 import { v4 as uuidv4 } from 'uuid'
 
 interface EditToolbarProps {
+  addDisabled?: boolean
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
@@ -46,7 +47,7 @@ const EditToolbar = (props: EditToolbarProps) => {
 
   return (
     <GridToolbarContainer>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick} disabled={props.addDisabled}>
         Add record
       </Button>
     </GridToolbarContainer>
@@ -210,7 +211,7 @@ export default function SetsTable({ collectionId, sets }: TableProps) {
           toolbar: EditToolbar as GridSlots['toolbar'],
         }}
         slotProps={{
-          toolbar: { setRows, setRowModesModel },
+          toolbar: { setRows, setRowModesModel, addDisabled: Object.keys(rowModesModel).length > 0 },
         }}
       />
     </Box>
