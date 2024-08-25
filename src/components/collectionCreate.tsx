@@ -9,12 +9,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useAtom } from 'jotai';
 import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer';
 import { findCollection } from 'src/helpers/findCollection';
+import { useParams } from 'react-router-dom';
 
 interface Props {
   onClick: () => void
 }
 
 export default function CollectionCreate({ onClick }: Props) {
+  const { collectionId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [newCollectionName, setNewCollectionName] = React.useState('');
   const [collections, setCollection] = useAtom(collectionsAtom);
@@ -43,7 +45,8 @@ export default function CollectionCreate({ onClick }: Props) {
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
             const newCollection = {
-              name: newCollectionName
+              name: newCollectionName,
+              parentCollectionId: collectionId
             }
             setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
             handleClose();
