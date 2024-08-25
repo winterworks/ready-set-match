@@ -30,7 +30,7 @@ export function MatcherItem({ id, text, isSelected, isCorrect, selectedLeft, sel
       variant={variant}
       color={color}
       fullWidth
-      sx={{ ml: 6, textTransform: 'none', marginLeft: 0 }}
+      sx={{ ml: 6, textTransform: 'none', marginLeft: 0, height: 50 }}
     >
       {isLarge
         ? <span style={{ fontSize: 35, lineHeight: 1 }}>{text}</span>

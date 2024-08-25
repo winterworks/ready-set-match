@@ -24,6 +24,7 @@ export default function PracticeOptionSelector() {
         label="Set selection"
         sx={{ marginRight: 1, width: 200 }}
         onChange={handleChange}
+        MenuProps={{ disableScrollLock: true }}
       >
         {practiceOptions.map(({ id, text, disabled }) => (
           <MenuItem key={id} value={id} disabled={disabled}>

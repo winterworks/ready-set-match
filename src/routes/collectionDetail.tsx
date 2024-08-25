@@ -28,12 +28,7 @@ export default function CollectionDetail() {
         {collection.name}
       </Typography>
       {subCollections.length > 0 && (
-        <>
-          <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
-            Sub collections
-          </Typography>
-          <CollectionsGird collections={subCollections} displayWithParent />
-        </>
+        <CollectionsGird collections={subCollections} displayWithParent />
       )}
       <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
         Sets
@@ -81,6 +76,7 @@ export default function CollectionDetail() {
             id="collection-icon"
             value={collection.icon}
             label="Icon"
+            MenuProps={{ disableScrollLock: true }}
             onChange={(e) => {
               setCollection({
                 action: CollectionReducerAction.UPDATE_COLLECTION,
@@ -102,6 +98,7 @@ export default function CollectionDetail() {
             id="parentCollectionId"
             value={collection.parentCollectionId || ''}
             label="parentCollectionId"
+            MenuProps={{ disableScrollLock: true }}
             onChange={(e) => {
               const parentCollectionId = e.target.value != 'default' ? e.target.value : undefined
               setCollection({
