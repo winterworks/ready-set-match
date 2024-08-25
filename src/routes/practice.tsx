@@ -34,10 +34,7 @@ export default function Practice() {
           </Link>
         )}
       </Grid>
-      <Matcher
-        collectionId={collectionId}
-        collection={collection}
-      />
+      <Matcher collection={collection} />
     </>
   ), [])
 }

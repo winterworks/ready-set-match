@@ -44,9 +44,9 @@ function sortRandom(sets: Set[]) {
   const randomSets = sets.slice(0)
   for (let i = randomSets.length - 1; i > 0; i--) {
     const randomIndex = Math.floor(Math.random() * (i + 1))
-    const set = sets[i]
-    sets[i] = sets[randomIndex]
-    sets[randomIndex] = set
+    const set = randomSets[i]
+    randomSets[i] = randomSets[randomIndex]
+    randomSets[randomIndex] = set
   }
   return randomSets
 }

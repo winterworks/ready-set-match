@@ -10,21 +10,31 @@ import { setSizeAtom } from 'src/components/practiceSetSizeSelector'
 import { practiceOptions } from 'src/helpers/setSorting'
 import { MatcherItem } from 'src/components/matcherItem'
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector'
+import { findSubCollections } from 'src/helpers/collectionHelpers'
+import { collectionsAtom } from 'src/data/collectionReducer'
 
 interface Props {
-  collectionId: string
   collection: Collection
 }
 
-export default function Matcher({ collectionId, collection }: Props) {
+interface PracticeSet extends Set {
+  collectionId?: string
+}
+
+export default function Matcher({ collection }: Props) {
+  const [, setSet] = useAtom(setsAtom)
+  const [collections] = useAtom(collectionsAtom)
+
+  // Component states
+  const [leftSets, setLeftSets] = useState<PracticeSet[]>([])
+  const [rightSets, SetRightSets] = useState<PracticeSet[]>([])
+
   const [selectedLeft, setSelectedLeft] = useState<string>()
   const [selectedRight, setSelectedRight] = useState<string>()
+
   const [correctSets, setCorrectSets] = useState<string[]>([])
-  const [mistakes, setMistakes] = useState<Record<string, number>>({})
-  const [, setSet] = useAtom(setsAtom)
-  const [leftSets, setLeftSets] = useState<Set[]>([])
-  const [rightSets, SetRightSets] = useState<Set[]>([])
   const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = React.useState(false)
+  const [mistakes, setMistakes] = useState<Record<string, number>>({})
 
   // Practice options
   const [setSizeOption] = useAtom(setSizeAtom)
@@ -71,12 +81,21 @@ export default function Matcher({ collectionId, collection }: Props) {
 
   const backUrl = collection.parentCollectionId ? `/collection/${collection.parentCollectionId}` : '/'
 
+  const getPracticeSets = (collection: Collection): PracticeSet[] => {
+    return collection.sets.map(set => ({ ...set, collectionId: collection.id }))
+  }
+
   const initSets = () => {
+    const subCollections = findSubCollections(collections, collection.id)
+    const subSets = subCollections.reduce<PracticeSet[]>((acc, subCollection) => [...acc, ...getPracticeSets(subCollection)], [])
+
+    const sets: PracticeSet[] = [...getPracticeSets(collection), ...subSets]
+
     // Sort by the selected practice option (sort type)
-    const sortedSets = practiceOption.sort(collection.sets)
+    const sortedSets = practiceOption.sort(sets)
 
     // Select only a number of these least practiced sets
-    const practiceSets = sortedSets.slice(0, setSizeOption)
+    const practiceSets = sortedSets.slice(0, setSizeOption) as PracticeSet[]
 
     // Split the sets in 2 shuffled collections
     setLeftSets(shuffle(practiceSets))
@@ -106,6 +125,10 @@ export default function Matcher({ collectionId, collection }: Props) {
         practiced: set.practiced ? set.practiced + 1 : 1,
         mistakes: previousMistakes + newMistakes,
       }
+
+      const collectionId = updatedSet.collectionId || collection.id
+      delete updatedSet.collectionId
+
       setSet({ action: SetReducerAction.UPDATE_SET, collectionId, set: updatedSet })
     })
   }
