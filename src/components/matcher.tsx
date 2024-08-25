@@ -7,25 +7,33 @@ import { setsAtom, SetReducerAction } from 'src/data/setReducer';
 import { Link } from 'react-router-dom';
 import { shuffle } from "src/helpers/shuffle";
 import { setSizeAtom } from 'src/components/practiceSetSizeSelector';
-import { PracticeElement } from 'src/helpers/setSorting';
+import { practiceOptions } from 'src/helpers/setSorting';
 import { MatcherItem } from 'src/components/matcherItem';
+import { practiceTypeAtom } from 'src/components/practiceTypeSelector';
 
 interface Props {
   collectionId: string;
   collection: Collection;
-  practiceOption: PracticeElement;
 }
 
-export default function Matcher({ collectionId, collection, practiceOption }: Props) {
+export default function Matcher({ collectionId, collection }: Props) {
   const [selectedLeft, setSelectedLeft] = useState<string>();
   const [selectedRight, setSelectedRight] = useState<string>();
   const [correctSets, setCorrectSets] = useState<string[]>([]);
   const [mistakes, setMistakes] = useState<Record<string, number>>({});
-  const [setSizeOption] = useAtom(setSizeAtom);
   const [, setSet] = useAtom(setsAtom);
   const [leftSets, setLeftSets] = useState<Set[]>([]);
   const [rightSets, SetRightSets] = useState<Set[]>([]);
   const [isSuccessSnackbarOpen, setIsSuccessSnackbarOpen] = React.useState(false);
+
+  // Practice options
+  const [setSizeOption] = useAtom(setSizeAtom);
+  const [selectedOption] = useAtom(practiceTypeAtom);
+  const practiceOption = practiceOptions.find(({ id }) => id === selectedOption);
+
+  if (!practiceOption) {
+    return <>Practice option is not defined</>;
+  }
 
   useEffect(() => {
     initSets();
@@ -60,6 +68,7 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
     }
   }, [correctSets, selectedLeft, selectedRight]);
 
+  const backUrl = collection.parentCollectionId ? `/collection/${collection.parentCollectionId}` : '/';
 
   const initSets = () => {
     // Sort by the selected practice option (sort type)
@@ -183,7 +192,7 @@ export default function Matcher({ collectionId, collection, practiceOption }: Pr
         </Alert>
       </Snackbar>
       <Grid container item xs={12} justifyContent="space-between">
-        <Link to="/">
+        <Link to={backUrl}>
           <Button size="large" variant="contained">
             Back
           </Button>
