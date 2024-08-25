@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@emotion/react": "latest",
-    "@emotion/styled": "latest",
     "@fontsource/roboto": "^5.0.13",
     "@mui/icons-material": "next",
     "@mui/material": "next",
@@ -25,6 +24,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",
+    "@stylistic/eslint-plugin": "^2.6.4",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/uuid": "^10.0.0",

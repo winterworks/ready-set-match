@@ -1,24 +1,24 @@
 export interface Data {
-    collections: Collection[];
+  collections: Collection[]
 }
 
 export interface Collection {
-    id: string;
-    name: string;
-    sets: Set[];
+  id: string
+  name: string
+  sets: Set[]
 
-    parentCollectionId?: string;
-    link?: string;
-    icon?: string;
-    aIsLarge?: boolean;
-    bIsLarge?: boolean;
+  parentCollectionId?: string
+  link?: string
+  icon?: string
+  aIsLarge?: boolean
+  bIsLarge?: boolean
 }
 
 export interface Set {
-    id: string;
-    a: string;
-    b: string;
+  id: string
+  a: string
+  b: string
 
-    practiced?: number;
-    mistakes?: number;
+  practiced?: number
+  mistakes?: number
 }

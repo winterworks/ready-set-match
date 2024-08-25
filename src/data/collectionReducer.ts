@@ -1,89 +1,89 @@
-import { atom } from "jotai";
-import { stateAtom } from "src/data/state";
-import { deleteCollection, persistCollection } from "src/data/dbConnector";
-import { Data, Collection } from "src/types";
-import { v4 as uuidv4 } from 'uuid';
+import { atom } from 'jotai'
+import { stateAtom } from 'src/data/state'
+import { deleteCollection, persistCollection } from 'src/data/dbConnector'
+import { Data, Collection } from 'src/types'
+import { v4 as uuidv4 } from 'uuid'
 
 export enum CollectionReducerAction {
-  CREATE_COLLECTION = "CREATE_COLLECTION",
-  UPDATE_COLLECTION = "UPDATE_COLLECTION",
-  DELETE_COLLECTION = "DELETE_COLLECTION",
+  CREATE_COLLECTION = 'CREATE_COLLECTION',
+  UPDATE_COLLECTION = 'UPDATE_COLLECTION',
+  DELETE_COLLECTION = 'DELETE_COLLECTION',
 }
 
 interface PayloadBase {
-  action: CollectionReducerAction;
+  action: CollectionReducerAction
 }
 
 interface CollectionCreatePayload extends PayloadBase {
-  action: CollectionReducerAction.CREATE_COLLECTION;
-  collection: Pick<Collection, "name" | "icon">;
+  action: CollectionReducerAction.CREATE_COLLECTION
+  collection: Pick<Collection, 'name' | 'icon'>
 }
 
-interface CollectionUpdatePayload extends PayloadBase  {
-  action: CollectionReducerAction.UPDATE_COLLECTION;
-  collection: Collection;
+interface CollectionUpdatePayload extends PayloadBase {
+  action: CollectionReducerAction.UPDATE_COLLECTION
+  collection: Collection
 }
 
-interface CollectionDeletePayload extends PayloadBase  {
-  action: CollectionReducerAction.DELETE_COLLECTION;
-  collectionId: string;
+interface CollectionDeletePayload extends PayloadBase {
+  action: CollectionReducerAction.DELETE_COLLECTION
+  collectionId: string
 }
 
-type Payload = CollectionCreatePayload | CollectionUpdatePayload | CollectionDeletePayload;
+type Payload = CollectionCreatePayload | CollectionUpdatePayload | CollectionDeletePayload
 
 const collectionCreate = (prevState: Data, payload: CollectionCreatePayload) => {
   const newCollection = {
     id: uuidv4(),
     ...payload.collection,
-    sets: []
+    sets: [],
   }
-  persistCollection(newCollection);
+  persistCollection(newCollection)
   return {
     ...prevState,
     collections: [
       ...prevState.collections,
-      newCollection
-    ]
-  };
+      newCollection,
+    ],
+  }
 }
 
 const collectionUpdate = (prevState: Data, payload: CollectionUpdatePayload) => {
-  persistCollection(payload.collection, payload.collection.id);
+  persistCollection(payload.collection, payload.collection.id)
   return {
     ...prevState,
     collections: prevState.collections.map((collection) => {
       if (collection.id !== payload.collection.id) {
-        return collection;
+        return collection
       }
       return payload.collection
-    })
-  };
+    }),
+  }
 }
 
 const collectionDelete = (prevState: Data, payload: CollectionDeletePayload) => {
-  deleteCollection(payload.collectionId);
+  deleteCollection(payload.collectionId)
   return {
     ...prevState,
-    collections: prevState.collections.filter(({ id }) => id !== payload.collectionId)
-  };
+    collections: prevState.collections.filter(({ id }) => id !== payload.collectionId),
+  }
 }
 
 const collectionReducer = (prevState: Data, payload: Payload): Data => {
   switch (payload.action) {
     case CollectionReducerAction.CREATE_COLLECTION:
-      return collectionCreate(prevState, payload);
+      return collectionCreate(prevState, payload)
     case CollectionReducerAction.UPDATE_COLLECTION:
-      return collectionUpdate(prevState, payload);
+      return collectionUpdate(prevState, payload)
     case CollectionReducerAction.DELETE_COLLECTION:
-      return collectionDelete(prevState, payload);
+      return collectionDelete(prevState, payload)
     default:
-      return prevState;
+      return prevState
   }
 }
 
 export const collectionsAtom = atom(
-  (get) => get(stateAtom).collections,
+  get => get(stateAtom).collections,
   (get, set, action: Payload) => {
     set(stateAtom, collectionReducer(get(stateAtom), action))
-  }
-);
+  },
+)

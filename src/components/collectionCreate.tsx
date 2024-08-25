@@ -1,55 +1,58 @@
-import React from 'react';
-import { Button, DialogContentText, MenuItem } from "@mui/material";
-import { Add } from '@mui/icons-material';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import { useAtom } from 'jotai';
-import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer';
-import { findCollection } from 'src/helpers/collectionHelpers';
-import { useParams } from 'react-router-dom';
+import React from 'react'
+import { Button, DialogContentText, MenuItem } from '@mui/material'
+import { Add } from '@mui/icons-material'
+import TextField from '@mui/material/TextField'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import { useAtom } from 'jotai'
+import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer'
+import { findCollection } from 'src/helpers/collectionHelpers'
+import { useParams } from 'react-router-dom'
 
 interface Props {
   onClick: () => void
 }
 
 export default function CollectionCreate({ onClick }: Props) {
-  const { collectionId } = useParams();
-  const [open, setOpen] = React.useState(false);
-  const [newCollectionName, setNewCollectionName] = React.useState('');
-  const [collections, setCollection] = useAtom(collectionsAtom);
+  const { collectionId } = useParams()
+  const [open, setOpen] = React.useState(false)
+  const [newCollectionName, setNewCollectionName] = React.useState('')
+  const [collections, setCollection] = useAtom(collectionsAtom)
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-    onClick();
-  };
+    setOpen(false)
+    onClick()
+  }
 
   const onClickMenu = () => {
-    handleClickOpen();
+    handleClickOpen()
   }
 
   return (
     <React.Fragment>
-      <MenuItem onClick={onClickMenu}><Add />Add Collection</MenuItem>
+      <MenuItem onClick={onClickMenu}>
+        <Add />
+        Add Collection
+      </MenuItem>
       <Dialog
         open={open}
         onClose={handleClose}
         PaperProps={{
           component: 'form',
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
+            event.preventDefault()
             const newCollection = {
               name: newCollectionName,
-              parentCollectionId: collectionId
+              parentCollectionId: collectionId,
             }
             setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
-            handleClose();
+            handleClose()
           },
         }}
       >
@@ -64,7 +67,7 @@ export default function CollectionCreate({ onClick }: Props) {
             fullWidth
             variant="standard"
             value={newCollectionName}
-            onChange={(e) => { setNewCollectionName(e.target.value); }}
+            onChange={(e) => { setNewCollectionName(e.target.value) }}
           />
           {findCollection(collections, newCollectionName) && <DialogContentText>This name already exists</DialogContentText>}
         </DialogContent>
@@ -74,5 +77,5 @@ export default function CollectionCreate({ onClick }: Props) {
         </DialogActions>
       </Dialog>
     </React.Fragment>
-  );
+  )
 }

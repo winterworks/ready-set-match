@@ -1,8 +1,8 @@
-import React from 'react';
-import { Grid } from "@mui/material";
-import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector';
-import PracticeOptionSelector from 'src/components/practiceTypeSelector';
-import MainMenu from 'src/components/mainMenu';
+import React from 'react'
+import { Grid } from '@mui/material'
+import PracticeSetSizeSelector from 'src/components/practiceSetSizeSelector'
+import PracticeOptionSelector from 'src/components/practiceTypeSelector'
+import MainMenu from 'src/components/mainMenu'
 
 export function HeaderMenu() {
   return (
@@ -22,5 +22,5 @@ export function HeaderMenu() {
         </div>
       </Grid>
     </Grid>
-  );
+  )
 }

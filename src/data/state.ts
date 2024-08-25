@@ -1,20 +1,21 @@
-import { Data } from "src/types";
-import { atom } from "jotai";
-import { getAllCollections, initDB, persistFullState } from 'src/data/dbConnector';
-import { data } from "src/data/data";
+import { Data } from 'src/types'
+import { atom } from 'jotai'
+import { getAllCollections, initDB, persistFullState } from 'src/data/dbConnector'
+import { data } from 'src/data/data'
 
-await initDB();
+await initDB()
 
 const [collections] = await Promise.all([
-  getAllCollections()
-]);
+  getAllCollections(),
+])
 
 let initialState: Data
 if (collections.length) {
-  initialState = { collections };
-} else {
-  initialState = data;
-  persistFullState(initialState);
+  initialState = { collections }
+}
+else {
+  initialState = data
+  persistFullState(initialState)
 }
 
-export const stateAtom = atom<Data>(initialState);
+export const stateAtom = atom<Data>(initialState)

@@ -1,12 +1,12 @@
-import React from 'react';
-import { Grid } from "@mui/material";
-import { Collection } from 'src/types';
-import CollectionTile from 'src/components/collectionTile';
+import React from 'react'
+import { Grid } from '@mui/material'
+import { Collection } from 'src/types'
+import CollectionTile from 'src/components/collectionTile'
 
 interface Props {
-  collections: Collection[];
+  collections: Collection[]
 
-  displayWithParent?: boolean;
+  displayWithParent?: boolean
 }
 
 export default function CollectionsGird({ collections, displayWithParent }: Props) {
@@ -18,10 +18,10 @@ export default function CollectionsGird({ collections, displayWithParent }: Prop
     >
       {collections.map((collection) => {
         if (!displayWithParent && collection.parentCollectionId) {
-          return null;
+          return null
         }
         return <CollectionTile key={collection.id} collection={collection} />
       })}
     </Grid>
-  );
+  )
 }

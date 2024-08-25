@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route, Routes } from "react-router-dom";
-import Index from 'src/routes';
-import CollectionDetail from "src/routes/collectionDetail";
-import DataDetail from 'src/routes/dataDetail';
-import Practice from 'src/routes/practice';
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Index from 'src/routes'
+import CollectionDetail from 'src/routes/collectionDetail'
+import DataDetail from 'src/routes/dataDetail'
+import Practice from 'src/routes/practice'
 
 // TODO define the routes and paths together
 export function AppRouter() {
@@ -14,5 +14,5 @@ export function AppRouter() {
       <Route path="/collection/:collectionId" element={<CollectionDetail />} />
       <Route path="/data" element={<DataDetail />} />
     </Routes>
-  );
+  )
 }

@@ -1,38 +1,38 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
 
 interface props {
-  title: string;
-  message: string;
+  title: string
+  message: string
 
-  cancelText?: string;
-  confirmText?: string;
+  cancelText?: string
+  confirmText?: string
 
-  onConfirm: () => void;
+  onConfirm: () => void
 }
 
 export default function DeleteConfirm({ title, message, cancelText, confirmText, onConfirm }: props) {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <React.Fragment>
       <Button
-        color='error'
-        variant='outlined'
-        sx={{ float: "right" }}
+        color="error"
+        variant="outlined"
+        sx={{ float: 'right' }}
         onClick={handleClickOpen}
       >
         Delete
@@ -52,10 +52,10 @@ export default function DeleteConfirm({ title, message, cancelText, confirmText,
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant='contained'>{cancelText ?? 'Cancel'}</Button>
-          <Button onClick={onConfirm} color='error' >{confirmText ?? 'Delete'}</Button>
+          <Button onClick={handleClose} variant="contained">{cancelText ?? 'Cancel'}</Button>
+          <Button onClick={onConfirm} color="error">{confirmText ?? 'Delete'}</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
-  );
+  )
 }

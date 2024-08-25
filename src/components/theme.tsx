@@ -1,24 +1,24 @@
-import React from 'react';
-import { PaletteMode, ThemeProvider } from "@mui/material";
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { createTheme } from '@mui/material/styles';
+import React from 'react'
+import { PaletteMode, ThemeProvider } from '@mui/material'
+import useMediaQuery from '@mui/material/useMediaQuery'
+import { createTheme } from '@mui/material/styles'
 
 const getTheme = (mode: PaletteMode) => {
   return createTheme({
     palette: {
-      mode
+      mode,
     },
-  });
+  })
 }
 
 export default function Theme({ children }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   return (
     <ThemeProvider theme={getTheme(prefersDarkMode ? 'dark' : 'light')}>
       {children}
     </ThemeProvider>
-  );
+  )
 }
