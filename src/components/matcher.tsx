@@ -12,6 +12,7 @@ import { MatcherItem } from 'src/components/matcherItem'
 import { practiceTypeAtom } from 'src/components/practiceTypeSelector'
 import { findSubCollections } from 'src/helpers/collectionHelpers'
 import { collectionsAtom } from 'src/data/collectionReducer'
+import { setReverseAtom } from 'src/components/practiceReverseToggle'
 
 interface Props {
   collection: Collection
@@ -41,6 +42,7 @@ export default function Matcher({ collection }: Props) {
   // Practice options
   const [setSizeOption] = useAtom(setSizeAtom)
   const [selectedOption] = useAtom(practiceTypeAtom)
+  const [reversed] = useAtom(setReverseAtom)
   const practiceOption = practiceOptions.find(({ id }) => id === selectedOption)
 
   if (!practiceOption) {
@@ -164,7 +166,7 @@ export default function Matcher({ collection }: Props) {
       const leftId = leftSets[index].id
       const rightId = rightSets[index].id
       items.push(
-        <Grid key={index} container item columnSpacing={4} xs={12}>
+        <Grid key={index} container item columnSpacing={4} xs={12} direction={reversed ? 'row-reverse' : undefined}>
           <Grid item xs={6} justifyContent="center">
             <MatcherItem
               id={leftId}
