@@ -19,7 +19,7 @@ import {
   GridRowEditStopReasons,
   GridSlots,
 } from '@mui/x-data-grid'
-import { Set } from 'src/types'
+import { Collection, Set } from 'src/types'
 import { setsAtom, SetReducerAction } from 'src/data/setReducer'
 import { useAtom } from 'jotai'
 import { v4 as uuidv4 } from 'uuid'
@@ -55,11 +55,10 @@ const EditToolbar = (props: EditToolbarProps) => {
 }
 
 interface TableProps {
-  collectionId: string
-  sets: Set[]
+  collection: Collection
 }
 
-export default function SetsTable({ collectionId, sets }: TableProps) {
+export default function SetsTable({ collection }: TableProps) {
   const [rows, setRows] = React.useState<Set[]>([])
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({})
   const [, setSet] = useAtom(setsAtom)
@@ -80,7 +79,7 @@ export default function SetsTable({ collectionId, sets }: TableProps) {
 
   const handleDeleteClick = (id: GridRowId) => () => {
     setRows(rows.filter(row => row.id !== id))
-    setSet({ action: SetReducerAction.DELETE_SET, collectionId, setId: id as string })
+    setSet({ action: SetReducerAction.DELETE_SET, collectionId: collection.id, setId: id as string })
   }
 
   const handleCancelClick = (id: GridRowId) => () => {
@@ -98,11 +97,11 @@ export default function SetsTable({ collectionId, sets }: TableProps) {
   const processRowUpdate = (set: Set) => {
     if (set.id === NEW_ITEM_ID) {
       const newSet = { ...set, id: uuidv4() }
-      setSet({ action: SetReducerAction.CREATE_SET, collectionId, set: newSet })
+      setSet({ action: SetReducerAction.CREATE_SET, collectionId: collection.id, set: newSet })
       setRows([...rows.filter(row => row.id !== NEW_ITEM_ID)])
     }
     else {
-      setSet({ action: SetReducerAction.UPDATE_SET, collectionId, set })
+      setSet({ action: SetReducerAction.UPDATE_SET, collectionId: collection.id, set })
     }
     return { ...set }
   }
@@ -200,7 +199,7 @@ export default function SetsTable({ collectionId, sets }: TableProps) {
       }}
     >
       <DataGrid
-        rows={[...rows, ...sets]}
+        rows={[...rows, ...collection.sets]}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

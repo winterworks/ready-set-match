@@ -26,6 +26,10 @@ export default function DataDetail() {
     persistFullState(newData)
   }
 
+  const onDataInputFieldChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDataImportValue(e.target.value)
+  }
+
   return (
     <Grid
       container
@@ -63,7 +67,7 @@ export default function DataDetail() {
           placeholder="Paste your data here"
           style={{ width: '100%', resize: 'vertical' }}
           value={dataImportValue}
-          onChange={(e) => { setDataImportValue(e.target.value) }}
+          onChange={onDataInputFieldChanged}
         />
         <Button variant="contained" onClick={onLoad}>
           Load

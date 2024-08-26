@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, Switch, TextField, Typography } from '@mui/material'
+import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Switch, TextField, Typography } from '@mui/material'
 import { useAtom } from 'jotai'
 import { useNavigate, useParams } from 'react-router-dom'
 import Icon, { ENABLED_ICON } from 'src/components/icon'
@@ -21,6 +21,54 @@ export default function CollectionDetail() {
   }
   const subCollections = findSubCollections(collections, collectionId)
 
+  const onDeleteConfirmed = () => {
+    setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId })
+    navigate('/')
+  }
+
+  const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collection: { ...collection, name: e.target.value },
+    })
+  }
+
+  const onIconChanged = (e: SelectChangeEvent<string>) => {
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collection: { ...collection, icon: (e.target.value as ENABLED_ICON) },
+    })
+  }
+
+  const onParentChanged = (e: SelectChangeEvent<string>) => {
+    const parentCollectionId = e.target.value != 'default' ? e.target.value : undefined
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collection: { ...collection, parentCollectionId },
+    })
+  }
+
+  const onLinkChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collection: { ...collection, link: e.target.value },
+    })
+  }
+
+  const onASizeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collection: { ...collection, aIsLarge: e.target.checked },
+    })
+  }
+
+  const onBSizeChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCollection({
+      action: CollectionReducerAction.UPDATE_COLLECTION,
+      collection: { ...collection, bIsLarge: e.target.checked },
+    })
+  }
+
   return (
     <>
       <HeaderMenu />
@@ -33,15 +81,12 @@ export default function CollectionDetail() {
       <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
         Sets
       </Typography>
-      <SetsTable collectionId={collectionId} sets={collection.sets} />
+      <SetsTable collection={collection} />
       <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
         Details
       </Typography>
       <DeleteConfirm
-        onConfirm={() => {
-          setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId })
-          navigate('/')
-        }}
+        onConfirm={onDeleteConfirmed}
         title={`Delete ${collection.name}`}
         message={`Are you sure you want to delete ${collection.name}?`}
       />
@@ -62,12 +107,7 @@ export default function CollectionDetail() {
           label="Name"
           variant="standard"
           value={collection.name}
-          onChange={(e) => {
-            setCollection({
-              action: CollectionReducerAction.UPDATE_COLLECTION,
-              collection: { ...collection, name: e.target.value },
-            })
-          }}
+          onChange={onNameChanged}
         />
         <FormControl variant="standard">
           <InputLabel id="collection-icon">Icon</InputLabel>
@@ -77,12 +117,7 @@ export default function CollectionDetail() {
             value={collection.icon}
             label="Icon"
             MenuProps={{ disableScrollLock: true }}
-            onChange={(e) => {
-              setCollection({
-                action: CollectionReducerAction.UPDATE_COLLECTION,
-                collection: { ...collection, icon: (e.target.value as ENABLED_ICON) },
-              })
-            }}
+            onChange={onIconChanged}
           >
             {Object.values(ENABLED_ICON).map(enabledIcon => (
               <MenuItem key={enabledIcon} value={enabledIcon}>
@@ -99,13 +134,7 @@ export default function CollectionDetail() {
             value={collection.parentCollectionId || ''}
             label="parentCollectionId"
             MenuProps={{ disableScrollLock: true }}
-            onChange={(e) => {
-              const parentCollectionId = e.target.value != 'default' ? e.target.value : undefined
-              setCollection({
-                action: CollectionReducerAction.UPDATE_COLLECTION,
-                collection: { ...collection, parentCollectionId },
-              })
-            }}
+            onChange={onParentChanged}
           >
             {collections.filter(coll => !coll.parentCollectionId).map(coll => (
               <MenuItem key={coll.id} value={coll.id}>
@@ -122,40 +151,25 @@ export default function CollectionDetail() {
           label="Link"
           variant="standard"
           value={collection.link}
-          onChange={(e) => {
-            setCollection({
-              action: CollectionReducerAction.UPDATE_COLLECTION,
-              collection: { ...collection, link: e.target.value },
-            })
-          }}
+          onChange={onLinkChanged}
         />
         <br />
         <FormControlLabel
-          control={(
+          control={
             <Switch
               checked={collection.aIsLarge}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setCollection({
-                  action: CollectionReducerAction.UPDATE_COLLECTION,
-                  collection: { ...collection, aIsLarge: e.target.checked },
-                })
-              }}
+              onChange={onASizeChanged}
             />
-          )}
+          }
           label="Value A large"
         />
         <FormControlLabel
-          control={(
+          control={
             <Switch
               checked={collection.bIsLarge}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                setCollection({
-                  action: CollectionReducerAction.UPDATE_COLLECTION,
-                  collection: { ...collection, bIsLarge: e.target.checked },
-                })
-              }}
+              onChange={onBSizeChanged}
             />
-          )}
+          }
           label="Value B large"
         />
       </Box>

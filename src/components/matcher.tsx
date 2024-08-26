@@ -146,6 +146,10 @@ export default function Matcher({ collection }: Props) {
     itemClicked(id, selectedRight, setSelectedRight)
   }
 
+  const closeSuccessSnackbar = () => {
+    setIsSuccessSnackbarOpen(false)
+  }
+
   const itemClicked = (
     id: string,
     currentValue: string | undefined,
@@ -216,14 +220,14 @@ export default function Matcher({ collection }: Props) {
       {renderItems()}
       <Snackbar
         open={isSuccessSnackbarOpen}
-        onClick={() => { setIsSuccessSnackbarOpen(false) }}
-        onClose={() => { setIsSuccessSnackbarOpen(false) }}
+        onClick={closeSuccessSnackbar}
+        onClose={closeSuccessSnackbar}
         key="successSnackbar"
         autoHideDuration={5000}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
-          // onClose={handleClose}
+          onClose={closeSuccessSnackbar}
           severity="success"
           variant="outlined"
           sx={{ width: '100%' }}

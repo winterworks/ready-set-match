@@ -25,6 +25,15 @@ export default function MainMenu({ disabled }: Props) {
     setAnchorEl(null)
   }
 
+  const onCloseDialog = () => {
+    setCreateCollectionOpen(false)
+  }
+
+  const onAddCollection = () => {
+    closeMenu()
+    setCreateCollectionOpen(true)
+  }
+
   return (
     <div>
       <Button
@@ -43,7 +52,7 @@ export default function MainMenu({ disabled }: Props) {
       </Button>
       <CollectionCreate
         isOpen={createCollectionOpen}
-        closeDialog={() => { setCreateCollectionOpen(false) }}
+        closeDialog={onCloseDialog}
       />
       <Menu
         id="basic-menu"
@@ -55,12 +64,7 @@ export default function MainMenu({ disabled }: Props) {
         }}
         disableScrollLock={true}
       >
-        <MenuItem
-          onClick={() => {
-            closeMenu()
-            setCreateCollectionOpen(true)
-          }}
-        >
+        <MenuItem onClick={onAddCollection}>
           <AddIcon />
           Add Collection
         </MenuItem>

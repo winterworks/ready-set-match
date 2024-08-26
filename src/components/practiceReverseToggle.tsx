@@ -12,15 +12,17 @@ export const setReverseAtom = atomWithStorage(setReverseKey, setReverseDefault, 
 export default function PracticeReverseToggle() {
   const [setReversed, setSetReverse] = useAtom(setReverseAtom)
 
+  const onButtonToggled = () => {
+    setSetReverse(!setReversed)
+  }
+
   return (
     <ToggleButton
       id="set-reversed"
       value="check"
       selected={setReversed}
       sx={{ marginRight: 1 }}
-      onChange={() => {
-        setSetReverse(!setReversed)
-      }}
+      onChange={onButtonToggled}
     >
       {setReversed ? <ArrowBackIcon /> : <ArrowForwardIcon />}
     </ToggleButton>

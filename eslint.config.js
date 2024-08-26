@@ -29,10 +29,8 @@ export default [
         "version": "detect"
       }
     },
-    // rules: {
-    //   "@stylistic/indent": ["error", 2],
-    //   "@stylistic/comma-dangle": ["error", "always-multiline"],
-    //   "@stylistic/semi": ["error", "always"]
-    // }
+    rules: {
+      "@stylistic/brace-style": false
+    }
   }
 ];

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, DialogContentText } from '@mui/material'
 import TextField from '@mui/material/TextField'
 import Dialog from '@mui/material/Dialog'
@@ -7,7 +7,6 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import { useAtom } from 'jotai'
 import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer'
-import { findCollection } from 'src/helpers/collectionHelpers'
 import { useParams } from 'react-router-dom'
 
 interface Props {
@@ -19,6 +18,27 @@ export default function CollectionCreate({ isOpen, closeDialog }: Props) {
   const { collectionId } = useParams()
   const [newCollectionName, setNewCollectionName] = React.useState('')
   const [collections, setCollection] = useAtom(collectionsAtom)
+  const [nameIsTaken, setNameIsTaken] = useState<boolean>(false)
+
+  useEffect(() => {
+    setNameIsTaken(!!collections.find(({ name }) => name === newCollectionName))
+  }, [collections, newCollectionName])
+
+  const onNameChanged = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewCollectionName(e.target.value)
+  }
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!nameIsTaken) {
+      const newCollection = {
+        name: newCollectionName,
+        parentCollectionId: collectionId,
+      }
+      setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
+      closeDialog()
+    }
+  }
 
   return (
     <React.Fragment>
@@ -27,15 +47,7 @@ export default function CollectionCreate({ isOpen, closeDialog }: Props) {
         onClose={closeDialog}
         PaperProps={{
           component: 'form',
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault()
-            const newCollection = {
-              name: newCollectionName,
-              parentCollectionId: collectionId,
-            }
-            setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
-            closeDialog()
-          },
+          onSubmit,
         }}
       >
         <DialogTitle>Create a new collection</DialogTitle>
@@ -49,12 +61,9 @@ export default function CollectionCreate({ isOpen, closeDialog }: Props) {
             fullWidth
             variant="standard"
             value={newCollectionName}
-            onChange={(e) => {
-              console.log(e)
-              setNewCollectionName(e.target.value)
-            }}
+            onChange={onNameChanged}
           />
-          {findCollection(collections, newCollectionName) && <DialogContentText>This name already exists</DialogContentText>}
+          {nameIsTaken && <DialogContentText>This name already exists: {newCollectionName}</DialogContentText>}
         </DialogContent>
         <DialogActions>
           <Button onClick={closeDialog}>Cancel</Button>
