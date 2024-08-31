@@ -3,18 +3,18 @@ import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/m
 import Icon from './icon'
 import { Link } from 'react-router-dom'
 import { Collection } from 'src/types'
+import { collectionsAtom } from 'src/data/collectionReducer'
+import { useAtom } from 'jotai'
+import { findSubCollections, getAllSubSets } from 'src/helpers/collectionHelpers'
 
 interface Props {
   collection: Collection
 }
 
 export default function CollectionTile({ collection: { id, name, icon, sets } }: Props) {
-  const totalPracticed = sets.reduce((acc, set) => {
-    if (set.practiced) {
-      return acc + set.practiced
-    }
-    return acc
-  }, 0)
+  const [collections] = useAtom(collectionsAtom)
+  const subCollections = findSubCollections(collections, id)
+  const subsets = getAllSubSets(subCollections)
 
   return (
     <Grid key={name} item xs={12} sm={6} md={4}>
@@ -25,14 +25,7 @@ export default function CollectionTile({ collection: { id, name, icon, sets } }:
             {icon && (<Icon fontSize="large" iconName={icon} />)}
           </Typography>
           <Typography>
-            Sets:
-            {' '}
-            {sets.length}
-          </Typography>
-          <Typography>
-            Practiced:
-            {' '}
-            {totalPracticed}
+            Sets: {sets.length + subsets.length}
           </Typography>
         </CardContent>
         <CardActions sx={{
