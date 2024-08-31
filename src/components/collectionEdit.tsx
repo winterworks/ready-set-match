@@ -1,28 +1,23 @@
 import React from 'react'
 import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Switch, TextField, Typography } from '@mui/material'
 import { useAtom } from 'jotai'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Icon, { ENABLED_ICON } from 'src/components/icon'
 import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer'
-import SetsTable from 'src/components/setsTable'
-import { findCollection, findSubCollections } from 'src/helpers/collectionHelpers'
 import DeleteConfirm from 'src/components/deleteConfirm'
-import CollectionsGird from 'src/components/collectionGird'
 import { HeaderMenu } from 'src/components/headerMenu'
+import { Collection } from 'src/types'
 
-export default function CollectionDetail() {
-  const { collectionId } = useParams()
+interface Props {
+  collection: Collection
+}
+
+export default function CollectionEdit({ collection }: Props) {
   const [collections, setCollection] = useAtom(collectionsAtom)
   const navigate = useNavigate()
 
-  const collection = collectionId ? findCollection(collections, collectionId) : undefined
-  if (!collectionId || !collection) {
-    return <>This collection does not exist</>
-  }
-  const subCollections = findSubCollections(collections, collectionId)
-
   const onDeleteConfirmed = () => {
-    setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId })
+    setCollection({ action: CollectionReducerAction.DELETE_COLLECTION, collectionId: collection.id })
     navigate('/')
   }
 
@@ -71,20 +66,6 @@ export default function CollectionDetail() {
 
   return (
     <>
-      <HeaderMenu />
-      <Typography component="h2" variant="h4" gutterBottom>
-        {collection.name}
-      </Typography>
-      {subCollections.length > 0 && (
-        <CollectionsGird collections={subCollections} displayWithParent />
-      )}
-      <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
-        Sets
-      </Typography>
-      <SetsTable collection={collection} />
-      <Typography component="h3" variant="h5" sx={{ marginTop: 4, marginBottom: 2 }}>
-        Details
-      </Typography>
       <DeleteConfirm
         onConfirm={onDeleteConfirmed}
         title={`Delete ${collection.name}`}
