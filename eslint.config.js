@@ -30,7 +30,7 @@ export default [
       }
     },
     rules: {
-      "@stylistic/brace-style": false
+      "@stylistic/jsx-one-expression-per-line": 0
     }
   }
 ];

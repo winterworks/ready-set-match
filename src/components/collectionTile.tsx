@@ -35,7 +35,7 @@ export default function CollectionTile({ collection: { id, name, icon, sets } }:
         >
           <Link to={`/collection/${id}`}>
             <Button size="small" color="secondary">
-              edit
+              View
             </Button>
           </Link>
           <Link to={`/practice/${id}`}>

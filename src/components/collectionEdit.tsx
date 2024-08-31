@@ -1,11 +1,10 @@
 import React from 'react'
-import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Switch, TextField, Typography } from '@mui/material'
+import { Box, FormControl, FormControlLabel, InputLabel, MenuItem, Select, SelectChangeEvent, Switch, TextField } from '@mui/material'
 import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 import Icon, { ENABLED_ICON } from 'src/components/icon'
 import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer'
 import DeleteConfirm from 'src/components/deleteConfirm'
-import { HeaderMenu } from 'src/components/headerMenu'
 import { Collection } from 'src/types'
 
 interface Props {
@@ -28,14 +27,14 @@ export default function CollectionEdit({ collection }: Props) {
     })
   }
 
-  const onIconChanged = (e: SelectChangeEvent<string>) => {
+  const onIconChanged = (e: SelectChangeEvent) => {
     setCollection({
       action: CollectionReducerAction.UPDATE_COLLECTION,
       collection: { ...collection, icon: (e.target.value as ENABLED_ICON) },
     })
   }
 
-  const onParentChanged = (e: SelectChangeEvent<string>) => {
+  const onParentChanged = (e: SelectChangeEvent) => {
     const parentCollectionId = e.target.value != 'default' ? e.target.value : undefined
     setCollection({
       action: CollectionReducerAction.UPDATE_COLLECTION,
@@ -76,7 +75,6 @@ export default function CollectionEdit({ collection }: Props) {
         sx={{
           '& .MuiFormControl-root': { marginBottom: 4, width: '50ch' },
           '& .MuiTextField-root.number-field': { width: '100px' },
-          'marginBottom': 20,
           'display': 'flex',
           'flexDirection': 'column',
         }}
@@ -136,21 +134,21 @@ export default function CollectionEdit({ collection }: Props) {
         />
         <br />
         <FormControlLabel
-          control={
+          control={(
             <Switch
               checked={collection.aIsLarge}
               onChange={onASizeChanged}
             />
-          }
+          )}
           label="Value A large"
         />
         <FormControlLabel
-          control={
+          control={(
             <Switch
               checked={collection.bIsLarge}
               onChange={onBSizeChanged}
             />
-          }
+          )}
           label="Value B large"
         />
       </Box>
