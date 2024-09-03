@@ -100,7 +100,7 @@ export default function CollectionEdit({ collection }: Props) {
           >
             {Object.values(ENABLED_ICON).map(enabledIcon => (
               <MenuItem key={enabledIcon} value={enabledIcon}>
-                <Icon iconName={enabledIcon} />
+                <Icon iconName={enabledIcon} />&nbsp;&nbsp;{enabledIcon}
               </MenuItem>
             ))}
           </Select>

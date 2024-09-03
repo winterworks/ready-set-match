@@ -1,5 +1,5 @@
 import React from 'react'
-import { Checklist, Science, Translate, CellTower, Flag } from '@mui/icons-material'
+import { Checklist, Science, Translate, CellTower, Flag, AccountBalance } from '@mui/icons-material'
 import { SvgIconOwnProps } from '@mui/material'
 
 interface Props extends SvgIconOwnProps {
@@ -12,6 +12,7 @@ export enum ENABLED_ICON {
   CELL_TOWER = 'CellTower',
   CHECKLIST = 'Checklist',
   FLAG = 'Flag',
+  ROMAN_TEMPLE = 'RomanTemple',
 }
 
 export default function Icon({ iconName, ...props }: Props) {
@@ -29,6 +30,9 @@ export default function Icon({ iconName, ...props }: Props) {
       break
     case ENABLED_ICON.FLAG:
       Icon = Flag
+      break
+    case ENABLED_ICON.ROMAN_TEMPLE:
+      Icon = AccountBalance
       break
     default:
       break
