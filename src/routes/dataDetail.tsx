@@ -5,6 +5,7 @@ import { Button, Grid, TextareaAutosize, Typography } from '@mui/material'
 import { Data } from 'src/types'
 import { persistFullState } from 'src/data/dbConnector'
 import { HeaderMenu } from 'src/components/headerMenu'
+import ConfirmAction from 'src/components/confirmAction'
 
 export default function DataDetail() {
   const [state, setState] = useAtom(stateAtom)
@@ -69,9 +70,17 @@ export default function DataDetail() {
           value={dataImportValue}
           onChange={onDataInputFieldChanged}
         />
-        <Button variant="contained" onClick={onLoad}>
-          Load
-        </Button>
+        <ConfirmAction
+          onConfirm={onLoad}
+          title="Loan new data"
+          message="Are you sure you want import this new data? All existing data will be overwritten!"
+          buttonText="Import"
+          buttonProps={{
+            variant: 'contained',
+          }}
+          cancelText="cancel"
+          confirmText="Import"
+        />
       </Grid>
     </Grid>
   )

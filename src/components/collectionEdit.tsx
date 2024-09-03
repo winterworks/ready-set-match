@@ -4,8 +4,8 @@ import { useAtom } from 'jotai'
 import { useNavigate } from 'react-router-dom'
 import Icon, { ENABLED_ICON } from 'src/components/icon'
 import { collectionsAtom, CollectionReducerAction } from 'src/data/collectionReducer'
-import DeleteConfirm from 'src/components/deleteConfirm'
 import { Collection } from 'src/types'
+import ConfirmAction from 'src/components/confirmAction'
 
 interface Props {
   collection: Collection
@@ -65,10 +65,18 @@ export default function CollectionEdit({ collection }: Props) {
 
   return (
     <>
-      <DeleteConfirm
+      <ConfirmAction
         onConfirm={onDeleteConfirmed}
         title={`Delete ${collection.name}`}
         message={`Are you sure you want to delete ${collection.name}?`}
+        buttonText="Delete"
+        buttonProps={{
+          color: 'error',
+          variant: 'outlined',
+          sx: { float: 'right' },
+        }}
+        cancelText="cancel"
+        confirmText="Delete"
       />
       <Box
         component="form"

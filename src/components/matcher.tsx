@@ -201,7 +201,7 @@ export default function Matcher({ collection }: Props) {
 
   if (isLoading) {
     return (
-      <Grid container xs={12} justifyContent="center">
+      <Grid container item xs={12} justifyContent="center">
         <Box sx={{ display: 'flex' }}>
           <CircularProgress />
         </Box>

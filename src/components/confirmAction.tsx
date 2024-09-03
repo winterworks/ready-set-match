@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Button from '@mui/material/Button'
+import Button, { ButtonOwnProps } from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -7,16 +7,18 @@ import DialogContentText from '@mui/material/DialogContentText'
 import DialogTitle from '@mui/material/DialogTitle'
 
 interface props {
+  buttonText: string
+  buttonProps: ButtonOwnProps
+
   title: string
   message: string
-
-  cancelText?: string
-  confirmText?: string
+  cancelText: string
+  confirmText: string
 
   onConfirm: () => void
 }
 
-export default function DeleteConfirm({ title, message, cancelText, confirmText, onConfirm }: props) {
+export default function ConfirmAction({ buttonText, buttonProps, title, message, cancelText, confirmText, onConfirm }: props) {
   const [open, setOpen] = React.useState(false)
 
   const handleClickOpen = () => {
@@ -30,12 +32,10 @@ export default function DeleteConfirm({ title, message, cancelText, confirmText,
   return (
     <React.Fragment>
       <Button
-        color="error"
-        variant="outlined"
-        sx={{ float: 'right' }}
         onClick={handleClickOpen}
+        {...buttonProps}
       >
-        Delete
+        {buttonText}
       </Button>
       <Dialog
         open={open}
@@ -52,8 +52,8 @@ export default function DeleteConfirm({ title, message, cancelText, confirmText,
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant="contained">{cancelText ?? 'Cancel'}</Button>
-          <Button onClick={onConfirm} color="error">{confirmText ?? 'Delete'}</Button>
+          <Button onClick={handleClose} variant="contained">{cancelText}</Button>
+          <Button onClick={onConfirm} {...buttonProps}>{confirmText}</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
