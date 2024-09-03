@@ -29,7 +29,7 @@ export default function CollectionPage() {
 
   return (
     <>
-      <HeaderMenu />
+      <HeaderMenu collection={collection} />
       <Typography component="h2" variant="h4" gutterBottom>
         {collection.name}
       </Typography>

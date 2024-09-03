@@ -30,14 +30,15 @@ export default function CollectionCreate({ isOpen, closeDialog }: Props) {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!nameIsTaken) {
-      const newCollection = {
-        name: newCollectionName,
-        parentCollectionId: collectionId,
-      }
-      setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
-      closeDialog()
+    if (nameIsTaken) {
+      return
     }
+    const newCollection = {
+      name: newCollectionName,
+      parentCollectionId: collectionId,
+    }
+    setCollection({ action: CollectionReducerAction.CREATE_COLLECTION, collection: newCollection })
+    closeDialog()
   }
 
   return (

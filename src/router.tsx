@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Index from 'src/routes'
-import CollectionPage from 'src/routes/CollectionPage'
+import CollectionPage from 'src/routes/collectionPage'
 import DataDetail from 'src/routes/dataDetail'
 import Practice from 'src/routes/practice'
 

@@ -13,14 +13,14 @@ export default function Practice() {
   const [collections] = useAtom(collectionsAtom)
 
   const collection = collectionId ? findCollection(collections, collectionId) : undefined
-  if (!collectionId || !collection) {
+  if (!collection) {
     return <>This collection does not exist</>
   }
 
-  return React.useMemo(() => (
+  return (
     <>
       <Grid container item xs={12} justifyContent="space-between">
-        <HeaderMenu currentPageName="Practice" menuDisabled />
+        <HeaderMenu collection={collection} currentPageName="Practice" menuDisabled />
         {collection.link && (
           <Link
             to={collection.link}
@@ -34,5 +34,5 @@ export default function Practice() {
       </Grid>
       <Matcher collection={collection} />
     </>
-  ), [])
+  )
 }

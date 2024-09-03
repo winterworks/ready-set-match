@@ -43,11 +43,6 @@ export default function Matcher({ collection }: Props) {
   const [setSizeOption] = useAtom(setSizeAtom)
   const [selectedOption] = useAtom(practiceTypeAtom)
   const [reversed] = useAtom(setReverseAtom)
-  const practiceOption = practiceOptions.find(({ id }) => id === selectedOption)
-
-  if (!practiceOption) {
-    return <>Practice option is not defined</>
-  }
 
   useEffect(() => {
     initSets()
@@ -90,9 +85,11 @@ export default function Matcher({ collection }: Props) {
   }
 
   const initSets = () => {
+    // Find the selected practice option or default to the first one
+    const practiceOption = practiceOptions.find(({ id }) => id === selectedOption) || practiceOptions[0]
+
     const subCollections = findSubCollections(collections, collection.id)
     const subSets = subCollections.reduce<PracticeSet[]>((acc, subCollection) => [...acc, ...getPracticeSets(subCollection)], [])
-
     const sets: PracticeSet[] = [...getPracticeSets(collection), ...subSets]
 
     // Sort by the selected practice option (sort type)

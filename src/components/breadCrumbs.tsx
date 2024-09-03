@@ -1,19 +1,18 @@
 import React from 'react'
 import { Breadcrumbs, Typography } from '@mui/material'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useAtom } from 'jotai'
 import { collectionsAtom } from 'src/data/collectionReducer'
 import { findCollection } from 'src/helpers/collectionHelpers'
+import { Collection } from 'src/types'
 
 interface Props {
+  collection?: Collection
   currentPageName?: string
 }
 
-export function BreadcrumbsPath({ currentPageName }: Props) {
-  const { collectionId } = useParams()
+export function BreadcrumbsPath({ collection, currentPageName }: Props) {
   const [collections] = useAtom(collectionsAtom)
-
-  const collection = collectionId ? findCollection(collections, collectionId) : undefined
   const parentCollection = collection?.parentCollectionId ? findCollection(collections, collection.parentCollectionId) : undefined
 
   return (
