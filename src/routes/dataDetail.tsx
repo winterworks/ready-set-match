@@ -72,7 +72,7 @@ export default function DataDetail() {
         />
         <ConfirmAction
           onConfirm={onLoad}
-          title="Loan new data"
+          title="Load new data"
           message="Are you sure you want import this new data? All existing data will be overwritten!"
           buttonText="Import"
           buttonProps={{

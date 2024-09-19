@@ -29,6 +29,11 @@ export default function ConfirmAction({ buttonText, buttonProps, title, message,
     setOpen(false)
   }
 
+  const handleConfirm = () => {
+    setOpen(false)
+    onConfirm()
+  }
+
   return (
     <React.Fragment>
       <Button
@@ -53,7 +58,7 @@ export default function ConfirmAction({ buttonText, buttonProps, title, message,
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} variant="contained">{cancelText}</Button>
-          <Button onClick={onConfirm} {...buttonProps}>{confirmText}</Button>
+          <Button onClick={handleConfirm} {...buttonProps}>{confirmText}</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
