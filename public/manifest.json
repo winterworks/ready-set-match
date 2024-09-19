@@ -1,10 +1,11 @@
 {
   "name": "Ready Set Match",
-  "start_url": "../",
+  "start_url": "/",
   "display": "standalone",
+  "background_color": "#5F699E",
   "icons": [
     {
-      "src": "/images/logo.svg",
+      "src": "/images/icon.svg",
       "sizes": "any"
     }
   ]
