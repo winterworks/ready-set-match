@@ -9,4 +9,14 @@ export default defineConfig({
       src: "/src",
     },
   },
+  build: {
+    target: 'esnext',
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
+  }
 });
