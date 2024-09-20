@@ -1,7 +1,7 @@
 import React from 'react'
-import { Divider, Tab, Tabs, Typography } from '@mui/material'
+import { Button, Divider, Grid, Tab, Tabs, Typography } from '@mui/material'
 import { useAtom } from 'jotai'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { collectionsAtom } from 'src/data/collectionReducer'
 import SetsTable from 'src/components/setsTable'
 import { findCollection, findSubCollections } from 'src/helpers/collectionHelpers'
@@ -30,9 +30,20 @@ export default function CollectionPage() {
   return (
     <>
       <HeaderMenu collection={collection} />
-      <Typography component="h2" variant="h4" gutterBottom>
-        {collection.name}
-      </Typography>
+      <Grid container>
+        <Grid item xs={8}>
+          <Typography component="h2" variant="h4" gutterBottom>
+            {collection.name}
+          </Typography>
+        </Grid>
+        <Grid item xs={4} display="flex" justifyContent="flex-end">
+          <Link to={`/practice/${collectionId}`}>
+            <Button size="small" color="primary" variant="contained">
+              Practice
+            </Button>
+          </Link>
+        </Grid>
+      </Grid>
       <Tabs
         value={activeTab}
         onChange={(e, newValue: string) => { setActiveTab(newValue as TABS) }}
