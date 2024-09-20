@@ -24,7 +24,7 @@ self.addEventListener('fetch', event => {
         const networkFetch = fetch(event.request).then(response => {
           // update the cache with a clone of the network response
           const responseClone = response.clone()
-          caches.open(url.searchParams.get('name')).then(cache => {
+          caches.open(cacheName).then(cache => {
             cache.put(event.request, responseClone)
           })
           return response
