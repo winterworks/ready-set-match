@@ -10,15 +10,15 @@ import { Collection } from 'src/types'
 interface Props {
   collection?: Collection
   currentPageName?: string
-  menuDisabled?: boolean
+  addCollectionDisabled?: boolean
 }
 
-export function HeaderMenu({ collection, currentPageName, menuDisabled }: Props) {
+export function HeaderMenu({ collection, currentPageName, addCollectionDisabled }: Props) {
   return (
     <>
       <Grid container display="flex" justifyContent="space-between" marginBottom={2}>
         <BreadcrumbsPath collection={collection} currentPageName={currentPageName} />
-        <MainMenu disabled={menuDisabled} />
+        <MainMenu addCollectionDisabled={addCollectionDisabled} />
       </Grid>
       <Grid container display="flex" flexWrap="wrap" rowGap={1} marginBottom={4}>
         <PracticeReverseToggle />

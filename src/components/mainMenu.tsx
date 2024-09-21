@@ -9,10 +9,10 @@ import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
 
 interface Props {
-  disabled?: boolean
+  addCollectionDisabled?: boolean
 }
 
-export default function MainMenu({ disabled }: Props) {
+export default function MainMenu({ addCollectionDisabled }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [createCollectionOpen, setCreateCollectionOpen] = React.useState(false)
   const open = Boolean(anchorEl)
@@ -46,7 +46,6 @@ export default function MainMenu({ disabled }: Props) {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         sx={{ height: '100%' }}
-        disabled={disabled}
       >
         Menu
       </Button>
@@ -64,7 +63,7 @@ export default function MainMenu({ disabled }: Props) {
         }}
         disableScrollLock={true}
       >
-        <MenuItem onClick={onAddCollection}>
+        <MenuItem onClick={onAddCollection} disabled={addCollectionDisabled}>
           <AddIcon />
           Add Collection
         </MenuItem>

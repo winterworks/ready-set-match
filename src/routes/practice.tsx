@@ -19,7 +19,7 @@ export default function Practice() {
   return (
     <>
       <Grid container item xs={12} justifyContent="space-between">
-        <HeaderMenu collection={collection} currentPageName="Practice" menuDisabled />
+        <HeaderMenu collection={collection} currentPageName="Practice" addCollectionDisabled />
         {/* Disable link to find a better way to display it */}
         {/* {collection.link && (
           <Link

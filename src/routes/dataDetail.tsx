@@ -37,7 +37,7 @@ export default function DataDetail() {
       rowSpacing={4}
       columnSpacing={4}
     >
-      <HeaderMenu />
+      <HeaderMenu addCollectionDisabled />
       <Grid item xs={12}>
         <Typography component="h3" variant="h5" gutterBottom>
           Export
