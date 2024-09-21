@@ -1,10 +1,9 @@
 import React from 'react'
 import { Grid } from '@mui/material'
 import { useAtom } from 'jotai'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Matcher from 'src/components/matcher'
 import { collectionsAtom } from 'src/data/collectionReducer'
-import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { findCollection } from 'src/helpers/collectionHelpers'
 import { HeaderMenu } from 'src/components/headerMenu'
 
@@ -21,7 +20,8 @@ export default function Practice() {
     <>
       <Grid container item xs={12} justifyContent="space-between">
         <HeaderMenu collection={collection} currentPageName="Practice" menuDisabled />
-        {collection.link && (
+        {/* Disable link to find a better way to display it */}
+        {/* {collection.link && (
           <Link
             to={collection.link}
             target="_blank"
@@ -30,7 +30,7 @@ export default function Practice() {
             View more information
             <OpenInNewIcon fontSize="small" />
           </Link>
-        )}
+        )} */}
       </Grid>
       <Matcher collection={collection} />
     </>
