@@ -46,7 +46,6 @@ export default function MainMenu({ addCollectionDisabled }: Props) {
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
-        sx={{ height: '100%' }}
       >
         Menu
       </Button>

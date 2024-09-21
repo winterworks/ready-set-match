@@ -16,7 +16,7 @@ interface Props {
 export function HeaderMenu({ collection, currentPageName, addCollectionDisabled }: Props) {
   return (
     <>
-      <Grid container display="flex" justifyContent="space-between" marginBottom={2}>
+      <Grid container display="flex" justifyContent="space-between" flexWrap="wrap" rowGap={1} marginBottom={2}>
         <BreadcrumbsPath collection={collection} currentPageName={currentPageName} />
         <MainMenu addCollectionDisabled={addCollectionDisabled} />
       </Grid>

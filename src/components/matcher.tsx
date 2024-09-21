@@ -226,7 +226,7 @@ export default function Matcher({ collection }: Props) {
         <Alert
           onClose={closeSuccessSnackbar}
           severity="success"
-          variant="outlined"
+          variant="filled"
           sx={{ width: '100%' }}
         >
           You got all sets matched correctly!
