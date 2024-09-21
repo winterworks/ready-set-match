@@ -15,14 +15,16 @@ interface Props {
 
 export function HeaderMenu({ collection, currentPageName, menuDisabled }: Props) {
   return (
-    <Grid container item xs={12} marginBottom={4} flexDirection="row" display="flex" justifyContent="space-between" alignContent="center">
-      <BreadcrumbsPath collection={collection} currentPageName={currentPageName} />
-      <Grid item display="flex">
+    <>
+      <Grid container display="flex" justifyContent="space-between" marginBottom={2}>
+        <BreadcrumbsPath collection={collection} currentPageName={currentPageName} />
+        <MainMenu disabled={menuDisabled} />
+      </Grid>
+      <Grid container display="flex" flexWrap="wrap" rowGap={1} marginBottom={4}>
         <PracticeReverseToggle />
         <PracticeOptionSelector />
         <PracticeSetSizeSelector />
-        <MainMenu disabled={menuDisabled} />
       </Grid>
-    </Grid>
+    </>
   )
 }

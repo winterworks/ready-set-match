@@ -35,7 +35,7 @@ export default function MainMenu({ disabled }: Props) {
   }
 
   return (
-    <div>
+    <>
       <Button
         id="menu-button"
         variant="outlined"
@@ -75,6 +75,6 @@ export default function MainMenu({ disabled }: Props) {
           </Link>
         </MenuItem>
       </Menu>
-    </div>
+    </>
   )
 }
