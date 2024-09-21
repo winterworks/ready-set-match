@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom'
 import ImportExportIcon from '@mui/icons-material/ImportExport'
 import AddIcon from '@mui/icons-material/Add'
 import MenuIcon from '@mui/icons-material/Menu'
+import HouseIcon from '@mui/icons-material/House'
 
 interface Props {
   addCollectionDisabled?: boolean
@@ -63,16 +64,22 @@ export default function MainMenu({ addCollectionDisabled }: Props) {
         }}
         disableScrollLock={true}
       >
+        <Link to="/">
+          <MenuItem onClick={closeMenu}>
+            <HouseIcon />
+            Home
+          </MenuItem>
+        </Link>
         <MenuItem onClick={onAddCollection} disabled={addCollectionDisabled}>
           <AddIcon />
           Add Collection
         </MenuItem>
-        <MenuItem onClick={closeMenu}>
-          <Link to="/data">
+        <Link to="/data">
+          <MenuItem onClick={closeMenu}>
             <ImportExportIcon />
             Import / Export
-          </Link>
-        </MenuItem>
+          </MenuItem>
+        </Link>
       </Menu>
     </>
   )

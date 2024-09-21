@@ -32,11 +32,7 @@ export default function DataDetail() {
   }
 
   return (
-    <Grid
-      container
-      rowSpacing={4}
-      columnSpacing={4}
-    >
+    <>
       <HeaderMenu addCollectionDisabled />
       <Grid item xs={12}>
         <Typography component="h3" variant="h5" gutterBottom>
@@ -82,6 +78,6 @@ export default function DataDetail() {
           confirmText="Import"
         />
       </Grid>
-    </Grid>
+    </>
   )
 }

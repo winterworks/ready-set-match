@@ -20,7 +20,7 @@ export function Header() {
           </Link>
         </Grid>
       </Grid>
-      <Divider sx={{ width: '100%', marginBottom: 4 }} />
+      <Divider sx={{ width: '100%', marginBottom: 2 }} />
     </>
   )
 }
