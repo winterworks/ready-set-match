@@ -6,12 +6,12 @@ import Container from '@mui/material/Container'
 import theme from 'src/theme'
 import { AppRouter } from 'src/router'
 import { Header } from 'src/components/header'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Container maxWidth="md">
@@ -19,7 +19,7 @@ createRoot(document.getElementById('root')!).render(
           <AppRouter />
         </Container>
       </ThemeProvider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
 )
 
