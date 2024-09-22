@@ -4,12 +4,15 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/images/icon.svg',
+  '/images/icon-120.png',
+  '/images/icon-180.png',
+  '/images/icon-1024.png',
   '/assets/index.css',
   '/assets/index.js'
 ];
 
 self.addEventListener("install", (event) => {
-  let cacheUrls = async () => {
+  const cacheUrls = async () => {
      const cache = await caches.open(cacheName);
      return cache.addAll(urlsToCache);
   };
