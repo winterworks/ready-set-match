@@ -22,7 +22,7 @@ export default function PracticeOptionSelector() {
         id="practice-option-select"
         value={practiceType}
         label="Set selection"
-        sx={{ marginRight: 1, width: 200 }}
+        sx={{ marginRight: 1, width: 170 }}
         onChange={handleChange}
         MenuProps={{ disableScrollLock: true }}
       >
