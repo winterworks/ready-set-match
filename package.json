@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@emotion/react": "latest",
-    "@fontsource/roboto": "^5.0.13",
     "@mui/icons-material": "next",
     "@mui/material": "next",
     "@mui/x-data-grid": "^7.12.0",
